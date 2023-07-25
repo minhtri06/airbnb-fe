@@ -42,7 +42,7 @@ const UserMenu = () => {
             flex
             flex-row
             items-center
-            gap-3
+            gap-2
             rounded-full
             cursor-pointer
             hover:shadow-md
