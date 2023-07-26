@@ -30,24 +30,14 @@ const Modal: React.FC<ModelProps> = ({
   body,
   footer,
 }) => {
-  const [_isOpen, setIsOpen] = useState(isOpen)
-
-  useEffect(() => {
-    setIsOpen(isOpen)
-  }, [isOpen])
-
   const handleClose = () => {
     if (disabled) {
       return
     }
-    setIsOpen(false)
-
-    setTimeout(() => {
-      onClose()
-    }, 300)
+    onClose()
   }
 
-  const handleSubmit = () => {
+  const handleAction = () => {
     if (disabled) {
       return
     }
@@ -61,7 +51,7 @@ const Modal: React.FC<ModelProps> = ({
     secondaryAction()
   }
 
-  if (!_isOpen) {
+  if (!isOpen) {
     return <></>
   }
 
@@ -79,8 +69,8 @@ const Modal: React.FC<ModelProps> = ({
           z-50
           outline-none
           focus:outline-none
-          bg-neutral-800/70
-        "
+          bg-neutral-800/70"
+        onClick={(e) => handleClose()}
       >
         <div
           className="
@@ -93,16 +83,16 @@ const Modal: React.FC<ModelProps> = ({
             mx-auto
             h-full
             lg:h-auto
-            md:h-auto
-          "
+            md:h-auto"
+          onClick={(e) => e.stopPropagation()}
         >
           <div
             className={`
               translate
               duration-300
               h-full
-              ${_isOpen ? 'translate-y-0' : 'translate-y-full'}  
-              ${_isOpen ? 'opacity-100' : 'opacity-0'}  
+              ${isOpen ? 'translate-y-0' : 'translate-y-full'}  
+              ${isOpen ? 'opacity-100' : 'opacity-0'}  
           `}
           >
             <div
@@ -127,14 +117,14 @@ const Modal: React.FC<ModelProps> = ({
                 className="
                   flex
                   items-center
-                  p-6
+                  p-4
                   rounded-t
                   justify-center
                   relative
                   border-b-[1px]
                 "
               >
-                <div className="text-lg font-bold">{title}</div>
+                <div className="text-xl font-bold">{title}</div>
                 <button
                   onClick={handleClose}
                   className="
@@ -146,7 +136,7 @@ const Modal: React.FC<ModelProps> = ({
                     right-9
                   "
                 >
-                  <IoMdClose />
+                  <IoMdClose size={22} />
                 </button>
               </div>
               {/* BODY */}
@@ -163,7 +153,7 @@ const Modal: React.FC<ModelProps> = ({
                   )}
                   <Button
                     label={actionLabel}
-                    onClick={handleSubmit}
+                    onClick={handleAction}
                     disabled={disabled}
                   />
                 </div>

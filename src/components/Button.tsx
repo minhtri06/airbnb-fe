@@ -38,8 +38,8 @@ const Button: React.FC<ButtonProps> = ({
       }
       ${
         small
-          ? 'py-1 text-base font-semibold border-[1px]'
-          : 'py-3 text-lg font-bold border-2'
+          ? 'text-base font-semibold border-[1px]'
+          : 'py-1 text-lg font-bold border-[2px]'
       }
       `}
     >

@@ -1,13 +1,11 @@
-'use client'
-
 import axios from 'axios'
 
 import useAuthTokens from './useAuthTokens'
 import useAuth from './useAuth'
 
-const usePrivateAxios = () => {
+const useAuthAxios = () => {
   const privateAxios = axios.create({
-    baseURL: process.env.SERVER_URL,
+    baseURL: process.env.NEXT_PUBLIC_SERVER_URL + '/api/v1',
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
   })
@@ -41,4 +39,4 @@ const usePrivateAxios = () => {
   return privateAxios
 }
 
-export default usePrivateAxios
+export default useAuthAxios

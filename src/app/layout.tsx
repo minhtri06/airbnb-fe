@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 
 import Navbar from '../components/navbar/Navbar'
-// import RegisterModal from '@/components/modal/RegisterModal'
+import RegisterModal from '@/components/modals/RegisterModal'
 
 const nunito = Nunito({ subsets: ['latin'] })
 
@@ -19,9 +19,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${nunito.className} text-gray-900`}>
-        {/* <RegisterModal /> */}
+      <body
+        className={`${nunito.className} text-gray-900`}
+        suppressHydrationWarning={true}
+      >
         <Navbar />
+        <RegisterModal />
         {children}
       </body>
     </html>
