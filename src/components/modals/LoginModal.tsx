@@ -12,7 +12,6 @@ import Button from '../Button'
 import validateRequire from '@/utils/validateRequire'
 import useAuth from '@/hooks/useAuth'
 import useLoginModal from '@/hooks/contexts/useLoginModal'
-import useRegisterModal from '@/hooks/contexts/useRegisterModal'
 import ErrorText from '../ErrorText'
 
 function LoginModal() {
@@ -45,19 +44,17 @@ function LoginModal() {
         setErrors(errors)
       }, 300)
     } else {
-      const { res, err } = await auth.login(email, password)
-
-      if (err && err.isFetchError && res) {
-        const status = res.status
-        // If client error
-        if (status >= 400 && status < 500) {
-          setErrors((pre) => ({ ...pre, general: err.message }))
-        }
-      } else {
+      try {
+        await auth.login(email, password)
         modal.close()
+      } catch (error: any) {
+        if (axios.isAxiosError(error)) {
+          setErrors((pre) => ({ ...pre, general: error.response.data.message }))
+        } else {
+          console.log(error)
+        }
       }
     }
-    ;('object')
     setIsLoading(false)
   }
 

@@ -7,14 +7,28 @@ import Avatar from '../Avatar'
 import MenuItem from './MenuItem'
 import useRegisterModal from '@/hooks/contexts/useRegisterModal'
 import useLoginModal from '@/hooks/contexts/useLoginModal'
+import useCurrentUser from '@/hooks/contexts/useCurrentUser'
+import useAuth from '@/hooks/useAuth'
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
+
   const registerModal = useRegisterModal()
   const loginModal = useLoginModal()
+  const { logout } = useAuth()
+
+  const { currentUser } = useCurrentUser()
 
   const toggleOpen = () => {
     setIsOpen((pre) => !pre)
+  }
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -73,20 +87,30 @@ const UserMenu = () => {
             text-base"
         >
           <div className="flex flex-col cursor-pointer">
-            <MenuItem
-              onClick={() => {
-                loginModal.open()
-                toggleOpen()
-              }}
-              label="Login"
-            />
-            <MenuItem
-              onClick={() => {
-                registerModal.open()
-                toggleOpen()
-              }}
-              label="Sign up"
-            />
+            {currentUser ? (
+              <>
+                <MenuItem onClick={() => {}} label="Account" />
+                <MenuItem onClick={() => {}} label="Help" />
+                <MenuItem onClick={handleLogout} label="Logout" />
+              </>
+            ) : (
+              <>
+                <MenuItem
+                  onClick={() => {
+                    loginModal.open()
+                    toggleOpen()
+                  }}
+                  label="Login"
+                />
+                <MenuItem
+                  onClick={() => {
+                    registerModal.open()
+                    toggleOpen()
+                  }}
+                  label="Sign up"
+                />
+              </>
+            )}
           </div>
         </div>
       )}

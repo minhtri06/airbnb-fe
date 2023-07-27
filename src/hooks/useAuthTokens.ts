@@ -4,6 +4,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/auth'
 import jwtDecode from 'jwt-decode'
 import moment, { Moment } from 'moment'
 import axios from 'axios'
+import { BASE_URL } from '@/constants/urls'
 
 interface TokenPayload {
   sub: string
@@ -40,17 +41,17 @@ const useAuthTokens = () => {
     accessToken: string,
     refreshToken: string,
   ) => {
-    const response = await axios.post(
-      `${process.env.SERVER_URL}/api/v1/auth/refresh-token`,
-      {
-        accessToken,
-        refreshToken,
-      },
-    )
-    accessToken = response.data.authTokens.accessToken
-    refreshToken = response.data.authTokens.refreshToken
-    setAccessToken(accessToken)
-    setRefreshToken(refreshToken)
+    const response = await axios.post(`${BASE_URL}/auth/refresh-token`, {
+      accessToken,
+      refreshToken,
+    })
+
+    const newAccessToken = response.data.authTokens.accessToken
+    const newRefreshToken = response.data.authTokens.refreshToken
+    setAccessToken(newAccessToken)
+    setRefreshToken(newRefreshToken)
+
+    return { newAccessToken, newRefreshToken }
   }
 
   return {

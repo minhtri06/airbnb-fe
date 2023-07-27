@@ -2,12 +2,12 @@ import axios from 'axios'
 
 import useAuthTokens from './useAuthTokens'
 import useAuth from './useAuth'
+import { BASE_URL } from '@/constants/urls'
 
 const useAuthAxios = () => {
   const privateAxios = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_SERVER_URL + '/api/v1',
+    baseURL: BASE_URL,
     headers: { 'Content-Type': 'application/json' },
-    withCredentials: true,
   })
 
   const { logout } = useAuth()
@@ -15,18 +15,19 @@ const useAuthAxios = () => {
     useAuthTokens()
 
   privateAxios.interceptors.request.use(async (config) => {
-    const accessToken = getAccessToken()
-
+    let accessToken = getAccessToken()
     if (accessToken) {
       // If access token expired => we refresh tokens
       if (isTokenExpired(accessToken)) {
-        const refreshToken = getRefreshToken()
+        let refreshToken = getRefreshToken()
 
         // If refresh token is not available or expired => logout user
         if (!refreshToken || isTokenExpired(refreshToken)) {
           logout()
         } else {
-          await refreshAuthTokens(accessToken, refreshToken)
+          const newTokens = await refreshAuthTokens(accessToken, refreshToken)
+          accessToken = newTokens.newAccessToken
+          refreshToken = newTokens.newRefreshToken
         }
       }
 

@@ -6,6 +6,7 @@ import Navbar from '../components/navbar/Navbar'
 import RegisterModal from '@/components/modals/RegisterModal'
 import NotificationModal from '@/components/modals/NotificationModal'
 import LoginModal from '@/components/modals/LoginModal'
+import SetupClient from '@/components/SetupClient'
 
 const nunito = Nunito({ subsets: ['latin'] })
 
@@ -25,11 +26,13 @@ export default function RootLayout({
         className={`${nunito.className} text-gray-900`}
         suppressHydrationWarning={true}
       >
-        <Navbar />
-        <NotificationModal />
-        <RegisterModal />
-        <LoginModal />
-        {children}
+        <SetupClient>
+          <Navbar />
+          <NotificationModal />
+          <RegisterModal />
+          <LoginModal />
+          {children}
+        </SetupClient>
       </body>
     </html>
   )

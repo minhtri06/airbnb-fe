@@ -15,13 +15,18 @@ const Navbar = () => {
               flex
               flex-row 
               items-center 
-              justify-between 
+              justify-center
               gap-3
-              md:gap-0"
+              md:gap-0
+              relative"
           >
-            <Logo />
+            <div className="absolute left-0">
+              <Logo />
+            </div>
             <Search />
-            <UserMenu />
+            <div className="absolute right-0">
+              <UserMenu />
+            </div>
           </div>
         </Container>
       </div>

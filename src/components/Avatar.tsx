@@ -2,7 +2,6 @@
 
 import useCurrentUser from '@/hooks/contexts/useCurrentUser'
 import Image from 'next/image'
-import { useEffect } from 'react'
 
 interface AvatarProps {
   size: string

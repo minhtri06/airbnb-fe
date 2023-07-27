@@ -3,7 +3,7 @@
 import { FcGoogle } from 'react-icons/fc'
 import { useState } from 'react'
 import Image from 'next/image'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 import useRegisterModal from '@/hooks/contexts/useRegisterModal'
 import Modal from './Modal'
@@ -13,6 +13,7 @@ import Input from '../inputs/Input'
 import Button from '../Button'
 import validateRequire from '@/utils/validateRequire'
 import useNotificationModal from '@/hooks/contexts/useNotificationModal'
+import ErrorText from '../ErrorText'
 
 function RegisterModal() {
   const modal = useRegisterModal()
@@ -25,25 +26,26 @@ function RegisterModal() {
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
 
-  const [validateErrors, setValidateErrors] = useState<{
+  const [errors, setErrors] = useState<{
     name?: string
     email?: string
     password?: string
     passwordConfirm?: string
+    general?: string
   }>({})
 
   const [isLoading, setIsLoading] = useState(false)
 
   const validateForm = () => {
-    const errors = validateRequire(
+    const errs = validateRequire(
       { name, email, password, passwordConfirm },
       'name',
       'email',
       'password',
       'passwordConfirm',
     )
-    if (errors !== null) {
-      return errors
+    if (errs !== null) {
+      return errs
     }
     if (password !== passwordConfirm) {
       return { passwordConfirm: 'Password does not match' }
@@ -53,12 +55,12 @@ function RegisterModal() {
 
   const onSubmit = async () => {
     setIsLoading(true)
-    setValidateErrors({})
+    setErrors({})
 
-    const errors = validateForm()
-    if (errors !== null) {
+    const errs = validateForm()
+    if (errs !== null) {
       setTimeout(() => {
-        setValidateErrors(errors)
+        setErrors(errs)
       }, 300)
     } else {
       try {
@@ -80,9 +82,9 @@ function RegisterModal() {
             </div>
           </div>,
         )
-      } catch (error) {
+      } catch (error: any) {
         if (axios.isAxiosError(error)) {
-          console.log(error.response?.data)
+          setErrors((pre) => ({ ...pre, general: error.response.data.message }))
         } else {
           console.log(error)
         }
@@ -94,14 +96,17 @@ function RegisterModal() {
   const bodyElement = (
     <div className="flex flex-col gap-3">
       <Heading title="Welcome to Airbnb" subtitle="Create an account" />
+      <div className="pb-2">
+        <ErrorText error={errors.general} small />
+      </div>
       <Input
         label="Name"
         value={name}
         onChange={(e) => {
-          setValidateErrors((pre) => ({ ...pre, name: undefined }))
+          setErrors((pre) => ({ ...pre, name: undefined }))
           setName(e.currentTarget.value)
         }}
-        error={validateErrors.name}
+        error={errors.name}
         disabled={isLoading}
       />
       <Input
@@ -109,10 +114,10 @@ function RegisterModal() {
         label="Email"
         value={email}
         onChange={(e) => {
-          setValidateErrors((pre) => ({ ...pre, email: undefined }))
+          setErrors((pre) => ({ ...pre, email: undefined }))
           setEmail(e.currentTarget.value)
         }}
-        error={validateErrors.email}
+        error={errors.email}
         disabled={isLoading}
       />
       <Input
@@ -120,10 +125,10 @@ function RegisterModal() {
         label="Password"
         value={password}
         onChange={(e) => {
-          setValidateErrors((pre) => ({ ...pre, password: undefined }))
+          setErrors((pre) => ({ ...pre, password: undefined }))
           setPassword(e.currentTarget.value)
         }}
-        error={validateErrors.password}
+        error={errors.password}
         disabled={isLoading}
       />
       <Input
@@ -131,10 +136,10 @@ function RegisterModal() {
         label="Confirm password"
         value={passwordConfirm}
         onChange={(e) => {
-          setValidateErrors((pre) => ({ ...pre, passwordConfirm: undefined }))
+          setErrors((pre) => ({ ...pre, passwordConfirm: undefined }))
           setPasswordConfirm(e.currentTarget.value)
         }}
-        error={validateErrors.passwordConfirm}
+        error={errors.passwordConfirm}
         disabled={isLoading}
       />
     </div>
