@@ -6,10 +6,12 @@ import { useState } from 'react'
 import Avatar from '../Avatar'
 import MenuItem from './MenuItem'
 import useRegisterModal from '@/hooks/contexts/useRegisterModal'
+import useLoginModal from '@/hooks/contexts/useLoginModal'
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
   const registerModal = useRegisterModal()
+  const loginModal = useLoginModal()
 
   const toggleOpen = () => {
     setIsOpen((pre) => !pre)
@@ -71,8 +73,13 @@ const UserMenu = () => {
             text-base"
         >
           <div className="flex flex-col cursor-pointer">
-            <MenuItem onClick={() => {}} label="Login" />
-            <MenuItem onClick={() => {}} label="Logout" />
+            <MenuItem
+              onClick={() => {
+                loginModal.open()
+                toggleOpen()
+              }}
+              label="Login"
+            />
             <MenuItem
               onClick={() => {
                 registerModal.open()

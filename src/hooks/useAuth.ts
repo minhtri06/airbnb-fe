@@ -3,23 +3,47 @@
 import apiAxios from '@/utils/apiAxios'
 import useCurrentUser from './contexts/useCurrentUser'
 import useAuthTokens from './useAuthTokens'
-import { BASE_URL, REGISTER_URL } from '@/constants/urls'
+import { LOGIN_URL, LOGOUT_URL, REGISTER_URL } from '@/constants/urls'
+import catchFetch from '@/utils/catchFetch'
 
 const useAuth = () => {
   const { setCurrentUser } = useCurrentUser()
-  const { removeAuthTokens } = useAuthTokens()
+  const { removeAuthTokens, setAccessToken, setRefreshToken, getRefreshToken } =
+    useAuthTokens()
 
-  const logout = () => {
-    setCurrentUser(null)
-    removeAuthTokens()
+  const register = async (body: object) =>
+    catchFetch(async () => {
+      const res = await apiAxios.post(REGISTER_URL, body)
+      return { res }
+    })
+
+  const login = async (email: string, password: string) => {
+    return catchFetch(async () => {
+      const res = await apiAxios.post(LOGIN_URL, { email, password })
+
+      setCurrentUser(res.data.user)
+
+      const { accessToken, refreshToken } = res.data.authTokens
+      setAccessToken(accessToken)
+      setRefreshToken(refreshToken)
+
+      return { res }
+    })
   }
+  const logout = () =>
+    catchFetch(async () => {
+      const refreshToken = getRefreshToken()
+      const res = await apiAxios.post(LOGOUT_URL, { refreshToken })
+      setCurrentUser(null)
+      removeAuthTokens()
+      return { res }
+    })
 
-  const register = async (body: object) => {
-    const res = await apiAxios.post(REGISTER_URL, body)
-    return res
+  return {
+    register,
+    login,
+    logout,
   }
-
-  return { logout, register }
 }
 
 export default useAuth

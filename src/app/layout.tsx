@@ -4,6 +4,8 @@ import { Nunito } from 'next/font/google'
 
 import Navbar from '../components/navbar/Navbar'
 import RegisterModal from '@/components/modals/RegisterModal'
+import NotificationModal from '@/components/modals/NotificationModal'
+import LoginModal from '@/components/modals/LoginModal'
 
 const nunito = Nunito({ subsets: ['latin'] })
 
@@ -24,7 +26,9 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <Navbar />
+        <NotificationModal />
         <RegisterModal />
+        <LoginModal />
         {children}
       </body>
     </html>

@@ -2,6 +2,8 @@
 
 import { FcGoogle } from 'react-icons/fc'
 import { useState } from 'react'
+import Image from 'next/image'
+import axios from 'axios'
 
 import useRegisterModal from '@/hooks/contexts/useRegisterModal'
 import Modal from './Modal'
@@ -10,12 +12,13 @@ import Heading from '../Heading'
 import Input from '../inputs/Input'
 import Button from '../Button'
 import validateRequire from '@/utils/validateRequire'
-import useCurrentUser from '@/hooks/contexts/useCurrentUser'
-import axios, { AxiosError } from 'axios'
-import { BASE_URL, REGISTER_URL } from '@/constants/urls'
+import useNotificationModal from '@/hooks/contexts/useNotificationModal'
 
 function RegisterModal() {
   const modal = useRegisterModal()
+  const notificationModal = useNotificationModal()
+
+  const auth = useAuth()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -30,9 +33,6 @@ function RegisterModal() {
   }>({})
 
   const [isLoading, setIsLoading] = useState(false)
-
-  const auth = useAuth()
-  const { setCurrentUser } = useCurrentUser()
 
   const validateForm = () => {
     const errors = validateRequire(
@@ -62,15 +62,24 @@ function RegisterModal() {
       }, 300)
     } else {
       try {
-        const apiAxios = axios.create({
-          baseURL: BASE_URL,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        const res = await apiAxios.post(REGISTER_URL, { name, email, password })
+        await auth.register({ name, email, password })
         modal.close()
-        setCurrentUser(res.data)
+
+        notificationModal.open(
+          'Verify your email',
+          <div className="text-base flex flex-col items-center">
+            <Image
+              height={120}
+              width={120}
+              src="/img/email.png"
+              alt="email-image"
+              className="mb-3"
+            />
+            <div className="text-center">
+              {`Thank you for joining us. We sent an verification email to '${email}' to verify your email address and active your account`}
+            </div>
+          </div>,
+        )
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error.response?.data)
@@ -93,6 +102,7 @@ function RegisterModal() {
           setName(e.currentTarget.value)
         }}
         error={validateErrors.name}
+        disabled={isLoading}
       />
       <Input
         type="email"
@@ -103,6 +113,7 @@ function RegisterModal() {
           setEmail(e.currentTarget.value)
         }}
         error={validateErrors.email}
+        disabled={isLoading}
       />
       <Input
         type="password"
@@ -113,6 +124,7 @@ function RegisterModal() {
           setPassword(e.currentTarget.value)
         }}
         error={validateErrors.password}
+        disabled={isLoading}
       />
       <Input
         type="password"
@@ -123,6 +135,7 @@ function RegisterModal() {
           setPasswordConfirm(e.currentTarget.value)
         }}
         error={validateErrors.passwordConfirm}
+        disabled={isLoading}
       />
     </div>
   )
@@ -135,30 +148,8 @@ function RegisterModal() {
         label="Continue with Google"
         icon={FcGoogle}
         onClick={() => {}}
+        disabled={isLoading}
       />
-      <div
-        className="
-          text-neutral-500 
-          text-center 
-          mt-4 
-          font-light
-        "
-      >
-        <p>
-          Already have an account?
-          <span
-            onClick={() => {}}
-            className="
-              text-neutral-800
-              cursor-pointer 
-              hover:underline
-            "
-          >
-            {' '}
-            Log in
-          </span>
-        </p>
-      </div>
     </div>
   )
 

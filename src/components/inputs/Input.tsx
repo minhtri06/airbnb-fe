@@ -1,8 +1,6 @@
 'use client'
 
-import { ChangeEvent, ReactElement, useState } from 'react'
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
-import { BiDollar } from 'react-icons/bi'
+import ErrorText from '../ErrorText'
 
 interface InputProps {
   value: string
@@ -10,6 +8,7 @@ interface InputProps {
   type?: string
   label?: string
   error?: string
+  disabled?: boolean
 }
 
 const Input: React.FC<InputProps> = ({
@@ -18,6 +17,7 @@ const Input: React.FC<InputProps> = ({
   type,
   label,
   error,
+  disabled,
 }) => {
   return (
     <div>
@@ -38,15 +38,19 @@ const Input: React.FC<InputProps> = ({
           </label>
         )}
         <input
+          disabled={disabled}
           value={value}
           onChange={onChange}
           type={type}
-          className="
-        w-full outline-none h-5 
-        disabled:opacity-70 disabled:cursor-not-allowed bg-white"
+          className={`
+            w-full outline-none h-5 
+            disabled:opacity-70 disabled:cursor-not-allowed
+            ${disabled && 'text-gray-500'}
+            `}
+          autoComplete="off"
         />
       </div>
-      <div className="h-3 text-sm text-rose-600 ">{error}</div>
+      <ErrorText error={error} small />
     </div>
   )
 }

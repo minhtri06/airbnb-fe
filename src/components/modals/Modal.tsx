@@ -16,6 +16,7 @@ interface ModelProps {
   title?: string
   body?: React.ReactElement
   footer?: React.ReactElement
+  small?: boolean
 }
 
 const Modal: React.FC<ModelProps> = ({
@@ -29,6 +30,7 @@ const Modal: React.FC<ModelProps> = ({
   title,
   body,
   footer,
+  small,
 }) => {
   const handleClose = () => {
     if (disabled) {
@@ -73,17 +75,15 @@ const Modal: React.FC<ModelProps> = ({
         onClick={(e) => handleClose()}
       >
         <div
-          className="
+          className={`
             relative
             w-full
-            md:w-4/6
-            lg:w-3/6
-            xl:w-2/5
+            ${small ? 'md:w-2/6 lg:1/4 xl:w-1/5' : 'md:w-3/6 lg:w-5/12 xl:2/6'}
             my-6
             mx-auto
             h-full
             lg:h-auto
-            md:h-auto"
+            md:h-auto`}
           onClick={(e) => e.stopPropagation()}
         >
           <div

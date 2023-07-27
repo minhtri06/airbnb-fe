@@ -18,11 +18,11 @@ const Avatar: React.FC<AvatarProps> = ({ size }) => {
       <Image
         alt="avatar"
         src={
-          // currentUser && currentUser.avatar
-          //   ? currentUser.avatar
-          //   :
-          '/img/avatar-placeholder.svg'
+          currentUser && currentUser.avatar
+            ? currentUser.avatar
+            : '/img/avatar-placeholder.svg'
         }
+        blurDataURL="/img/avatar-placeholder.svg"
         sizes="100px"
         fill
       />

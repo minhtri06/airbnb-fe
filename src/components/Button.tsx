@@ -34,7 +34,7 @@ const Button: React.FC<ButtonProps> = ({
       ${
         outline
           ? 'bg-white border-black text-gray-900'
-          : 'bg-rose-500 border-rose-500 text-white'
+          : 'bg-rose-600 border-rose-600 text-white'
       }
       ${
         small
