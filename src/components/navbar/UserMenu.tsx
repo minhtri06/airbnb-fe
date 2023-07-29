@@ -9,15 +9,16 @@ import useRegisterModal from '@/hooks/contexts/useRegisterModal'
 import useLoginModal from '@/hooks/contexts/useLoginModal'
 import useCurrentUser from '@/hooks/contexts/useCurrentUser'
 import useAuth from '@/hooks/useAuth'
+import { useRouter } from 'next/navigation'
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const { currentUser } = useCurrentUser()
 
   const registerModal = useRegisterModal()
   const loginModal = useLoginModal()
   const { logout } = useAuth()
-
-  const { currentUser } = useCurrentUser()
+  const router = useRouter()
 
   const toggleOpen = () => {
     setIsOpen((pre) => !pre)
@@ -89,7 +90,14 @@ const UserMenu = () => {
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
-                <MenuItem onClick={() => {}} label="Account" />
+                <MenuItem
+                  onClick={() => {
+                    router.push('/me')
+                  }}
+                  label="Account"
+                />
+                <MenuItem onClick={() => {}} label="My save" />
+                <hr />
                 <MenuItem onClick={() => {}} label="Help" />
                 <MenuItem onClick={handleLogout} label="Logout" />
               </>

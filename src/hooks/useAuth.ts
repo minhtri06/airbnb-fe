@@ -3,7 +3,12 @@
 import apiAxios from '@/utils/apiAxios'
 import useCurrentUser from './contexts/useCurrentUser'
 import useAuthTokens from './useAuthTokens'
-import { LOGIN_URL, LOGOUT_URL, REGISTER_URL } from '@/constants/urls'
+import {
+  GOOGLE_LOGIN,
+  LOGIN_URL,
+  LOGOUT_URL,
+  REGISTER_URL,
+} from '@/constants/urls'
 
 const useAuth = () => {
   const { setCurrentUser } = useCurrentUser()
@@ -26,6 +31,20 @@ const useAuth = () => {
     return res.data
   }
 
+  const googleLogin = async (code: string) => {
+    const res = await apiAxios.post(GOOGLE_LOGIN + `?code=${code}`)
+
+    const { user, authTokens } = res.data
+    setCurrentUser(user)
+    console.log(res.data)
+
+    const { accessToken, refreshToken } = authTokens
+    setAccessToken(accessToken)
+    setRefreshToken(refreshToken)
+
+    return res.data
+  }
+
   const logout = async () => {
     const refreshToken = getRefreshToken()
     await apiAxios.post(LOGOUT_URL, { refreshToken })
@@ -36,6 +55,7 @@ const useAuth = () => {
   return {
     register,
     login,
+    googleLogin,
     logout,
   }
 }

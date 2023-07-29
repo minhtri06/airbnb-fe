@@ -6,6 +6,8 @@ export const VERIFY_EMAIL_URL = '/auth/verify-email'
 
 export const LOGIN_URL = '/auth/login'
 
+export const GOOGLE_LOGIN = '/auth/google-login'
+
 export const LOGOUT_URL = '/auth/logout'
 
 export const GET_CURRENT_USER = '/me'

@@ -3,6 +3,7 @@
 import useCurrentUser from '@/hooks/contexts/useCurrentUser'
 import useAuthTokens from '@/hooks/useAuthTokens'
 import useUser from '@/hooks/useUser'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import React, { useEffect } from 'react'
 
 const SetupClient = ({ children }: { children: React.ReactNode }) => {
@@ -17,12 +18,16 @@ const SetupClient = ({ children }: { children: React.ReactNode }) => {
           setCurrentUser(user)
         })
         .catch((err) => {
-          console.log(err.response.data)
+          console.log(err.response?.data)
         })
     }
   }, [])
 
-  return <>{children}</>
+  return (
+    <GoogleOAuthProvider clientId="945182692173-9kbmv5mst5lb4s8j8b7rjhqsq67ipk6a.apps.googleusercontent.com">
+      {children}
+    </GoogleOAuthProvider>
+  )
 }
 
 export default SetupClient

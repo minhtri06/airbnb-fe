@@ -2,7 +2,6 @@
 
 import { FcGoogle } from 'react-icons/fc'
 import { useState } from 'react'
-import Image from 'next/image'
 import axios from 'axios'
 
 import Modal from './Modal'
@@ -13,6 +12,8 @@ import validateRequire from '@/utils/validateRequire'
 import useAuth from '@/hooks/useAuth'
 import useLoginModal from '@/hooks/contexts/useLoginModal'
 import ErrorText from '../ErrorText'
+import { useRouter } from 'next/navigation'
+import getGoogleOauthUrl from '@/utils/getGoogleOauthUrl'
 
 function LoginModal() {
   const modal = useLoginModal()
@@ -29,6 +30,7 @@ function LoginModal() {
   }>({})
 
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const validateForm = () => {
     return validateRequire({ email, password }, 'email', 'password')
@@ -98,7 +100,9 @@ function LoginModal() {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => {
+          router.push(getGoogleOauthUrl())
+        }}
         disabled={isLoading}
       />
     </div>

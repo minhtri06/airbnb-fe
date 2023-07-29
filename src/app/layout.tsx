@@ -7,6 +7,7 @@ import RegisterModal from '@/components/modals/RegisterModal'
 import NotificationModal from '@/components/modals/NotificationModal'
 import LoginModal from '@/components/modals/LoginModal'
 import SetupClient from '@/components/SetupClient'
+import ClientOnly from '@/components/ClientOnly'
 
 const nunito = Nunito({ subsets: ['latin'] })
 
