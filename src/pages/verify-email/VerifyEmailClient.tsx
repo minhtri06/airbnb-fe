@@ -2,8 +2,6 @@
 
 import '@/app/globals.css'
 
-import useCurrentUser, { CurrentUser } from '@/hooks/contexts/useCurrentUser'
-import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Button from '@/components/Button'
 

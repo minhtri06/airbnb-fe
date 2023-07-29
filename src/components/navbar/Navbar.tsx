@@ -3,15 +3,22 @@
 import Container from '../Container'
 import Logo from './Logo'
 import Search from './Search'
-import UserMenu from './UserMenu'
+import Categories from '../categories/Categories'
+import UserMenu from './user-menu/UserMenu'
 
-const Navbar = () => {
+interface NavbarProps {
+  hideSearch?: boolean
+  hideUserMenu?: boolean
+}
+
+const Navbar: React.FC<NavbarProps> = ({ hideSearch, hideUserMenu }) => {
   return (
-    <div className="h-20 w-ful">
-      <div className="fixed w-full py-4 border-b-[1px] bg-white z-10 shadow-sm">
+    <div className="w-ful h-20">
+      <div className="fixed w-full h-20 border-b-[1px] bg-white z-10 shadow-sm">
         <Container>
           <div
             className="
+              h-20
               flex
               flex-row 
               items-center 
@@ -23,9 +30,9 @@ const Navbar = () => {
             <div className="absolute left-0">
               <Logo />
             </div>
-            <Search />
+            {!hideSearch && <Search />}
             <div className="absolute right-0">
-              <UserMenu />
+              {!hideUserMenu && <UserMenu />}
             </div>
           </div>
         </Container>

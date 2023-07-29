@@ -16,6 +16,7 @@ const useAuthAxios = () => {
 
   privateAxios.interceptors.request.use(async (config) => {
     let accessToken = getAccessToken()
+
     if (accessToken) {
       // If access token expired => we refresh tokens
       if (isTokenExpired(accessToken)) {

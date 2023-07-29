@@ -111,6 +111,7 @@ function LoginModal() {
   return (
     <>
       <Modal
+        isForm
         disabled={isLoading}
         isOpen={modal.isOpen}
         title="Login"

@@ -3,7 +3,7 @@
 import { FcGoogle } from 'react-icons/fc'
 import { useState } from 'react'
 import Image from 'next/image'
-import axios, { AxiosError } from 'axios'
+import { useRouter } from 'next/navigation'
 
 import useRegisterModal from '@/hooks/contexts/useRegisterModal'
 import Modal from './Modal'
@@ -14,6 +14,8 @@ import Button from '../Button'
 import validateRequire from '@/utils/validateRequire'
 import useNotificationModal from '@/hooks/contexts/useNotificationModal'
 import ErrorText from '../ErrorText'
+import getGoogleOauthUrl from '@/utils/getGoogleOauthUrl'
+import axios from 'axios'
 
 function RegisterModal() {
   const modal = useRegisterModal()
@@ -35,6 +37,7 @@ function RegisterModal() {
   }>({})
 
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const validateForm = () => {
     const errs = validateRequire(
@@ -152,7 +155,9 @@ function RegisterModal() {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => {
+          router.push(getGoogleOauthUrl())
+        }}
         disabled={isLoading}
       />
     </div>
@@ -161,6 +166,7 @@ function RegisterModal() {
   return (
     <>
       <Modal
+        isForm
         disabled={isLoading}
         isOpen={modal.isOpen}
         title="Register"

@@ -17,6 +17,7 @@ interface ModelProps {
   body?: React.ReactElement
   footer?: React.ReactElement
   small?: boolean
+  isForm?: boolean
 }
 
 const Modal: React.FC<ModelProps> = ({
@@ -31,6 +32,7 @@ const Modal: React.FC<ModelProps> = ({
   body,
   footer,
   small,
+  isForm,
 }) => {
   const handleClose = () => {
     if (disabled) {
@@ -60,6 +62,11 @@ const Modal: React.FC<ModelProps> = ({
   return (
     <>
       <div
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && isForm) {
+            handleAction()
+          }
+        }}
         className="
           flex
           justify-center
