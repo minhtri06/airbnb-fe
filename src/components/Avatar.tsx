@@ -15,6 +15,7 @@ const Avatar: React.FC<AvatarProps> = ({ size }) => {
       className={`h-${size} w-${size} relative rounded-full overflow-hidden`}
     >
       <Image
+        priority
         alt="avatar"
         src={
           currentUser && currentUser.avatar
@@ -22,7 +23,7 @@ const Avatar: React.FC<AvatarProps> = ({ size }) => {
             : '/img/avatar-placeholder.svg'
         }
         blurDataURL="/img/avatar-placeholder.svg"
-        sizes="100px"
+        sizes="max-width: 300px"
         fill
       />
     </div>

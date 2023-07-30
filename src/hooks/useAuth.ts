@@ -36,7 +36,6 @@ const useAuth = () => {
 
     const { user, authTokens } = res.data
     setCurrentUser(user)
-    console.log(res.data)
 
     const { accessToken, refreshToken } = authTokens
     setAccessToken(accessToken)

@@ -1,14 +1,12 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
-
-import Navbar from '../components/navbar/Navbar'
-import RegisterModal from '@/components/modals/RegisterModal'
+import SetupClient from './SetupClient'
+import Navbar from '@/components/navbar/Navbar'
 import NotificationModal from '@/components/modals/NotificationModal'
+import RegisterModal from '@/components/modals/RegisterModal'
 import LoginModal from '@/components/modals/LoginModal'
-import SetupClient from '@/components/SetupClient'
-import Container from '@/components/Container'
-import Categories from '@/components/categories/Categories'
+import { usePathname } from 'next/navigation'
 
 const nunito = Nunito({ subsets: ['latin'] })
 
@@ -25,12 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${nunito.className} text-gray-900 h-[1200px]`}
+        className={`${nunito.className} text-gray-900`}
         suppressHydrationWarning={true}
       >
         <SetupClient>
           <Navbar />
-          <Categories />
           <NotificationModal />
           <RegisterModal />
           <LoginModal />

@@ -1,43 +1,41 @@
 'use client'
 
+import useAppSide from '@/hooks/contexts/useAppSide'
 import Container from '../Container'
 import Logo from './Logo'
 import Search from './Search'
-import Categories from '../categories/Categories'
 import UserMenu from './user-menu/UserMenu'
+import Categories from '../categories/Categories'
 
-interface NavbarProps {
-  hideSearch?: boolean
-  hideUserMenu?: boolean
-}
+const Navbar = () => {
+  const { appSide } = useAppSide()
 
-const Navbar: React.FC<NavbarProps> = ({ hideSearch, hideUserMenu }) => {
+  console.log('re-render navbar')
+
   return (
-    <div className="w-ful h-20">
-      <div className="fixed w-full h-20 border-b-[1px] bg-white z-10 shadow-sm">
-        <Container>
-          <div
-            className="
-              h-20
-              flex
-              flex-row 
-              items-center 
-              justify-center
-              gap-3
-              md:gap-0
-              relative"
-          >
-            <div className="absolute left-0">
-              <Logo />
+    <>
+      <div className="w-ful h-20">
+        <div className="fixed w-full h-20 border-b-[1px] bg-white z-20 shadow-sm">
+          <Container>
+            <div
+              className=" h-20 flex flex-row  items-center  justify-center gap-3 
+              md:gap-0 relative"
+            >
+              <div className="absolute left-0">
+                <Logo />
+              </div>
+
+              {appSide === 'traveling' && <Search />}
+
+              <div className="absolute right-0">
+                <UserMenu />
+              </div>
             </div>
-            {!hideSearch && <Search />}
-            <div className="absolute right-0">
-              {!hideUserMenu && <UserMenu />}
-            </div>
-          </div>
-        </Container>
+          </Container>
+        </div>
       </div>
-    </div>
+      {appSide === 'traveling' && <Categories />}
+    </>
   )
 }
 

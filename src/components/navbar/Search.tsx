@@ -33,31 +33,16 @@ const Search = () => {
           Anywhere
         </div>
         <div
-          className="
-            hidden
-            sm:block
-            text-sm
-            font-bold
-            px-6
-            border-x-[1px]
-            flex-1
-            text-center"
+          className="text-sm font-bold px-6 border-x-[1px] 
+            flex-1 text-center"
         >
           Any Week
         </div>
         <div
-          className="
-            text-sm
-            pl-6
-            pr-2
-            text-gray-600
-            font-bold
-            flex
-            flex-row
-            items-center
-            gap-3"
+          className=" text-sm pl-6 pr-2 text-gray-600 font-bold flex flex-row 
+            items-center gap-3"
         >
-          <div className="hidden sm:block font-normal">Add guest</div>
+          <div className="font-normal">Add guest</div>
           <div
             className="
               p-2

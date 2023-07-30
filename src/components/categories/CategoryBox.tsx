@@ -1,21 +1,28 @@
+import useSearch from '@/hooks/contexts/useSearch'
 import Image from 'next/image'
 
 interface CategoryBoxProps {
-  index: number
   icon: string
   label: string
   selected: boolean
+  code: string
 }
 
 const CategoryBox: React.FC<CategoryBoxProps> = ({
-  index,
   icon,
   label,
   selected,
+  code,
 }) => {
+  const { setParams, params } = useSearch()
+
   return (
     <div
-      key={index}
+      onClick={() => {
+        if (code !== params.categoryCode) {
+          setParams({ categoryCode: code })
+        }
+      }}
       className={`h-full py-3 text-sm font-semibold flex flex-col 
         justify-between items-center cursor-pointer ${
           !selected && 'opacity-60'

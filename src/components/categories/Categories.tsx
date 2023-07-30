@@ -6,11 +6,13 @@ import { CATEGORIES } from '@/constants/categories'
 import CategoryBox from './CategoryBox'
 import Container from '../Container'
 import { useEffect, useState } from 'react'
+import useSearch from '@/hooks/contexts/useSearch'
 
 const Categories = () => {
   const [isLeftBtnShowed, setIsLeftBtnShowed] = useState(false)
   const [isRightBtnShowed, setIsRightBtnShowed] = useState(true)
   const [isWindowOnTop, setIsWindowOnTop] = useState(true)
+  const { params } = useSearch()
 
   useEffect(() => {
     window.onscroll = () => {
@@ -47,7 +49,7 @@ const Categories = () => {
 
   return (
     <div
-      className={`sticky top-14 w-full pt-6 h-26 ${
+      className={`z-10 sticky top-14 w-full pt-6 h-26 ${
         !isWindowOnTop && 'border-b-[1px] bg-white shadow-sm'
       }`}
     >
@@ -60,7 +62,7 @@ const Categories = () => {
             >
               <div
                 className=" absolute p-[5px] bg-white rounded-full border-gray-400 
-            border-[1px] cursor-pointer"
+                  border-[1px] cursor-pointer"
                 onClick={() => slideLeft()}
               >
                 <FaAngleLeft />
@@ -84,22 +86,16 @@ const Categories = () => {
           )}
           <div
             id="slider"
-            className="
-              h-20
-              flex
-              flex-row
-              gap-7
-              items-center
-              w-full
-              overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide
-            "
+            className=" h-20 flex flex-row gap-7 items-center w-full
+              overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide"
           >
             {CATEGORIES.map((category, index) => (
               <CategoryBox
-                index={index}
+                key={index}
                 label={category.label}
                 icon={category.imageSrc}
-                selected={index === 1}
+                selected={category.code === params.categoryCode}
+                code={category.code}
               />
             ))}
           </div>

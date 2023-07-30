@@ -8,6 +8,7 @@ const Logo = () => {
 
   return (
     <Image
+      priority
       alt="Logo"
       src="/img/airbnb-logo.svg"
       className="hidden md:block cursor-pointer"

@@ -26,16 +26,16 @@ const Button: React.FC<ButtonProps> = ({
       className={`relative disabled:opacity-70 disabled:cursor-not-allowed 
         rounded-lg hover:opacity-80 transition w-full flex items-center 
         justify-center
-      ${
-        outline
-          ? 'bg-white border-black text-gray-900'
-          : 'bg-rose-600 border-rose-600 text-white'
-      }
-      ${
-        small
-          ? 'text-base font-semibold border-[1px]'
-          : 'py-1 text-lg font-semibold border-[2px]'
-      }
+        ${
+          outline
+            ? 'bg-white border-gray-400 shadow-sm text-gray-900'
+            : 'bg-rose-600 border-rose-600 text-white'
+        }
+        ${
+          small
+            ? 'text-base font-semibold border-[1px]'
+            : 'py-1 text-lg font-semibold border-[1px]'
+        }
       `}
     >
       {Icon && (

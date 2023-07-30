@@ -10,16 +10,20 @@ export interface CurrentUser {
 interface CurrentUserStore {
   currentUser: CurrentUser | null
   setCurrentUser: (newCurrentUser: CurrentUser | null) => void
+  isLoading: boolean
+  setIsLoading: (value: boolean) => void
 }
 
 const useCurrentUser = create<CurrentUserStore>((set) => {
   const setCurrentUser = (newCurrentUser: CurrentUser | null) => {
-    set({ currentUser: newCurrentUser })
+    set({ currentUser: newCurrentUser, isLoading: false })
   }
 
   return {
     currentUser: null,
     setCurrentUser,
+    isLoading: true,
+    setIsLoading: (value) => set({ isLoading: value }),
   }
 })
 
