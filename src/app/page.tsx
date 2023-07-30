@@ -41,12 +41,16 @@ export default function Home() {
             properties.map((property) => (
               <PropertyCard
                 key={property._id}
-                title={property.title}
+                cardTitle={
+                  property.address?.districtName +
+                  ', ' +
+                  property.address?.provinceName
+                }
+                subText1={property.title as string}
                 thumbnail={property.thumbnail as string}
-                address={property.address}
                 score={property.score || 9}
                 reviewCount={property.reviewCount}
-                accommodations={property.accommodations}
+                pricePerNight={property.accommodations[0].pricePerNight}
                 isLoading={isLoading}
               />
             ))}

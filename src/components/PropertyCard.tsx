@@ -3,17 +3,25 @@ import Image from 'next/image'
 import React from 'react'
 import LoadingText from './texts/LoadingText'
 
-interface PropertyCardProps extends property {
+interface PropertyCardProps {
+  cardTitle: string
+  subText1?: string
+  subText2?: string
+  thumbnail: string
+  score?: number | null
+  reviewCount?: number | null
+  pricePerNight: number
   isLoading: boolean
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
-  title,
-  address,
+  cardTitle,
+  subText1,
+  subText2,
   thumbnail,
   score,
   reviewCount,
-  accommodations,
+  pricePerNight,
   isLoading,
 }) => {
   return (
@@ -30,35 +38,36 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         )}
       </div>
       <div className="pt-3">
-        <div className="pb-1 h-7 font-semibold flex justify-between gap-3">
+        <div className="h-6 font-semibold flex justify-between gap-3">
           <div className="overflow-hidden whitespace-nowrap truncate">
-            <LoadingText
-              text={address?.provinceName + ','}
-              isLoading={isLoading}
-              length={8}
-            />{' '}
-            <LoadingText
-              text={address?.districtName || ''}
-              isLoading={isLoading}
-              length={8}
-            />
+            <LoadingText text={cardTitle} isLoading={isLoading} length={8} />
           </div>
+
           <span className="whitespace-nowrap text-rose-700">
-            <LoadingText
-              text={`${score}/10 (${reviewCount})`}
-              isLoading={isLoading}
-              length={5}
-            />
+            {score && (
+              <LoadingText
+                text={`${score}/10 (${reviewCount})`}
+                isLoading={isLoading}
+                length={5}
+              />
+            )}
           </span>
         </div>
 
-        <div className="pb-1 h-7 overflow-hidden whitespace-nowrap truncate">
-          <LoadingText text={title || ''} isLoading={isLoading} length={20} />
-        </div>
+        {subText1 && (
+          <div className="h-6 overflow-hidden whitespace-nowrap truncate text-gray-500">
+            <LoadingText text={subText1} isLoading={isLoading} length={20} />
+          </div>
+        )}
+        {subText2 && (
+          <div className="h-6 overflow-hidden whitespace-nowrap truncate">
+            <LoadingText text={subText2} isLoading={isLoading} length={20} />
+          </div>
+        )}
 
         <div className="font-semibold pb-3">
           <LoadingText
-            text={`$${accommodations && accommodations[0].pricePerNight}`}
+            text={'$' + pricePerNight + ' night'}
             isLoading={isLoading}
             length={3}
           />
