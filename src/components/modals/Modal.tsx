@@ -67,30 +67,14 @@ const Modal: React.FC<ModelProps> = ({
             handleAction()
           }
         }}
-        className="
-          flex
-          justify-center
-          items-center
-          overflow-x-hidden
-          overflow-y-auto
-          fixed
-          inset-0
-          z-50
-          outline-none
-          focus:outline-none
-          bg-neutral-800/70"
-        onClick={(e) => handleClose()}
+        className="flex justify-center items-center overflow-x-hidden overflow-y-auto 
+          fixed inset-0 z-50 outline-none focus:outline-none bg-neutral-800/70"
+        onClick={handleClose}
       >
         <div
-          className={`
-            relative
-            w-full
-            ${small ? 'md:w-2/6 lg:1/4 xl:w-1/5' : 'md:w-3/6 lg:w-5/12 xl:2/6'}
-            my-6
-            mx-auto
-            h-full
-            lg:h-auto
-            md:h-auto`}
+          className={` relative w-full 
+            ${small ? 'md:w-2/6 lg:1/4 xl:w-1/5' : 'md:w-3/6 lg:w-5/12 xl:2/6'} 
+            my-6 mx-auto h-full lg:h-auto md:h-auto`}
           onClick={(e) => e.stopPropagation()}
         >
           <div
@@ -103,21 +87,8 @@ const Modal: React.FC<ModelProps> = ({
           `}
           >
             <div
-              className="
-                translate
-                h-full
-                lg:h-auto
-                md:h-auto
-                border-0
-                rounded-lg
-                relative
-                flex
-                flex-col
-                w-full
-                bg-white
-                outline-none
-                focus:outline-none
-              "
+              className=" translate h-full lg:h-auto md:h-auto border-0 rounded-lg 
+                relative flex flex-col w-full bg-white outline-none focus:outline-none"
             >
               {/* HEADER */}
               <div

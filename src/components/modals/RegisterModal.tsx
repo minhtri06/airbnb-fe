@@ -36,6 +36,14 @@ function RegisterModal() {
     general?: string
   }>({})
 
+  const clearForm = () => {
+    setName('')
+    setEmail('')
+    setPassword('')
+    setPasswordConfirm('')
+    setErrors({})
+  }
+
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -174,7 +182,10 @@ function RegisterModal() {
         action={() => {
           onSubmit()
         }}
-        onClose={() => modal.close()}
+        onClose={() => {
+          modal.close()
+          clearForm()
+        }}
         body={bodyElement}
         footer={footerElement}
       />

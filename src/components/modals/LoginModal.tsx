@@ -29,6 +29,12 @@ function LoginModal() {
     general?: string
   }>({})
 
+  const clearForm = () => {
+    setEmail('')
+    setPassword('')
+    setErrors({})
+  }
+
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -119,7 +125,10 @@ function LoginModal() {
         action={() => {
           onSubmit()
         }}
-        onClose={() => modal.close()}
+        onClose={() => {
+          clearForm()
+          modal.close()
+        }}
         body={bodyElement}
         footer={footerElement}
       />
