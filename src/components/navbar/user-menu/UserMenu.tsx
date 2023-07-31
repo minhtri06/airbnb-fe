@@ -1,7 +1,7 @@
 'use client'
 
 import { AiOutlineMenu } from 'react-icons/ai'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import Avatar from '../../Avatar'
 import MenuItem from './MenuItem'
@@ -11,6 +11,7 @@ import useCurrentUser from '@/hooks/contexts/useCurrentUser'
 import useAuth from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import useAppSide from '@/hooks/contexts/useAppSide'
+import useOutSideListener from '@/hooks/useOutSideListener'
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -22,13 +23,22 @@ const UserMenu = () => {
   const { logout } = useAuth()
   const router = useRouter()
 
+  const accountBtnRef = useRef(null)
+
   const toggleOpen = () => {
     setIsOpen((pre) => !pre)
   }
 
+  useOutSideListener('mousedown', accountBtnRef, () => {
+    if (isOpen) {
+      setIsOpen(false)
+    }
+  })
+
   const handleLogout = async () => {
     try {
       await logout()
+      setIsOpen(false)
     } catch (error) {
       console.log(error)
     }
@@ -54,6 +64,7 @@ const UserMenu = () => {
         )}
         <div
           onClick={toggleOpen}
+          ref={accountBtnRef}
           className=" p-1 border-[1px] border-neutral-200 hidden md:flex flex-row 
             items-center gap-2 rounded-full cursor-pointer hover:shadow-md transition
             h-10"
@@ -66,8 +77,9 @@ const UserMenu = () => {
       </div>
       {isOpen && (
         <div
-          className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white 
+          className="absolute rounded-xl w-[40vw] md:w-3/4 bg-white 
             overflow-hidden right-0 top-12 text-base"
+          style={{ boxShadow: '0px 4px 10px 4px rgb(0 0 0 / 0.1)' }}
         >
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
@@ -99,6 +111,9 @@ const UserMenu = () => {
                   }}
                   label="Sign up"
                 />
+                <hr />
+                <MenuItem onClick={() => {}} label="Airbnb your home" />
+                <MenuItem onClick={() => {}} label="Help" />
               </>
             )}
           </div>
