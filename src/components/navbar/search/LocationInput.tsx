@@ -2,15 +2,22 @@ import { IoLocationOutline } from 'react-icons/io5'
 import useDivisionStore, { division } from '@/hooks/contexts/useDivisionStore'
 import useDivisions from '@/hooks/useDivisions'
 import { useEffect, useState } from 'react'
-import useSearchStore from '@/hooks/contexts/useSearchStore'
 
 interface LocationInputProps {
+  districtId: string | null
+  setDistrictId: (value: string | null) => void
+  provinceId: string | null
+  setProvinceId: (value: string | null) => void
   setSelectedInput: (value: any) => void
   locationSearch: string
   setLocationSearch: (value: string) => void
 }
 
 const LocationInput: React.FC<LocationInputProps> = ({
+  districtId,
+  setDistrictId,
+  provinceId,
+  setProvinceId,
   setSelectedInput,
   locationSearch,
   setLocationSearch,
@@ -18,7 +25,6 @@ const LocationInput: React.FC<LocationInputProps> = ({
   const { divisions, setDivisions } = useDivisionStore()
   const { getAllDivisions } = useDivisions()
   const [searchResult, setSearchResult] = useState<division[]>([])
-  const { params, setParams } = useSearchStore()
 
   useEffect(() => {
     if (!divisions) {
@@ -30,9 +36,11 @@ const LocationInput: React.FC<LocationInputProps> = ({
 
   const handleLocationOnClick = (location: division) => {
     if (location.type === 'district') {
-      setParams({ districtId: location._id, provinceId: null })
+      setDistrictId(location._id)
+      setProvinceId(null)
     } else {
-      setParams({ provinceId: location._id, districtId: null })
+      setDistrictId(null)
+      setProvinceId(location._id)
     }
   }
 
@@ -46,7 +54,6 @@ const LocationInput: React.FC<LocationInputProps> = ({
     } else {
       setSearchResult([])
     }
-    console.log(params)
   }, [locationSearch])
 
   return (

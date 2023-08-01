@@ -7,9 +7,7 @@ import { BiSearch } from 'react-icons/bi'
 import DateInput from './DateInput'
 import LocationInput from './LocationInput'
 import GuestInput from './GuestInput'
-import useSearchStore from '@/hooks/contexts/useSearchStore'
-import useProperties from '@/hooks/useProperties'
-import axios from 'axios'
+import { usePathname, useRouter } from 'next/navigation'
 
 interface ExpandedSearchProps {
   isExpanded: boolean
@@ -20,12 +18,19 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
   isExpanded,
   setIsExpanded,
 }) => {
+  // Search filters
+  const [provinceId, setProvinceId] = useState<string | null>(null)
+  const [districtId, setDistrictId] = useState<string | null>(null)
+  const [bookIn, setBookIn] = useState<Date | null>(null)
+  const [bookOut, setBookOut] = useState<Date | null>(null)
+
+  const router = useRouter()
+  const pathname = usePathname()
+
   const [selectedInput, setSelectedInput] = useState<
     'location' | 'book-in' | 'book-out' | 'who'
   >('location')
   const [locationSearch, setLocationSearch] = useState('')
-  const { params, setParams, setProperties } = useSearchStore()
-  const { searchProperties } = useProperties()
 
   const selectedInputStyle =
     'bg-white rounded-full text-sm pl-8 flex flex-col justify-center \
@@ -39,6 +44,10 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
     case 'location':
       input = (
         <LocationInput
+          districtId={districtId}
+          setDistrictId={setDistrictId}
+          provinceId={provinceId}
+          setProvinceId={setProvinceId}
           setSelectedInput={setSelectedInput}
           locationSearch={locationSearch}
           setLocationSearch={setLocationSearch}
@@ -49,6 +58,10 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
     case 'book-out':
       input = (
         <DateInput
+          bookIn={bookIn}
+          setBookIn={setBookIn}
+          bookOut={bookOut}
+          setBookOut={setBookOut}
           selectedInput={selectedInput}
           setSelectedInput={setSelectedInput}
         />
@@ -57,6 +70,23 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
     case 'who':
       input = <GuestInput />
       break
+  }
+
+  const handleSearchBtnOnClick = () => {
+    const options: any = {}
+    if (bookIn && bookOut) {
+      options.bookIn = bookIn.toISOString()
+      options.bookOut = bookOut.toISOString()
+    }
+    if (districtId) {
+      options.districtId = districtId
+    }
+    if (provinceId) {
+      options.provinceId = provinceId
+    }
+    const params = new URLSearchParams(options)
+    setIsExpanded(false)
+    router.push(`/search?${params.toString()}`)
   }
 
   return (
@@ -119,9 +149,7 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
                 >
                   <span className="font-bold">Book in</span>
                   <span className="text-gray-700">
-                    {!params.bookIn
-                      ? 'Add dates'
-                      : `${params.bookIn.toLocaleDateString()}`}
+                    {!bookIn ? 'Add dates' : `${bookIn.toLocaleDateString()}`}
                   </span>
                 </div>
                 <div
@@ -134,9 +162,7 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
                 >
                   <span className="font-bold">Book out</span>
                   <span className="text-gray-700">
-                    {!params.bookOut
-                      ? 'Add dates'
-                      : `${params.bookOut.toLocaleDateString()}`}
+                    {!bookOut ? 'Add dates' : `${bookOut.toLocaleDateString()}`}
                   </span>
                 </div>
                 <div
@@ -157,18 +183,7 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
                     rounded-full flex items-center justify-center text-base text-white
                     font-bold cursor-pointer absolute right-2 top-2 select-none"
                   onClick={() => {
-                    setParams({ categoryCode: null })
-                    searchProperties()
-                      .then(() => {
-                        setIsExpanded(false)
-                      })
-                      .catch((error) => {
-                        if (axios.isAxiosError(error)) {
-                          console.log(error.response?.data)
-                        } else {
-                          console.log(error)
-                        }
-                      })
+                    handleSearchBtnOnClick()
                   }}
                 >
                   <BiSearch size={20} />

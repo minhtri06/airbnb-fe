@@ -1,21 +1,23 @@
-import useSearchStore from '@/hooks/contexts/useSearchStore'
 import moment from 'moment'
 import { DateRangePicker } from 'react-date-range'
 
 interface DateInputProps {
+  bookIn: Date | null
+  setBookIn: (value: Date) => void
+  bookOut: Date | null
+  setBookOut: (value: Date) => void
   selectedInput: 'location' | 'book-in' | 'book-out' | 'who'
   setSelectedInput: (value: 'location' | 'book-in' | 'book-out' | 'who') => void
 }
 
 const DateInput: React.FC<DateInputProps> = ({
+  bookIn,
+  setBookIn,
+  bookOut,
+  setBookOut,
   selectedInput,
   setSelectedInput,
 }) => {
-  const {
-    params: { bookIn, bookOut },
-    setParams,
-  } = useSearchStore()
-
   const bookingRange = {
     startDate: bookIn || moment().toDate(),
     endDate: bookOut || moment().toDate(),
@@ -31,10 +33,8 @@ const DateInput: React.FC<DateInputProps> = ({
     if (startDate.diff(endDate, 'days') === 0) {
       endDate.add(1, 'day')
     }
-    setParams({
-      bookIn: startDate.toDate(),
-      bookOut: endDate.toDate(),
-    })
+    setBookIn(startDate.toDate())
+    setBookOut(endDate.toDate())
   }
 
   return (

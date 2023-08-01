@@ -1,5 +1,12 @@
-import useSearchStore from '@/hooks/contexts/useSearchStore'
+'use client'
+
 import Image from 'next/image'
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation'
 
 interface CategoryBoxProps {
   icon: string
@@ -14,14 +21,29 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
   selected,
   code,
 }) => {
-  const { setParams, params } = useSearchStore()
+  const router = useRouter()
+  const pathname = usePathname()
+  const params = useSearchParams()
+
+  const handleOnSwitchCategory = (code: string) => {
+    const currentParams = new URLSearchParams(
+      Array.from(params?.entries() || []),
+    )
+
+    currentParams.delete('categoryCode')
+    currentParams.delete('page')
+    currentParams.set('categoryCode', code)
+
+    const search = currentParams.toString()
+    const query = search ? `?${search}` : ''
+
+    router.push(`${pathname}${query}`)
+  }
 
   return (
     <div
       onClick={() => {
-        if (code !== params.categoryCode) {
-          setParams({ categoryCode: code })
-        }
+        handleOnSwitchCategory(code)
       }}
       className={`h-full py-3 text-sm font-semibold flex flex-col 
         justify-between items-center cursor-pointer ${

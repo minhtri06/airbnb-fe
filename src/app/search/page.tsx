@@ -6,10 +6,9 @@ import PropertyCard from '@/components/PropertyCard'
 import useProperties from '@/hooks/useProperties'
 import { property } from '@/types'
 import axios from 'axios'
-import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function Home({ searchParams }: { searchParams: any }) {
+const page = ({ searchParams }: { searchParams: any }) => {
   const [properties, setProperties] = useState<property[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const { searchProperties } = useProperties()
@@ -58,9 +57,11 @@ export default function Home({ searchParams }: { searchParams: any }) {
             ))}
         </div>
         {properties.length !== 0 && (
-          <PaginationController currentPage={searchParams.page} maxPage={6} />
+          <PaginationController currentPage={searchParams.page} maxPage={2} />
         )}
       </Container>
     </div>
   )
 }
+
+export default page

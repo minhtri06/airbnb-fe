@@ -8,7 +8,7 @@ import Navbar from '@/components/navbar/Navbar'
 const NotFound = () => {
   return (
     <>
-      <Navbar hideSearch hideUserMenu />
+      <Navbar />
       <div className="pl-10 pr-32 pt-20">
         <div className="flex justify-between">
           <div>

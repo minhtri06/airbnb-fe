@@ -1,4 +1,6 @@
-import { usePathname, useRouter } from 'next/navigation'
+'use client'
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { FaAngleRight, FaAngleLeft } from 'react-icons/fa'
 
 interface PaginationControllerProps {
@@ -11,6 +13,8 @@ const PaginationController: React.FC<PaginationControllerProps> = ({
   maxPage,
 }) => {
   const pathname = usePathname()
+  const params = useSearchParams()
+
   const router = useRouter()
 
   currentPage = Number(currentPage) || 1
@@ -37,6 +41,20 @@ const PaginationController: React.FC<PaginationControllerProps> = ({
     renderNumbers.sort((a, b) => a - b)
   }
 
+  const handleOnSwitchPage = (num: number) => {
+    const currentParams = new URLSearchParams(
+      Array.from(params?.entries() || []),
+    )
+
+    currentParams.delete('page')
+    currentParams.set('page', num.toString())
+
+    const search = currentParams.toString()
+    const query = search ? `?${search}` : ''
+
+    router.push(`${pathname}${query}`)
+  }
+
   return (
     <div
       className="w-full flex justify-center gap-4 items-center text-base font-semibold
@@ -44,7 +62,7 @@ const PaginationController: React.FC<PaginationControllerProps> = ({
     >
       <div
         className="w-8 h-8 flex items-center justify-center rounded-full 
-              cursor-pointer hover:bg-gray-200 select-none"
+          cursor-pointer hover:bg-gray-200 select-none"
       >
         <FaAngleLeft />
       </div>
@@ -59,7 +77,7 @@ const PaginationController: React.FC<PaginationControllerProps> = ({
                   : 'hover:bg-gray-200'
               } select-none`}
               onClick={() => {
-                router.push(`${pathname}?page=${num}`)
+                handleOnSwitchPage(num)
               }}
             >
               {num}

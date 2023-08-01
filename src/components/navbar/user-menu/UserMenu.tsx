@@ -77,7 +77,7 @@ const UserMenu = () => {
       </div>
       {isOpen && (
         <div
-          className="absolute rounded-xl w-[40vw] md:w-3/4 bg-white 
+          className="absolute rounded-xl w-52 bg-white 
             overflow-hidden right-0 top-12 text-base"
           style={{ boxShadow: '0px 4px 10px 4px rgb(0 0 0 / 0.1)' }}
         >

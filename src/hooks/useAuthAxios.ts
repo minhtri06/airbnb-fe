@@ -21,11 +21,9 @@ const useAuthAxios = () => {
       // If access token expired => we refresh tokens
       if (isTokenExpired(accessToken)) {
         let refreshToken = getRefreshToken()
-        console.log('Oh no access token expire roi!!!')
         // If refresh token is not available or expired => logout user
         if (refreshToken && !isTokenExpired(refreshToken)) {
           const newTokens = await refreshAuthTokens(accessToken, refreshToken)
-          console.log("Let's refresh it")
 
           accessToken = newTokens.newAccessToken
           refreshToken = newTokens.newRefreshToken

@@ -10,8 +10,6 @@ import Categories from '../categories/Categories'
 const Navbar = () => {
   const { appSide } = useAppSideStore()
 
-  console.log('re-render navbar')
-
   return (
     <>
       <div className="w-ful h-20">

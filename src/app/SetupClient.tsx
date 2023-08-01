@@ -29,7 +29,6 @@ const SetupClient = ({ children }: { children: React.ReactNode }) => {
   }, [pathname])
 
   useEffect(() => {
-    console.log('get current user')
     if (!currentUser && getAccessToken()) {
       getCurrentUser()
         .then((user) => setCurrentUser(user))

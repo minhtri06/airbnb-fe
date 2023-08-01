@@ -11,7 +11,6 @@ const useUser = () => {
 
     return res.data.myProfile
   }
-  console.log('useUser')
 
   return { getCurrentUser }
 }

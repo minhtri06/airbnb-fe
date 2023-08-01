@@ -6,13 +6,16 @@ import { CATEGORIES } from '@/constants/categories'
 import CategoryBox from './CategoryBox'
 import Container from '../Container'
 import { useEffect, useState } from 'react'
-import useSearchStore from '@/hooks/contexts/useSearchStore'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 const Categories = () => {
   const [isLeftBtnShowed, setIsLeftBtnShowed] = useState(false)
   const [isRightBtnShowed, setIsRightBtnShowed] = useState(true)
   const [isWindowOnTop, setIsWindowOnTop] = useState(true)
-  const searchStore = useSearchStore()
+
+  const params = useSearchParams()
+
+  let selectedCategoryCode = params?.get('categoryCode')
 
   useEffect(() => {
     window.onscroll = () => {
@@ -94,7 +97,7 @@ const Categories = () => {
                 key={index}
                 label={category.label}
                 icon={category.imageSrc}
-                selected={category.code === searchStore.params.categoryCode}
+                selected={category.code === selectedCategoryCode}
                 code={category.code}
               />
             ))}
