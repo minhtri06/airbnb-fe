@@ -1,9 +1,9 @@
 import { GET_CURRENT_USER } from '@/constants/urls'
-import useCurrentUser from './contexts/useCurrentUser'
+import useCurrentUserStore from '@/hooks/contexts/useCurrentUserStore'
 import useAuthAxios from './useAuthAxios'
 
 const useUser = () => {
-  useCurrentUser()
+  useCurrentUserStore()
   const authAxios = useAuthAxios()
 
   const getCurrentUser = async () => {

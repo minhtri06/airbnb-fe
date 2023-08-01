@@ -2,7 +2,7 @@
 
 import Container from '@/components/Container'
 import PropertyCard from '@/components/PropertyCard'
-import useSearch from '@/hooks/contexts/useSearch'
+import useSearchStore from '@/hooks/contexts/useSearchStore'
 import useProperties from '@/hooks/useProperties'
 import axios from 'axios'
 import { usePathname } from 'next/navigation'
@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
-  const { params, setProperties, properties } = useSearch()
+  const { params, setProperties, properties } = useSearchStore()
   const { searchProperties } = useProperties()
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Home() {
         console.log(error)
       })
       .finally(() => setIsLoading(false))
-  }, [params])
+  }, [])
 
   console.log(usePathname())
   return (

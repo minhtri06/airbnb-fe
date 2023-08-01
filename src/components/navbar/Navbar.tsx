@@ -1,14 +1,14 @@
 'use client'
 
-import useAppSide from '@/hooks/contexts/useAppSide'
+import useAppSideStore from '@/hooks/contexts/useAppSideStore'
 import Container from '../Container'
 import Logo from './Logo'
-import Search from './Search'
+import Search from './search/Search'
 import UserMenu from './user-menu/UserMenu'
 import Categories from '../categories/Categories'
 
 const Navbar = () => {
-  const { appSide } = useAppSide()
+  const { appSide } = useAppSideStore()
 
   console.log('re-render navbar')
 
@@ -21,13 +21,13 @@ const Navbar = () => {
               className=" h-20 flex flex-row  items-center  justify-center gap-3 
               md:gap-0 relative"
             >
-              <div className="absolute left-0">
+              <div className="absolute left-0 z-20">
                 <Logo />
               </div>
 
               {appSide === 'traveling' && <Search />}
 
-              <div className="absolute right-0">
+              <div className="absolute right-0 z-20">
                 <UserMenu />
               </div>
             </div>

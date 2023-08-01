@@ -5,23 +5,23 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import useRegisterModal from '@/hooks/contexts/useRegisterModal'
+import useRegisterModalStore from '@/hooks/contexts/useRegisterModalStore'
 import Modal from './Modal'
-import useAuth from '@/hooks/useAuth'
+import useAuthService from '@/hooks/useAuthService'
 import Heading from '../Heading'
 import Input from '../inputs/Input'
 import Button from '../Button'
 import validateRequire from '@/utils/validateRequire'
-import useNotificationModal from '@/hooks/contexts/useNotificationModal'
+import useNotificationModalStore from '@/hooks/contexts/useNotificationModalStore'
 import ErrorText from '../ErrorText'
 import getGoogleOauthUrl from '@/utils/getGoogleOauthUrl'
 import axios from 'axios'
 
 function RegisterModal() {
-  const modal = useRegisterModal()
-  const notificationModal = useNotificationModal()
+  const modal = useRegisterModalStore()
+  const notificationModal = useNotificationModalStore()
 
-  const auth = useAuth()
+  const auth = useAuthService()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')

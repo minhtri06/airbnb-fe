@@ -1,10 +1,10 @@
 'use client'
 
-import useNotificationModal from '@/hooks/contexts/useNotificationModal'
+import useNotificationModalStore from '@/hooks/contexts/useNotificationModalStore'
 import Modal from './Modal'
 
 const NotificationModal = () => {
-  const modal = useNotificationModal()
+  const modal = useNotificationModalStore()
 
   const bodyElement =
     typeof modal.body === 'string' ? (

@@ -1,6 +1,6 @@
 'use client'
 
-import useCurrentUser from '@/hooks/contexts/useCurrentUser'
+import useCurrentUserStore from '@/hooks/contexts/useCurrentUserStore'
 import Image from 'next/image'
 
 interface AvatarProps {
@@ -8,7 +8,7 @@ interface AvatarProps {
 }
 
 const Avatar: React.FC<AvatarProps> = ({ size }) => {
-  const { currentUser } = useCurrentUser()
+  const { currentUser } = useCurrentUserStore()
 
   return (
     <div

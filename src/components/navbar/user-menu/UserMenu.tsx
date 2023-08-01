@@ -5,22 +5,22 @@ import { useEffect, useRef, useState } from 'react'
 
 import Avatar from '../../Avatar'
 import MenuItem from './MenuItem'
-import useRegisterModal from '@/hooks/contexts/useRegisterModal'
-import useLoginModal from '@/hooks/contexts/useLoginModal'
-import useCurrentUser from '@/hooks/contexts/useCurrentUser'
-import useAuth from '@/hooks/useAuth'
+import useRegisterModalStore from '@/hooks/contexts/useRegisterModalStore'
+import useLoginModalStore from '@/hooks/contexts/useLoginModalStore'
+import useCurrentUserStore from '@/hooks/contexts/useCurrentUserStore'
+import useAuthService from '@/hooks/useAuthService'
 import { useRouter } from 'next/navigation'
-import useAppSide from '@/hooks/contexts/useAppSide'
+import useAppSideStore from '@/hooks/contexts/useAppSideStore'
 import useOutSideListener from '@/hooks/useOutSideListener'
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { currentUser, isLoading } = useCurrentUser()
-  const { appSide } = useAppSide()
+  const { currentUser, isLoading } = useCurrentUserStore()
+  const { appSide } = useAppSideStore()
 
-  const registerModal = useRegisterModal()
-  const loginModal = useLoginModal()
-  const { logout } = useAuth()
+  const registerModal = useRegisterModalStore()
+  const loginModal = useLoginModalStore()
+  const { logout } = useAuthService()
   const router = useRouter()
 
   const accountBtnRef = useRef(null)

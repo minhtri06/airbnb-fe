@@ -6,13 +6,13 @@ import { CATEGORIES } from '@/constants/categories'
 import CategoryBox from './CategoryBox'
 import Container from '../Container'
 import { useEffect, useState } from 'react'
-import useSearch from '@/hooks/contexts/useSearch'
+import useSearchStore from '@/hooks/contexts/useSearchStore'
 
 const Categories = () => {
   const [isLeftBtnShowed, setIsLeftBtnShowed] = useState(false)
   const [isRightBtnShowed, setIsRightBtnShowed] = useState(true)
   const [isWindowOnTop, setIsWindowOnTop] = useState(true)
-  const { params } = useSearch()
+  const { params } = useSearchStore()
 
   useEffect(() => {
     window.onscroll = () => {

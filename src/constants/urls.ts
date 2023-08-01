@@ -11,6 +11,11 @@ export const GOOGLE_LOGIN = '/auth/google-login'
 
 export const LOGOUT_URL = '/auth/logout'
 
+// DIVISIONS
+export const GET_ALL_PROVINCES = '/divisions/p'
+
+export const GET_ALL_DISTRICTS = '/divisions/d'
+
 // ME
 export const GET_CURRENT_USER = '/me'
 

@@ -8,10 +8,10 @@ interface LoginModalStore {
   close: () => void
 }
 
-const useLoginModal = create<LoginModalStore>((set) => ({
+const useLoginModalStore = create<LoginModalStore>((set) => ({
   isOpen: false,
   open: () => set({ isOpen: true }),
   close: () => set({ isOpen: false }),
 }))
 
-export default useLoginModal
+export default useLoginModalStore

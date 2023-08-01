@@ -1,6 +1,6 @@
 import { SEARCH_PROPERTIES } from '@/constants/urls'
 import apiAxios from '@/utils/apiAxios'
-import { PropertyParams } from './contexts/useSearch'
+import { PropertyParams } from './contexts/useSearchStore'
 
 const useProperties = () => {
   const searchProperties = async (params: PropertyParams) => {

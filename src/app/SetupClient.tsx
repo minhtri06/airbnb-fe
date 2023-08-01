@@ -1,7 +1,7 @@
 'use client'
 
-import useAppSide from '@/hooks/contexts/useAppSide'
-import useCurrentUser from '@/hooks/contexts/useCurrentUser'
+import useAppSideStore from '@/hooks/contexts/useAppSideStore'
+import useCurrentUserStore from '@/hooks/contexts/useCurrentUserStore'
 import useAuthTokens from '@/hooks/useAuthTokens'
 import useUser from '@/hooks/useUser'
 import { usePathname } from 'next/navigation'
@@ -10,9 +10,9 @@ import React, { useEffect } from 'react'
 const SetupClient = ({ children }: { children: React.ReactNode }) => {
   const { getCurrentUser } = useUser()
   const { getAccessToken } = useAuthTokens()
-  const { setCurrentUser, setIsLoading } = useCurrentUser()
+  const { setCurrentUser, setIsLoading } = useCurrentUserStore()
 
-  const { appSide, setAppSide } = useAppSide()
+  const { appSide, setAppSide } = useAppSideStore()
 
   const pathname = usePathname()
 

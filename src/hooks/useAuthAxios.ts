@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import useAuthTokens from './useAuthTokens'
-import useAuth from './useAuth'
+import useAuthService from './useAuthService'
 import { BASE_URL } from '@/constants/urls'
 
 const useAuthAxios = () => {
@@ -10,7 +10,7 @@ const useAuthAxios = () => {
     headers: { 'Content-Type': 'application/json' },
   })
 
-  const { logout } = useAuth()
+  const { logout } = useAuthService()
   const { getAccessToken, getRefreshToken, isTokenExpired, refreshAuthTokens } =
     useAuthTokens()
 

@@ -10,7 +10,7 @@ interface NotificationModalStore {
   close: () => void
 }
 
-const useNotificationModal = create<NotificationModalStore>((set) => ({
+const useNotificationModalStore = create<NotificationModalStore>((set) => ({
   isOpen: false,
   body: '',
   title: '',
@@ -18,4 +18,4 @@ const useNotificationModal = create<NotificationModalStore>((set) => ({
   close: () => set({ isOpen: false, title: '', body: '' }),
 }))
 
-export default useNotificationModal
+export default useNotificationModalStore

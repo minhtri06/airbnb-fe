@@ -1,7 +1,7 @@
 'use client'
 
 import apiAxios from '@/utils/apiAxios'
-import useCurrentUser from './contexts/useCurrentUser'
+import useCurrentUserStore from './contexts/useCurrentUserStore'
 import useAuthTokens from './useAuthTokens'
 import {
   GOOGLE_LOGIN,
@@ -10,8 +10,8 @@ import {
   REGISTER_URL,
 } from '@/constants/urls'
 
-const useAuth = () => {
-  const { setCurrentUser } = useCurrentUser()
+const useAuthService = () => {
+  const { setCurrentUser } = useCurrentUserStore()
   const { removeAuthTokens, setAccessToken, setRefreshToken, getRefreshToken } =
     useAuthTokens()
 
@@ -59,4 +59,4 @@ const useAuth = () => {
   }
 }
 
-export default useAuth
+export default useAuthService

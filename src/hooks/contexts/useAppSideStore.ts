@@ -5,9 +5,9 @@ export interface AppSideStore {
   setAppSide: (appSide: 'traveling' | 'hosting') => void
 }
 
-const useAppSide = create<AppSideStore>((set) => ({
+const useAppSideStore = create<AppSideStore>((set) => ({
   appSide: null,
   setAppSide: (appSide) => set({ appSide }),
 }))
 
-export default useAppSide
+export default useAppSideStore

@@ -1,13 +1,13 @@
 'use client'
 
-import useAuth from '@/hooks/useAuth'
+import useAuthService from '@/hooks/useAuthService'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 const page = () => {
   const router = useRouter()
   const params = useSearchParams()
-  const { googleLogin } = useAuth()
+  const { googleLogin } = useAuthService()
 
   useEffect(() => {
     let code = params?.get('code')

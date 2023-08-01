@@ -8,10 +8,10 @@ interface RegisterModelStore {
   close: () => void
 }
 
-const useRegisterModal = create<RegisterModelStore>((set) => ({
+const useRegisterModalStore = create<RegisterModelStore>((set) => ({
   isOpen: false,
   open: () => set({ isOpen: true }),
   close: () => set({ isOpen: false }),
 }))
 
-export default useRegisterModal
+export default useRegisterModalStore

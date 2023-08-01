@@ -21,7 +21,7 @@ export interface SearchStore {
   setProperties: (properties: property[]) => void
 }
 
-const useSearch = create<SearchStore>((set) => ({
+const useSearchStore = create<SearchStore>((set) => ({
   params: {
     districtId: null,
     provinceId: null,
@@ -40,4 +40,4 @@ const useSearch = create<SearchStore>((set) => ({
   setProperties: (properties) => set({ properties }),
 }))
 
-export default useSearch
+export default useSearchStore

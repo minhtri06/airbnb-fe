@@ -1,4 +1,4 @@
-import useSearch from '@/hooks/contexts/useSearch'
+import useSearchStore from '@/hooks/contexts/useSearchStore'
 import Image from 'next/image'
 
 interface CategoryBoxProps {
@@ -14,7 +14,7 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
   selected,
   code,
 }) => {
-  const { setParams, params } = useSearch()
+  const { setParams, params } = useSearchStore()
 
   return (
     <div

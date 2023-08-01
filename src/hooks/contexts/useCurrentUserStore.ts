@@ -14,7 +14,7 @@ interface CurrentUserStore {
   setIsLoading: (value: boolean) => void
 }
 
-const useCurrentUser = create<CurrentUserStore>((set) => {
+const useCurrentUserStore = create<CurrentUserStore>((set) => {
   const setCurrentUser = (newCurrentUser: CurrentUser | null) => {
     set({ currentUser: newCurrentUser, isLoading: false })
   }
@@ -27,4 +27,4 @@ const useCurrentUser = create<CurrentUserStore>((set) => {
   }
 })
 
-export default useCurrentUser
+export default useCurrentUserStore

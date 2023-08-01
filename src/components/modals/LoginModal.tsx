@@ -9,16 +9,16 @@ import Heading from '../Heading'
 import Input from '../inputs/Input'
 import Button from '../Button'
 import validateRequire from '@/utils/validateRequire'
-import useAuth from '@/hooks/useAuth'
-import useLoginModal from '@/hooks/contexts/useLoginModal'
+import useAuthService from '@/hooks/useAuthService'
+import useLoginModalStore from '@/hooks/contexts/useLoginModalStore'
 import ErrorText from '../ErrorText'
 import { useRouter } from 'next/navigation'
 import getGoogleOauthUrl from '@/utils/getGoogleOauthUrl'
 
 function LoginModal() {
-  const modal = useLoginModal()
+  const modal = useLoginModalStore()
 
-  const auth = useAuth()
+  const auth = useAuthService()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
