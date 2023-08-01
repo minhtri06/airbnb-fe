@@ -8,16 +8,15 @@ import { usePathname } from 'next/navigation'
 import React, { useEffect } from 'react'
 
 const SetupClient = ({ children }: { children: React.ReactNode }) => {
+  const { currentUser, setCurrentUser, setIsLoading } = useCurrentUserStore()
   const { getCurrentUser } = useUser()
   const { getAccessToken } = useAuthTokens()
-  const { setCurrentUser, setIsLoading } = useCurrentUserStore()
 
   const { appSide, setAppSide } = useAppSideStore()
 
   const pathname = usePathname()
 
   useEffect(() => {
-    console.log('check path name')
     if (pathname?.startsWith('/hosting')) {
       if (appSide !== 'hosting') {
         setAppSide('hosting')
@@ -31,7 +30,7 @@ const SetupClient = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     console.log('get current user')
-    if (getAccessToken()) {
+    if (!currentUser && getAccessToken()) {
       getCurrentUser()
         .then((user) => setCurrentUser(user))
         .catch((err) => console.log(err.response?.data))

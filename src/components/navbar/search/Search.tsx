@@ -11,7 +11,7 @@ const Search = () => {
     <>
       <div
         onClick={() => setIsExpanded(true)}
-        className=" border-[1px] w-full md:w-auto rounded-full shadow-sm 
+        className="border-[1px] w-full md:w-auto rounded-full shadow-sm 
           hover:shadow-md transition cursor-pointer h-12"
       >
         <div className=" flex flex-row  items-center  justify-between h-full">

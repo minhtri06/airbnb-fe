@@ -11,40 +11,12 @@ export type division = {
 
 interface DivisionStore {
   divisions: division[] | null
-  fetchDivisions: () => Promise<void>
+  setDivisions: (divisions: division[] | null) => void
 }
 
-const useDivisionStore = create<DivisionStore>((set) => {
-  const fetchDivisions = async () => {
-    const [res1, res2] = await Promise.all([
-      apiAxios.get(GET_ALL_DISTRICTS),
-      apiAxios.get(GET_ALL_PROVINCES),
-    ])
-
-    const { districts } = res1.data
-    const { provinces } = res2.data
-
-    const divisions = [
-      ...districts.map(
-        (district: any): division => ({
-          _id: district._id,
-          type: 'district',
-          name: district.name,
-        }),
-      ),
-      ...provinces.map(
-        (province: any): division => ({
-          _id: province._id,
-          type: 'province',
-          name: province.name,
-        }),
-      ),
-    ]
-
-    set({ divisions })
-  }
-
-  return { divisions: null, fetchDivisions }
-})
+const useDivisionStore = create<DivisionStore>((set) => ({
+  divisions: null,
+  setDivisions: (divisions) => set({ divisions }),
+}))
 
 export default useDivisionStore

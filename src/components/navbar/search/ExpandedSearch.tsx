@@ -2,12 +2,14 @@
 
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
-import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { BiSearch } from 'react-icons/bi'
 import DateInput from './DateInput'
 import LocationInput from './LocationInput'
-import WhoInput from './WhoInput'
+import GuestInput from './GuestInput'
+import useSearchStore from '@/hooks/contexts/useSearchStore'
+import useProperties from '@/hooks/useProperties'
+import axios from 'axios'
 
 interface ExpandedSearchProps {
   isExpanded: boolean
@@ -21,6 +23,9 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
   const [selectedInput, setSelectedInput] = useState<
     'location' | 'book-in' | 'book-out' | 'who'
   >('location')
+  const [locationSearch, setLocationSearch] = useState('')
+  const { params, setParams, setProperties } = useSearchStore()
+  const { searchProperties } = useProperties()
 
   const selectedInputStyle =
     'bg-white rounded-full text-sm pl-8 flex flex-col justify-center \
@@ -32,7 +37,13 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
   let input
   switch (selectedInput) {
     case 'location':
-      input = <LocationInput setSelectedInput={setSelectedInput} />
+      input = (
+        <LocationInput
+          setSelectedInput={setSelectedInput}
+          locationSearch={locationSearch}
+          setLocationSearch={setLocationSearch}
+        />
+      )
       break
     case 'book-in':
     case 'book-out':
@@ -44,7 +55,7 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
       )
       break
     case 'who':
-      input = <WhoInput />
+      input = <GuestInput />
       break
   }
 
@@ -90,7 +101,13 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
                   onClick={() => setSelectedInput('location')}
                 >
                   <span className="font-bold">Where</span>
-                  <span className="text-gray-700">Search destination</span>
+                  <input
+                    className="text-gray-700 w-5/6 bg-inherit outline-none"
+                    placeholder="Search destination"
+                    value={locationSearch}
+                    onChange={(e) => setLocationSearch(e.target.value)}
+                    autoFocus
+                  />
                 </div>
                 <div
                   className={`w-32 ${
@@ -101,7 +118,11 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
                   onClick={() => setSelectedInput('book-in')}
                 >
                   <span className="font-bold">Book in</span>
-                  <span className="text-gray-700">Add dates</span>
+                  <span className="text-gray-700">
+                    {!params.bookIn
+                      ? 'Add dates'
+                      : `${params.bookIn.toLocaleDateString()}`}
+                  </span>
                 </div>
                 <div
                   className={`w-32 ${
@@ -112,7 +133,11 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
                   onClick={() => setSelectedInput('book-out')}
                 >
                   <span className="font-bold">Book out</span>
-                  <span className="text-gray-700">Add dates</span>
+                  <span className="text-gray-700">
+                    {!params.bookOut
+                      ? 'Add dates'
+                      : `${params.bookOut.toLocaleDateString()}`}
+                  </span>
                 </div>
                 <div
                   className={`flex-1 ${
@@ -129,14 +154,27 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
                 </div>
                 <div
                   className="h-12 px-3 bg-gradient-to-r from-rose-500 to-pink-700 
-                  rounded-full flex items-center justify-center text-base text-white
-                  font-bold cursor-pointer absolute right-2 top-2"
+                    rounded-full flex items-center justify-center text-base text-white
+                    font-bold cursor-pointer absolute right-2 top-2 select-none"
+                  onClick={() => {
+                    setParams({ categoryCode: null })
+                    searchProperties()
+                      .then(() => {
+                        setIsExpanded(false)
+                      })
+                      .catch((error) => {
+                        if (axios.isAxiosError(error)) {
+                          console.log(error.response?.data)
+                        } else {
+                          console.log(error)
+                        }
+                      })
+                  }}
                 >
                   <BiSearch size={20} />
                   <span className="ml-1">Search</span>
                 </div>
-
-                <div className="absolute top-20 w-full">{input}</div>
+                {input}
               </div>
             </div>
           </div>

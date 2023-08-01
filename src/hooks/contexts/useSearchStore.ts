@@ -10,8 +10,6 @@ export interface PropertyParams {
   categoryCode?: string | null
   bookIn?: Date | null
   bookOut?: Date | null
-  page?: number | null
-  limit?: number | null
 }
 
 export interface SearchStore {
@@ -19,6 +17,8 @@ export interface SearchStore {
   setParams: (params: PropertyParams) => void
   properties: property[] | null
   setProperties: (properties: property[]) => void
+  isLoading: boolean
+  setIsLoading: (value: boolean) => void
 }
 
 const useSearchStore = create<SearchStore>((set) => ({
@@ -28,16 +28,13 @@ const useSearchStore = create<SearchStore>((set) => ({
     categoryCode: CATEGORIES[0].code,
     bookIn: null,
     bookOut: null,
-    page: null,
-    limit: null,
   },
   setParams: (params) =>
-    set((pre) => ({
-      ...pre,
-      params: { ...pre.params, ...params },
-    })),
+    set((pre) => ({ params: { ...pre.params, ...params } })),
   properties: null,
   setProperties: (properties) => set({ properties }),
+  isLoading: false,
+  setIsLoading: (isLoading) => set({ isLoading }),
 }))
 
 export default useSearchStore

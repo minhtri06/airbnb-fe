@@ -1,6 +1,7 @@
 'use client'
 
 import Container from '@/components/Container'
+import PaginationController from '@/components/PaginationController'
 import PropertyCard from '@/components/PropertyCard'
 import useSearchStore from '@/hooks/contexts/useSearchStore'
 import useProperties from '@/hooks/useProperties'
@@ -8,26 +9,24 @@ import axios from 'axios'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function Home() {
-  const [isLoading, setIsLoading] = useState(true)
-  const { params, setProperties, properties } = useSearchStore()
+export default function Home({
+  searchParams,
+}: {
+  searchParams: { page: string | undefined }
+}) {
+  const searchStore = useSearchStore()
   const { searchProperties } = useProperties()
 
   useEffect(() => {
-    setIsLoading(true)
-
-    searchProperties(params)
-      .then((data) => {
-        setProperties(data.properties)
-      })
-      .catch((error) => {
-        if (axios.isAxiosError(error)) {
-          console.log(error.response?.data)
-        }
+    searchProperties({ page: searchParams.page, limit: 16 }).catch((error) => {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data)
+      } else {
         console.log(error)
-      })
-      .finally(() => setIsLoading(false))
-  }, [])
+      }
+    })
+    console.log('call at page')
+  }, [searchStore.params.categoryCode, searchParams.page])
 
   console.log(usePathname())
   return (
@@ -35,10 +34,10 @@ export default function Home() {
       <Container>
         <div
           className=" pt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
-              xl:grid-cols-5 2xl:grid-cols-6 gap-8"
+            xl:grid-cols-5 2xl:grid-cols-6 gap-8"
         >
-          {properties &&
-            properties.map((property) => (
+          {searchStore.properties &&
+            searchStore.properties.map((property) => (
               <PropertyCard
                 key={property._id}
                 cardTitle={
@@ -51,10 +50,11 @@ export default function Home() {
                 score={property.score || 9}
                 reviewCount={property.reviewCount}
                 pricePerNight={property.accommodations[0].pricePerNight}
-                isLoading={isLoading}
+                isLoading={searchStore.isLoading}
               />
             ))}
         </div>
+        <PaginationController currentPage={searchParams.page} maxPage={2} />
       </Container>
     </div>
   )

@@ -18,7 +18,7 @@ const DateInput: React.FC<DateInputProps> = ({
 
   const bookingRange = {
     startDate: bookIn || moment().toDate(),
-    endDate: bookOut || moment().add(2, 'days').toDate(),
+    endDate: bookOut || moment().toDate(),
     key: 'selection',
   }
 
@@ -26,22 +26,27 @@ const DateInput: React.FC<DateInputProps> = ({
     if (selectedInput === 'book-in') {
       setSelectedInput('book-out')
     }
+    const startDate = moment(ranges.selection.startDate)
+    const endDate = moment(ranges.selection.endDate)
+    if (startDate.diff(endDate, 'days') === 0) {
+      endDate.add(1, 'day')
+    }
     setParams({
-      bookIn: ranges.selection.startDate,
-      bookOut: ranges.selection.endDate,
+      bookIn: startDate.toDate(),
+      bookOut: endDate.toDate(),
     })
   }
 
   return (
     <div
-      className="p-8 bg-white h-fit w-fit m-auto rounded-3xl 
-      shadow-[0px_0px_10px_5px_rgba(0,0,0,0.1)]"
+      className="absolute top-20 m-auto left-0 right-0 p-8 bg-white h-fit w-fit rounded-3xl 
+      shadow-[0px_0px_10px_5px_rgba(0,0,0,0.1)] "
     >
       <DateRangePicker
         ranges={[bookingRange]}
         minDate={new Date()}
         maxDate={moment().add(3, 'months').toDate()}
-        rangeColors={['#fd5b61']}
+        rangeColors={['#e11d48']}
         onChange={handleSelectDate}
         startDatePlaceholder="Book in"
         endDatePlaceholder="Book out"

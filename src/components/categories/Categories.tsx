@@ -12,7 +12,7 @@ const Categories = () => {
   const [isLeftBtnShowed, setIsLeftBtnShowed] = useState(false)
   const [isRightBtnShowed, setIsRightBtnShowed] = useState(true)
   const [isWindowOnTop, setIsWindowOnTop] = useState(true)
-  const { params } = useSearchStore()
+  const searchStore = useSearchStore()
 
   useEffect(() => {
     window.onscroll = () => {
@@ -94,7 +94,7 @@ const Categories = () => {
                 key={index}
                 label={category.label}
                 icon={category.imageSrc}
-                selected={category.code === params.categoryCode}
+                selected={category.code === searchStore.params.categoryCode}
                 code={category.code}
               />
             ))}
