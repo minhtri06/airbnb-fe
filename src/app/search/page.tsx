@@ -3,7 +3,7 @@
 import Container from '@/components/Container'
 import PaginationController from '@/components/PaginationController'
 import PropertyCard from '@/components/PropertyCard'
-import useProperties from '@/hooks/useProperties'
+import usePropertyAction from '@/hooks/usePropertyAction'
 import { property } from '@/types'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 const page = ({ searchParams }: { searchParams: any }) => {
   const [properties, setProperties] = useState<property[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const { searchProperties } = useProperties()
+  const { searchProperties } = usePropertyAction()
 
   useEffect(() => {
     setIsLoading(true)

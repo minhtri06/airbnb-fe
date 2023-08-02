@@ -29,7 +29,7 @@ const Hosting: React.FC = () => {
       ) : (
         <div className="flex justify-between items-center">
           <div className="text-3xl font-bold">
-            Welcome, {currentUserStore.currentUser?.name}!
+            Welcome, {currentUserStore.currentUser?.name}! 🍁
           </div>
           <div className="w-44">
             <Button

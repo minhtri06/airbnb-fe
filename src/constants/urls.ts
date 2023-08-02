@@ -21,3 +21,5 @@ export const GET_CURRENT_USER = '/me'
 
 // PROPERTIES
 export const SEARCH_PROPERTIES = '/properties'
+
+export const CHECK_PAGE_NAME_EXISTS = '/properties/check-page-name-exits'

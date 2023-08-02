@@ -1,19 +1,21 @@
 'use client'
 
+import ErrorText from '@/components/ErrorText'
 import Heading from '@/components/Heading'
 import { CATEGORIES } from '@/constants/categories'
 import Image from 'next/image'
 
-interface Step1Props {
+interface CategoryStepProps {
   selectedCategoryCodes: string[]
   setSelectedCategoryCodes: (value: any) => void
+  error?: string
 }
 
-const Step1: React.FC<Step1Props> = ({
+const CategoryStep: React.FC<CategoryStepProps> = ({
   selectedCategoryCodes,
   setSelectedCategoryCodes,
+  error,
 }) => {
-  console.log(selectedCategoryCodes)
   const handleCategoryOnClick = (code: string, isSelected: boolean) => {
     if (isSelected) {
       setSelectedCategoryCodes((pre: string[]) =>
@@ -41,8 +43,8 @@ const Step1: React.FC<Step1Props> = ({
             <div
               key={c.code}
               className={`flex flex-col items-center py-6 rounded-xl cursor-pointer 
-                select-none gap-3 hover:bg-gray-200 ${
-                  isSelected && 'border-[2px] border-gray-700'
+                select-none gap-3 border-[2px] hover:border-gray-700 ${
+                  isSelected ? 'bg-gray-200 border-gray-700' : 'border-white'
                 }`}
               onClick={() => handleCategoryOnClick(c.code, isSelected)}
             >
@@ -52,8 +54,9 @@ const Step1: React.FC<Step1Props> = ({
           )
         })}
       </div>
+      <ErrorText error={error} />
     </div>
   )
 }
 
-export default Step1
+export default CategoryStep
