@@ -1,6 +1,11 @@
 import apiAxios from '@/utils/apiAxios'
-import { division } from './contexts/useDivisionStore'
 import { GET_ALL_DISTRICTS, GET_ALL_PROVINCES } from '@/constants/urls'
+
+export type division = {
+  _id: string
+  type: string
+  name: string
+}
 
 const useDivisions = () => {
   const getAllDivisions = async (): Promise<division[]> => {

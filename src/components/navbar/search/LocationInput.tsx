@@ -1,12 +1,11 @@
 import { IoLocationOutline } from 'react-icons/io5'
-import useDivisionStore, { division } from '@/hooks/contexts/useDivisionStore'
-import useDivisions from '@/hooks/useDivisions'
+import useDivisions, { division } from '@/hooks/useDivisions'
 import { useEffect, useState } from 'react'
 
 interface LocationInputProps {
-  districtId: string | null
+  divisions: division[]
+  setDivisions: (value: division[]) => void
   setDistrictId: (value: string | null) => void
-  provinceId: string | null
   setProvinceId: (value: string | null) => void
   setSelectedInput: (value: any) => void
   locationSearch: string
@@ -14,23 +13,26 @@ interface LocationInputProps {
 }
 
 const LocationInput: React.FC<LocationInputProps> = ({
-  districtId,
+  divisions,
+  setDivisions,
   setDistrictId,
-  provinceId,
   setProvinceId,
   setSelectedInput,
   locationSearch,
   setLocationSearch,
 }) => {
-  const { divisions, setDivisions } = useDivisionStore()
   const { getAllDivisions } = useDivisions()
   const [searchResult, setSearchResult] = useState<division[]>([])
 
   useEffect(() => {
-    if (!divisions) {
-      getAllDivisions().then((data) => {
-        setDivisions(data)
-      })
+    if (divisions.length === 0) {
+      getAllDivisions()
+        .then((data) => {
+          setDivisions(data)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
     }
   }, [])
 

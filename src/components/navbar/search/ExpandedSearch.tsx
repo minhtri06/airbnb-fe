@@ -2,12 +2,13 @@
 
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BiSearch } from 'react-icons/bi'
 import DateInput from './DateInput'
 import LocationInput from './LocationInput'
 import GuestInput from './GuestInput'
 import { usePathname, useRouter } from 'next/navigation'
+import { division } from '@/hooks/useDivisions'
 
 interface ExpandedSearchProps {
   isExpanded: boolean
@@ -18,6 +19,8 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
   isExpanded,
   setIsExpanded,
 }) => {
+  const [divisions, setDivisions] = useState<division[]>([])
+
   // Search filters
   const [provinceId, setProvinceId] = useState<string | null>(null)
   const [districtId, setDistrictId] = useState<string | null>(null)
@@ -27,6 +30,7 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
   const router = useRouter()
   const pathname = usePathname()
 
+  // Selected inputs
   const [selectedInput, setSelectedInput] = useState<
     'location' | 'book-in' | 'book-out' | 'who'
   >('location')
@@ -44,9 +48,9 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
     case 'location':
       input = (
         <LocationInput
-          districtId={districtId}
+          divisions={divisions}
+          setDivisions={setDivisions}
           setDistrictId={setDistrictId}
-          provinceId={provinceId}
           setProvinceId={setProvinceId}
           setSelectedInput={setSelectedInput}
           locationSearch={locationSearch}
@@ -72,6 +76,15 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
       break
   }
 
+  const clearSearch = () => {
+    setProvinceId(null)
+    setDistrictId(null)
+    setBookIn(null)
+    setBookOut(null)
+    setSelectedInput('location')
+    setLocationSearch('')
+  }
+
   const handleSearchBtnOnClick = () => {
     const options: any = {}
     if (bookIn && bookOut) {
@@ -86,8 +99,13 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
     }
     const params = new URLSearchParams(options)
     setIsExpanded(false)
+    clearSearch()
     router.push(`/search?${params.toString()}`)
   }
+
+  useEffect(() => {
+    clearSearch()
+  }, [pathname])
 
   return (
     <>
