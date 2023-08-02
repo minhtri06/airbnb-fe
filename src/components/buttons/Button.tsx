@@ -8,6 +8,7 @@ interface ButtonProps {
   disabled?: boolean
   outline?: boolean
   small?: boolean
+  big?: boolean
   icon?: IconType
 }
 
@@ -17,6 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   outline,
   small,
+  big,
   icon: Icon,
 }) => {
   return (
@@ -29,11 +31,13 @@ const Button: React.FC<ButtonProps> = ({
         ${
           outline
             ? 'bg-white border-gray-400 shadow-sm text-gray-900'
-            : 'bg-rose-600 border-rose-600 text-white'
+            : 'bg-gradient-to-r from-rose-500 to-pink-700 text-white'
         }
         ${
           small
             ? 'text-base font-semibold border-[1px]'
+            : big
+            ? 'py-2 text-xl font-bold border-[1px]'
             : 'py-1 text-lg font-semibold border-[1px]'
         }
       `}

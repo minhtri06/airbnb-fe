@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 
-import Button from '../Button'
+import Button from '../buttons/Button'
 
 interface ModelProps {
   isOpen: boolean
@@ -127,6 +127,7 @@ const Modal: React.FC<ModelProps> = ({
                       label={secondaryActionLabel}
                       onClick={handleSecondaryAction}
                       disabled={disabled}
+                      outline
                     />
                   )}
                   <Button

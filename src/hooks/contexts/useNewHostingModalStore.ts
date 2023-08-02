@@ -9,7 +9,7 @@ interface NewHostingModalStore {
 const useNewHostingModalStore = create<NewHostingModalStore>((set) => ({
   isOpen: false,
   open: () => set({ isOpen: true }),
-  close: () => set({ isOpen: true }),
+  close: () => set({ isOpen: false }),
 }))
 
 export default useNewHostingModalStore

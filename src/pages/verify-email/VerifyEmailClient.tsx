@@ -3,7 +3,7 @@
 import '@/app/globals.css'
 
 import { useRouter } from 'next/navigation'
-import Button from '@/components/Button'
+import Button from '@/components/buttons/Button'
 
 const VerifyEmailClient = () => {
   const router = useRouter()

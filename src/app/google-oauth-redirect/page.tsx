@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 const page = () => {
   const router = useRouter()
   const params = useSearchParams()
-  const { googleLogin } = useAuthService()
+  const authService = useAuthService()
 
   useEffect(() => {
     let code = params?.get('code')
@@ -15,13 +15,14 @@ const page = () => {
       router.push('/500')
       return
     }
-    googleLogin(code)
+    authService
+      .googleLogin(code)
       .then(() => {
         router.push('/')
       })
       .catch((error) => {
         console.log(error.response.data)
-        // router.push('/500')
+        router.push('/500')
       })
   }, [])
 

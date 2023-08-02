@@ -7,13 +7,14 @@ import axios from 'axios'
 import Modal from './Modal'
 import Heading from '../Heading'
 import Input from '../inputs/Input'
-import Button from '../Button'
+import Button from '../buttons/Button'
 import validateRequire from '@/utils/validateRequire'
 import useAuthService from '@/hooks/useAuthService'
 import useLoginModalStore from '@/hooks/contexts/useLoginModalStore'
 import ErrorText from '../ErrorText'
 import { useRouter } from 'next/navigation'
 import getGoogleOauthUrl from '@/utils/getGoogleOauthUrl'
+import GoogleLoginButton from '../buttons/GoogleLoginButton'
 
 function LoginModal() {
   const modal = useLoginModalStore()
@@ -102,15 +103,7 @@ function LoginModal() {
   const footerElement = (
     <div className="flex flex-col gap-4 mt-3">
       <hr />
-      <Button
-        outline
-        label="Continue with Google"
-        icon={FcGoogle}
-        onClick={() => {
-          router.push(getGoogleOauthUrl())
-        }}
-        disabled={isLoading}
-      />
+      <GoogleLoginButton disabled={isLoading} />
     </div>
   )
 
