@@ -18,7 +18,7 @@ export type province = {
   name: string
 }
 
-const useDivisions = () => {
+const useDivisionAction = () => {
   const getAllDivisions = async (): Promise<division[]> => {
     const [res1, res2] = await Promise.all([
       apiAxios.get(GET_ALL_DISTRICTS),
@@ -59,4 +59,4 @@ const useDivisions = () => {
   return { getAllDivisions, getAllDistricts, getAllProvinces }
 }
 
-export default useDivisions
+export default useDivisionAction

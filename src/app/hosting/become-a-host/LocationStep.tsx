@@ -1,10 +1,9 @@
 'use client'
 
-import ErrorText from '@/components/ErrorText'
-import Heading from '@/components/Heading'
 import Select from 'react-select'
-import { district, province } from '@/hooks/useDivisions'
+import ErrorText from '@/components/ErrorText'
 import Input from '@/components/inputs/Input'
+import { district, province } from '@/hooks/useDivisionAction'
 
 interface LocationStepProps {
   error?: string
@@ -31,11 +30,11 @@ const LocationStep: React.FC<LocationStepProps> = ({
 }) => {
   const selectStyle = {
     classNames: {
-      control: () => 'p-1 border-[1px] font-semibold text-base',
+      control: () => 'p-1 border-[1px] font-semibold text-lg',
     },
     theme: function (theme: any) {
       theme.colors.primary = '#374151'
-      theme.borderRadius = 6
+      theme.borderRadius = 10
       return theme
     },
   }
@@ -59,12 +58,11 @@ const LocationStep: React.FC<LocationStepProps> = ({
 
   return (
     <div>
-      <Heading
-        title="Where is your place located?"
-        subtitle="Help guest find you"
-      />
-
-      <div className="py-5">
+      <div className="font-bold text-3xl pb-3">
+        Where is your place located?
+      </div>
+      <div className="text-xl text-gray-500">Help guests find you</div>
+      <div className="pt-7">
         <Select
           placeholder="Province"
           isSearchable
@@ -78,7 +76,7 @@ const LocationStep: React.FC<LocationStepProps> = ({
           {...selectStyle}
         />
       </div>
-      <div className="h-16">
+      <div className="pt-7">
         <Select
           placeholder="District"
           isSearchable
@@ -92,14 +90,15 @@ const LocationStep: React.FC<LocationStepProps> = ({
           {...selectStyle}
         />
       </div>
-      <div className="font-semibold">
+      <div className="font-semibold py-7">
         <Input
           value={address}
           onChange={(e) => addressOnChange(e.currentTarget.value)}
           label="Address"
+          size="big"
         />
       </div>
-      <ErrorText error={error} />
+      <ErrorText error={error} size="big" />
     </div>
   )
 }

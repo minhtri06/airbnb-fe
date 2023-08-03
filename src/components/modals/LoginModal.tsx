@@ -72,7 +72,7 @@ function LoginModal() {
       <Heading title="Welcome back" subtitle="Login to your account" />
       {errors.general && (
         <div className="pb-2">
-          <ErrorText error={errors.general} small />
+          <ErrorText error={errors.general} size="small" />
         </div>
       )}
       <Input

@@ -7,7 +7,6 @@ import NotificationModal from '@/components/modals/NotificationModal'
 import RegisterModal from '@/components/modals/RegisterModal'
 import LoginModal from '@/components/modals/LoginModal'
 import { usePathname } from 'next/navigation'
-import NewHostingModal from '@/components/modals/new-hosting-modal/NewHostingModal'
 
 const nunito = Nunito({ subsets: ['latin'] })
 
@@ -32,7 +31,6 @@ export default function RootLayout({
           <NotificationModal />
           <RegisterModal />
           <LoginModal />
-          <NewHostingModal />
           {children}
         </SetupClient>
       </body>

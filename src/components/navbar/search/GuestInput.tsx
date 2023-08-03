@@ -16,28 +16,32 @@ const GuestInput = () => {
         title="Adults"
         subTitle="Ages 13 or above"
         number={numOfAdults}
-        setNumber={setNumOfAdults}
+        onIncrease={() => setNumOfAdults((pre) => pre + 1)}
+        onDecrease={() => setNumOfAdults((pre) => pre - 1)}
       />
       <hr />
       <Counter
         title="Children"
         subTitle="Ages 2–12"
         number={numOfChildren}
-        setNumber={setNumOfChildren}
+        onIncrease={() => setNumOfChildren((pre) => pre + 1)}
+        onDecrease={() => setNumOfChildren((pre) => pre - 1)}
       />
       <hr />
       <Counter
         title="Infants"
         subTitle="Under 2"
         number={numOfInfants}
-        setNumber={setNumOfInfants}
+        onIncrease={() => setNumOfInfants((pre) => pre + 1)}
+        onDecrease={() => setNumOfInfants((pre) => pre - 1)}
       />
       <hr />
       <Counter
         title="Pets"
         subTitle="Bringing a service animal?"
         number={numOfPets}
-        setNumber={setNumOfPets}
+        onIncrease={() => setNumOfPets((pre) => pre + 1)}
+        onDecrease={() => setNumOfPets((pre) => pre - 1)}
       />
     </div>
   )

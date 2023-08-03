@@ -9,6 +9,7 @@ interface InputProps {
   label?: string
   error?: string
   disabled?: boolean
+  size?: 'small' | 'base' | 'big'
 }
 
 const Input: React.FC<InputProps> = ({
@@ -18,12 +19,20 @@ const Input: React.FC<InputProps> = ({
   label,
   error,
   disabled,
+  size,
 }) => {
+  const sizeStyle =
+    size === 'big'
+      ? 'py-2 px-3 text-lg border-[2px]'
+      : size === 'small'
+      ? 'p-1 text-sm border-[1px]'
+      : 'py-2 px-2 text-base border-[1px]'
+
   return (
     <div>
       <div
         className={`
-          w-full relative border-2 rounded-lg py-2 px-3
+          w-full relative border-2 border-gray-600 rounded-lg ${sizeStyle} 
           ${error && 'border-rose-600'}`}
       >
         {label && (
@@ -50,7 +59,7 @@ const Input: React.FC<InputProps> = ({
           autoComplete="off"
         />
       </div>
-      <ErrorText error={error} small />
+      <ErrorText error={error} size="small" />
     </div>
   )
 }

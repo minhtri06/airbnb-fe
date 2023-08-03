@@ -1,5 +1,5 @@
 import { IoLocationOutline } from 'react-icons/io5'
-import useDivisions, { division } from '@/hooks/useDivisions'
+import useDivisionAction, { division } from '@/hooks/useDivisionAction'
 import { useEffect, useState } from 'react'
 
 interface LocationInputProps {
@@ -21,7 +21,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
   locationSearch,
   setLocationSearch,
 }) => {
-  const { getAllDivisions } = useDivisions()
+  const { getAllDivisions } = useDivisionAction()
   const [searchResult, setSearchResult] = useState<division[]>([])
 
   useEffect(() => {

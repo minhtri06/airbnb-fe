@@ -3,12 +3,12 @@
 import Button from '@/components/buttons/Button'
 import useCurrentUserStore from '@/hooks/contexts/useCurrentUserStore'
 import useLoginModalStore from '@/hooks/contexts/useLoginModalStore'
-import useNewHostingModalStore from '@/hooks/contexts/useNewHostingModalStore'
+import { useRouter } from 'next/navigation'
 
 const Hosting: React.FC = () => {
   const currentUserStore = useCurrentUserStore()
   const loginModal = useLoginModalStore()
-  const newHostingModal = useNewHostingModalStore()
+  const router = useRouter()
 
   if (currentUserStore.isLoading) {
     return <></>
@@ -23,7 +23,7 @@ const Hosting: React.FC = () => {
             Login to create a new hosting, are you ready!
           </div>
           <div className="w-32">
-            <Button label="Login" onClick={() => loginModal.open()} />
+            <Button label="Login" onClick={() => loginModal.open()} big />
           </div>
         </>
       ) : (
@@ -34,7 +34,7 @@ const Hosting: React.FC = () => {
           <div className="w-44">
             <Button
               label="New hosting"
-              onClick={() => newHostingModal.open()}
+              onClick={() => router.push('/hosting/become-a-host')}
               outline
               big
             />

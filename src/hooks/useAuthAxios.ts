@@ -39,9 +39,13 @@ const useAuthAxios = () => {
   privateAxios.interceptors.response.use(
     (config) => config,
     (error) => {
-      if (axios.isAxiosError(error) && error.response?.status === 401) {
-        console.log(error.response.data)
-        logout()
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data)
+        if (error.response?.status === 401) {
+          logout()
+        }
+      } else {
+        console.log(error)
       }
     },
   )

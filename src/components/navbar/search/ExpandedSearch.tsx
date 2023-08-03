@@ -8,7 +8,7 @@ import DateInput from './DateInput'
 import LocationInput from './LocationInput'
 import GuestInput from './GuestInput'
 import { usePathname, useRouter } from 'next/navigation'
-import { division } from '@/hooks/useDivisions'
+import { division } from '@/hooks/useDivisionAction'
 
 interface ExpandedSearchProps {
   isExpanded: boolean

@@ -79,21 +79,23 @@ function RegisterModal() {
         await auth.register({ name, email, password })
         modal.close()
 
-        notificationModal.open(
-          'Verify your email',
-          <div className="text-base flex flex-col items-center">
-            <Image
-              height={120}
-              width={120}
-              src="/img/email.png"
-              alt="email-image"
-              className="mb-3"
-            />
-            <div className="text-center">
-              {`Thank you for joining us. We sent an verification email to '${email}' to verify your email address and active your account`}
+        notificationModal.open({
+          title: 'Verify your email',
+          body: (
+            <div className="text-base flex flex-col items-center">
+              <Image
+                height={120}
+                width={120}
+                src="/img/email.png"
+                alt="email-image"
+                className="mb-3"
+              />
+              <div className="text-center">
+                {`Thank you for joining us. We sent an verification email to '${email}' to verify your email address and active your account`}
+              </div>
             </div>
-          </div>,
-        )
+          ),
+        })
       } catch (error: any) {
         if (axios.isAxiosError(error)) {
           setErrors((pre) => ({ ...pre, general: error.response.data.message }))
@@ -109,7 +111,7 @@ function RegisterModal() {
     <div className="flex flex-col gap-3">
       <Heading title="Welcome to Airbnb" subtitle="Create an account" />
       <div className="pb-2">
-        <ErrorText error={errors.general} small />
+        <ErrorText error={errors.general} size="small" />
       </div>
       <Input
         label="Name"

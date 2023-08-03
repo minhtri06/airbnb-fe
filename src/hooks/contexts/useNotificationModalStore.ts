@@ -4,18 +4,27 @@ import { create } from 'zustand'
 
 interface NotificationModalStore {
   isOpen: boolean
-  body: React.ReactElement | string
   title: string
-  open: (title: string, body: React.ReactElement | string) => void
+  body: React.ReactElement | string
+  callWhenClose: () => void
+  open: (config: {
+    title: string
+    body: React.ReactElement | string
+    callWhenClose?: () => void
+  }) => void
   close: () => void
 }
 
 const useNotificationModalStore = create<NotificationModalStore>((set) => ({
   isOpen: false,
-  body: '',
   title: '',
-  open: (title, body) => set({ isOpen: true, title, body }),
-  close: () => set({ isOpen: false, title: '', body: '' }),
+  body: '',
+  callWhenClose: () => {},
+  open: ({ title, body, callWhenClose = () => {} }) =>
+    set({ isOpen: true, title, body, callWhenClose }),
+  close: () => {
+    set({ isOpen: false, title: '', body: '', callWhenClose: () => {} })
+  },
 }))
 
 export default useNotificationModalStore

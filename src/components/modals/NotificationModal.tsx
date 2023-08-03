@@ -13,14 +13,19 @@ const NotificationModal = () => {
       modal.body
     )
 
+  const handleOnClose = () => {
+    modal.callWhenClose()
+    modal.close()
+  }
+
   return (
     <Modal
       body={bodyElement}
       small
-      onClose={() => modal.close()}
+      onClose={handleOnClose}
       isOpen={modal.isOpen}
       actionLabel="Close"
-      action={() => modal.close()}
+      action={handleOnClose}
       title={modal.title}
     />
   )
