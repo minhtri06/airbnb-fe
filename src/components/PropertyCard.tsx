@@ -10,8 +10,9 @@ interface PropertyCardProps {
   thumbnail: string
   score?: number | null
   reviewCount?: number | null
-  pricePerNight: number
+  pricePerNight?: number
   isLoading: boolean
+  onClick?: () => void
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -23,13 +24,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   reviewCount,
   pricePerNight,
   isLoading,
+  onClick = () => {},
 }) => {
   return (
-    <div className="w-full cursor-pointer">
+    <div className="w-full cursor-pointer" onClick={() => onClick()}>
       <div className="w-full pt-[100%] relative rounded-xl overflow-hidden bg-slate-200">
         {!isLoading && (
           <Image
-            src={thumbnail || ''}
+            src={thumbnail || '/img/home-icon.png'}
             alt="thumbnail"
             style={{ objectFit: 'cover' }}
             fill
@@ -64,14 +66,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             <LoadingText text={subText2} isLoading={isLoading} length={20} />
           </div>
         )}
-
-        <div className="font-semibold pb-3">
-          <LoadingText
-            text={'$' + pricePerNight + ' night'}
-            isLoading={isLoading}
-            length={3}
-          />
-        </div>
+        {pricePerNight !== undefined && (
+          <div className="font-semibold pb-3">
+            <LoadingText
+              text={'$' + pricePerNight + ' night'}
+              isLoading={isLoading}
+              length={3}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

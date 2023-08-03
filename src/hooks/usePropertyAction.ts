@@ -1,6 +1,7 @@
 import {
   CHECK_PAGE_NAME_EXISTS,
   CREATE_PROPERTY,
+  GET_MY_PROPERTIES,
   SEARCH_PROPERTIES,
 } from '@/constants/urls'
 import apiAxios from '@/utils/apiAxios'
@@ -29,6 +30,7 @@ export type property = {
   description: string
   facilityCodes: string[]
   categoryCodes: string[]
+  thumbnail?: string
   address: {
     address: string
     district: string
@@ -57,7 +59,17 @@ const usePropertyAction = () => {
     return res
   }
 
-  return { searchProperties, checkPageNameExists, createProperty }
+  const getMyProperties = async () => {
+    const res = await authAxios.get(GET_MY_PROPERTIES)
+    return res.data
+  }
+
+  return {
+    searchProperties,
+    checkPageNameExists,
+    createProperty,
+    getMyProperties,
+  }
 }
 
 export default usePropertyAction
