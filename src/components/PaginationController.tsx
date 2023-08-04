@@ -1,7 +1,8 @@
 'use client'
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { FaAngleRight, FaAngleLeft } from 'react-icons/fa'
+import { FaAngleRight } from '@react-icons/all-files/fa/FaAngleRight'
+import { FaAngleLeft } from '@react-icons/all-files/fa/FaAngleLeft'
 
 interface PaginationControllerProps {
   currentPage?: number | string | null

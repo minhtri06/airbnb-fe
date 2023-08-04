@@ -6,13 +6,15 @@ import PropertyCard from '@/components/PropertyCard'
 import usePropertyAction from '@/hooks/usePropertyAction'
 import { property } from '@/types'
 import axios from 'axios'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function Home({ searchParams }: { searchParams: any }) {
+  const { searchProperties } = usePropertyAction()
+  const router = useRouter()
+
   const [properties, setProperties] = useState<property[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const { searchProperties } = usePropertyAction()
 
   useEffect(() => {
     setIsLoading(true)
@@ -54,6 +56,9 @@ export default function Home({ searchParams }: { searchParams: any }) {
                 reviewCount={property.reviewCount}
                 pricePerNight={property.accommodations[0].pricePerNight}
                 isLoading={isLoading}
+                onClick={() => {
+                  router.push(`/properties/${property.pageName}`)
+                }}
               />
             ))}
         </div>

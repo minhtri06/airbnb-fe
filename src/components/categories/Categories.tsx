@@ -1,6 +1,7 @@
 'use client'
 
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
+import { FaAngleLeft } from '@react-icons/all-files/fa/FaAngleLeft'
+import { FaAngleRight } from '@react-icons/all-files/fa/FaAngleRight'
 
 import { CATEGORIES } from '@/constants/categories'
 import CategoryBox from './CategoryBox'

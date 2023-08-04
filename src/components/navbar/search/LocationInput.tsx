@@ -1,4 +1,4 @@
-import { IoLocationOutline } from 'react-icons/io5'
+import { IoLocationOutline } from '@react-icons/all-files/io5/IoLocationOutline'
 import useDivisionAction, { division } from '@/hooks/useDivisionAction'
 import { useEffect, useState } from 'react'
 

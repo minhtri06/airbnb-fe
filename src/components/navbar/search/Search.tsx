@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BiSearch } from 'react-icons/bi'
+import { BiSearch } from '@react-icons/all-files/bi/BiSearch'
 import ExpandedSearch from './ExpandedSearch'
 
 const Search = () => {

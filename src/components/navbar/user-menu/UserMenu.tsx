@@ -1,6 +1,6 @@
 'use client'
 
-import { AiOutlineMenu } from 'react-icons/ai'
+import { AiOutlineMenu } from '@react-icons/all-files/ai/AiOutlineMenu'
 import { useEffect, useRef, useState } from 'react'
 
 import Avatar from '../../Avatar'

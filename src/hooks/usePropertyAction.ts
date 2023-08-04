@@ -27,6 +27,7 @@ export type property = {
   title: string
   isClosed: boolean
   pageName: string
+  owner: string | { name: string }
   description: string
   facilityCodes: string[]
   categoryCodes: string[]
@@ -59,6 +60,11 @@ const usePropertyAction = () => {
     return res
   }
 
+  const getPropertyByPageName = async (pageName: string) => {
+    const res = await apiAxios.get(`/properties/page-name:${pageName}`)
+    return res.data
+  }
+
   const getMyProperties = async () => {
     const res = await authAxios.get(GET_MY_PROPERTIES)
     return res.data
@@ -69,6 +75,7 @@ const usePropertyAction = () => {
     checkPageNameExists,
     createProperty,
     getMyProperties,
+    getPropertyByPageName,
   }
 }
 

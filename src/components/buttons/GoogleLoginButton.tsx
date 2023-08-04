@@ -1,6 +1,6 @@
 'use client'
 
-import { FcGoogle } from 'react-icons/fc'
+import { FcGoogle } from '@react-icons/all-files/fc/FcGoogle'
 import Button from './Button'
 import { usePathname, useRouter } from 'next/navigation'
 import getGoogleOauthUrl from '@/utils/getGoogleOauthUrl'

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
     "@types/node": "20.4.4",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
@@ -25,7 +26,6 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.2",
     "react-hot-toast": "^2.4.1",
-    "react-icons": "^4.10.1",
     "react-select": "^5.7.4",
     "tailwind-scrollbar-hide": "^1.1.7",
     "typescript": "5.1.6",

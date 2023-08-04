@@ -47,6 +47,7 @@ const useAuthAxios = () => {
       } else {
         console.log(error)
       }
+      throw error
     },
   )
 

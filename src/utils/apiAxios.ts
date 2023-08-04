@@ -6,4 +6,16 @@ const apiAxios = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
+apiAxios.interceptors.response.use(
+  (config) => config,
+  (error) => {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.data)
+    } else {
+      console.log(error)
+    }
+    throw error
+  },
+)
+
 export default apiAxios

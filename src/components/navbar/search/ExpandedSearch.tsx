@@ -3,7 +3,7 @@
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import { useEffect, useState } from 'react'
-import { BiSearch } from 'react-icons/bi'
+import { BiSearch } from '@react-icons/all-files/bi/BiSearch'
 import DateInput from './DateInput'
 import LocationInput from './LocationInput'
 import GuestInput from './GuestInput'

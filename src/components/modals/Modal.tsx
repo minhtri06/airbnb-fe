@@ -1,7 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
-import { IoMdClose } from 'react-icons/io'
+import { IoMdClose } from '@react-icons/all-files/io/IoMdClose'
 
 import Button from '../buttons/Button'
 

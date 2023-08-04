@@ -30,7 +30,7 @@ const Hosting: React.FC = () => {
   }
 
   return (
-    <div className="p-20">
+    <div className="px-16">
       {currentUserStore.currentUser === null ? (
         <>
           <div className="text-3xl font-bold pb-8">Welcome to Airbnb 🍁</div>
@@ -43,7 +43,7 @@ const Hosting: React.FC = () => {
         </>
       ) : (
         <div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center py-16">
             <div className="text-3xl font-bold">
               Welcome, {currentUserStore.currentUser?.name}! 🍁
             </div>
@@ -56,9 +56,9 @@ const Hosting: React.FC = () => {
               />
             </div>
           </div>
-          <div className="pt-10">
-            <div className="text-2xl font-bold pb-5">Your hosting</div>
-            <div className="grid grid-cols-4 gap-7 text-lg">
+          <div className="">
+            <div className="text-2xl font-bold pb-7">Your hosting</div>
+            <div className="grid grid-cols-4 gap-10 text-lg">
               {myProperties.map((p, i) => (
                 <PropertyCard
                   key={i}
