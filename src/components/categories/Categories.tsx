@@ -15,6 +15,7 @@ const Categories = () => {
   const [isWindowOnTop, setIsWindowOnTop] = useState(true)
 
   const params = useSearchParams()
+  const pathname = usePathname()
 
   let selectedCategoryCode = params?.get('categoryCode')
 
@@ -49,6 +50,10 @@ const Categories = () => {
         setIsRightBtnShowed(false)
       }
     }
+  }
+
+  if (pathname?.startsWith('/properties')) {
+    return <></>
   }
 
   return (

@@ -4,6 +4,7 @@ function useOutSideListener(
   event: string,
   ref: { current: any },
   action: () => void,
+  dependencies: any[] = [],
 ) {
   useEffect(() => {
     function handleClickOutside(event: Event) {
@@ -17,7 +18,7 @@ function useOutSideListener(
     return () => {
       document.removeEventListener(event, handleClickOutside)
     }
-  }, [ref])
+  }, [ref, ...dependencies])
 }
 
 export default useOutSideListener

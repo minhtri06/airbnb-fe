@@ -11,6 +11,8 @@ export type district = {
   _id: string
   name: string
   province: string
+  latitude: number
+  longitude: number
 }
 
 export type province = {
@@ -56,7 +58,27 @@ const useDivisionAction = () => {
     return res.data
   }
 
-  return { getAllDivisions, getAllDistricts, getAllProvinces }
+  const getCoordinate = async (
+    address: string,
+  ): Promise<{ latitude: number; longitude: number } | null> => {
+    const searchParams = new URLSearchParams({
+      format: 'json',
+      q: address,
+      addressdetails: '1',
+    })
+    const res = await apiAxios.get(
+      `https://nominatim.openstreetmap.org/search?${searchParams.toString()}`,
+    )
+    const locations = res.data as any[]
+
+    if (locations.length === 0) return null
+    return {
+      latitude: locations[0].lat,
+      longitude: locations[0].lon,
+    }
+  }
+
+  return { getAllDivisions, getAllDistricts, getAllProvinces, getCoordinate }
 }
 
 export default useDivisionAction

@@ -5,17 +5,18 @@ import useDivisionAction, {
   district,
   province,
 } from '@/hooks/useDivisionAction'
-import usePropertyAction, { accommodation } from '@/hooks/usePropertyAction'
+import usePropertyAction from '@/hooks/usePropertyAction'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import BasicInfoStep from './BasicInfoStep'
 import Button from '@/components/buttons/Button'
 import CategoryStep from './CategoryStep'
-import LocationStep from './LocationStep'
+import LocationStep from './LocationStep/LocationStep'
 import AccommodationStep from './AccommodationStep'
 import DescriptionStep from './DescriptionStep'
 import axios from 'axios'
 import useNotificationModalStore from '@/hooks/contexts/useNotificationModalStore'
+import { accommodation } from '@/types'
 
 enum STEPS {
   BASIC_INFO = 1,
@@ -23,6 +24,14 @@ enum STEPS {
   LOCATION = 3,
   DESCRIPTION = 4,
   ACCOMMODATIONS = 5,
+}
+
+export type addressState = {
+  province: province | null
+  district: district | null
+  address: string
+  latitude: number | null
+  longitude: number | null
 }
 
 const page = () => {
@@ -51,13 +60,13 @@ const page = () => {
   // Step 3
   const [provinces, setProvinces] = useState<province[]>([])
   const [districts, setDistricts] = useState<district[]>([])
-  const [selectedProvince, setSelectedProvince] = useState<province | null>(
-    null,
-  )
-  const [selectedDistrict, setSelectedDistrict] = useState<district | null>(
-    null,
-  )
-  const [address, setAddress] = useState('')
+  const [address, setAddress] = useState<addressState>({
+    province: null,
+    district: null,
+    address: '',
+    latitude: null,
+    longitude: null,
+  })
 
   // Step 4
   const [description, setDescription] = useState(
@@ -99,9 +108,11 @@ const page = () => {
         categoryCodes: selectedCategoryCodes,
         facilityCodes: ['Non-smoking rooms', 'Airport shuttle', 'Family rooms'],
         address: {
-          province: selectedProvince?._id as string,
-          district: selectedDistrict?._id as string,
-          address: address,
+          province: address.province?._id as string,
+          district: address.district?._id as string,
+          address: address.address,
+          latitude: address.latitude as number,
+          longitude: address.longitude as number,
         },
         description,
         accommodations: accommodations.map((a) => ({
@@ -167,22 +178,13 @@ const page = () => {
       break
 
     case STEPS.LOCATION:
-      const handleSelectedProvinceOnChange = (province: province | null) => {
-        setSelectedDistrict(null)
-        setSelectedProvince(province)
-      }
-
       bodyElement = (
         <LocationStep
           error={errors.location}
           provinces={provinces}
           districts={districts}
-          selectedProvince={selectedProvince}
-          selectedProvinceOnChange={handleSelectedProvinceOnChange}
-          selectedDistrict={selectedDistrict}
-          selectedDistrictOnChange={(v) => setSelectedDistrict(v)}
           address={address}
-          addressOnChange={(v) => setAddress(v)}
+          setAddress={setAddress}
         />
       )
       break
@@ -269,10 +271,8 @@ const page = () => {
         break
 
       case STEPS.LOCATION:
-        if (!selectedDistrict || !selectedProvince || !address) {
-          setErrors({
-            location: 'You must complete location ',
-          })
+        if (!address.district || !address.province || address.address === '') {
+          setErrors({ location: 'You must complete your location' })
           return false
         }
         break
@@ -321,15 +321,7 @@ const page = () => {
   // Clear error on change
   useEffect(() => {
     setErrors({})
-  }, [
-    title,
-    pageName,
-    selectedCategoryCodes,
-    selectedProvince,
-    selectedDistrict,
-    address,
-    accommodations,
-  ])
+  }, [title, pageName, selectedCategoryCodes, address, address, accommodations])
 
   // Check page name exists after user stop typing
   useEffect(() => {
@@ -347,7 +339,7 @@ const page = () => {
       <div className="pt-10 pb-28 flex justify-center">
         <div className="w-[650px]">{bodyElement}</div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 h-20 border-t-[1px] bg-white">
+      <div className="fixed bottom-0 left-0 right-0 h-20 border-t-[1px] z-10 bg-white">
         <div className="h-full px-20 flex justify-between items-center ">
           <div className="w-32">
             {step !== 1 && (

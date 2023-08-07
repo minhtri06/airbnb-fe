@@ -4,7 +4,7 @@ import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import { useEffect, useState } from 'react'
 import { BiSearch } from '@react-icons/all-files/bi/BiSearch'
-import DateInput from './DateInput'
+import BookingInput from '../../inputs/BookingInput'
 import LocationInput from './LocationInput'
 import GuestInput from './GuestInput'
 import { usePathname, useRouter } from 'next/navigation'
@@ -60,15 +60,22 @@ const ExpandedSearch: React.FC<ExpandedSearchProps> = ({
       break
     case 'book-in':
     case 'book-out':
+      const handleBookingOnChange = (startDate: Date, endDate: Date) => {
+        if (selectedInput === 'book-in') {
+          setSelectedInput('book-out')
+        }
+        setBookIn(startDate)
+        setBookOut(endDate)
+      }
+
       input = (
-        <DateInput
-          bookIn={bookIn}
-          setBookIn={setBookIn}
-          bookOut={bookOut}
-          setBookOut={setBookOut}
-          selectedInput={selectedInput}
-          setSelectedInput={setSelectedInput}
-        />
+        <div className="absolute top-20 m-auto left-0 right-0 w-fit">
+          <BookingInput
+            bookIn={bookIn}
+            bookOut={bookOut}
+            bookingOnChange={handleBookingOnChange}
+          />
+        </div>
       )
       break
     case 'who':

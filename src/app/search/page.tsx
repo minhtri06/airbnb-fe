@@ -5,8 +5,10 @@ import PaginationController from '@/components/PaginationController'
 import PropertyCard from '@/components/PropertyCard'
 import usePropertyAction from '@/hooks/usePropertyAction'
 import { property } from '@/types'
+import pickFields from '@/utils/pickFields'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import SearchMap from './SearchMap'
 
 const page = ({ searchParams }: { searchParams: any }) => {
   const [properties, setProperties] = useState<property[]>([])
@@ -31,35 +33,56 @@ const page = ({ searchParams }: { searchParams: any }) => {
       })
   }, [searchParams])
 
+  console.log(properties)
+
   return (
-    <div>
-      <Container>
-        <div
-          className=" pt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+    <div className="flex">
+      <div className="w-[62%] mr-0">
+        <Container>
+          <div className="">
+            <div
+              className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3
             xl:grid-cols-5 2xl:grid-cols-6 gap-6"
-        >
-          {properties &&
-            properties.map((property) => (
-              <PropertyCard
-                key={property._id}
-                cardTitle={
-                  property.address?.districtName +
-                  ', ' +
-                  property.address?.provinceName
-                }
-                subText1={property.title as string}
-                thumbnail={property.thumbnail as string}
-                score={property.score || 9}
-                reviewCount={property.reviewCount}
-                pricePerNight={property.accommodations[0].pricePerNight}
-                isLoading={isLoading}
+            >
+              {properties.length !== 0 &&
+                properties.map((property) => {
+                  const query = new URLSearchParams(
+                    pickFields(searchParams, 'bookIn', 'bookOut'),
+                  )
+                  const linkHref = `/properties/${
+                    property.pageName
+                  }?${query.toString()}`
+                  return (
+                    <PropertyCard
+                      key={property._id}
+                      cardTitle={
+                        property.address?.districtName +
+                        ', ' +
+                        property.address?.provinceName
+                      }
+                      subText1={property.title as string}
+                      thumbnail={property.thumbnail as string}
+                      score={property.score || 9}
+                      reviewCount={property.reviewCount}
+                      pricePerNight={
+                        property.accommodations[0].pricePerNight as number
+                      }
+                      isLoading={isLoading}
+                      linkHref={linkHref}
+                    />
+                  )
+                })}
+            </div>
+            {properties.length !== 0 && (
+              <PaginationController
+                currentPage={searchParams.page}
+                maxPage={2}
               />
-            ))}
-        </div>
-        {properties.length !== 0 && (
-          <PaginationController currentPage={searchParams.page} maxPage={2} />
-        )}
-      </Container>
+            )}
+          </div>
+        </Container>
+      </div>
+      {properties.length !== 0 && <SearchMap properties={properties} />}
     </div>
   )
 }

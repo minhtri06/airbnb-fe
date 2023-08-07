@@ -366,3 +366,12 @@ export const CATEGORIES = [
       'https://a0.muscache.com/pictures/33848f9e-8dd6-4777-b905-ed38342bacb9.jpg',
   },
 ]
+
+const map = new Map()
+for (let c of CATEGORIES) {
+  map.set(c.code, c)
+}
+export const CATEGORY_MAP = map as Map<
+  string,
+  { code: string; label: string; imageSrc: string }
+>

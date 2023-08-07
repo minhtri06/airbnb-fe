@@ -14,3 +14,7 @@ body,
   position: -webkit-sticky; /* Safari */
   position: sticky;
 }
+
+.leaflet-container {
+  height: 100%;
+}

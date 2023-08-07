@@ -29,7 +29,7 @@ const Input: React.FC<InputProps> = ({
       : 'py-2 px-2 text-base border-[1px]'
 
   return (
-    <div>
+    <>
       <div
         className={`
           w-full relative border-2 border-gray-600 rounded-lg ${sizeStyle} 
@@ -60,7 +60,7 @@ const Input: React.FC<InputProps> = ({
         />
       </div>
       <ErrorText error={error} size="small" />
-    </div>
+    </>
   )
 }
 

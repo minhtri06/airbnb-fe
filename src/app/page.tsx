@@ -54,11 +54,11 @@ export default function Home({ searchParams }: { searchParams: any }) {
                 thumbnail={property.thumbnail as string}
                 score={property.score || 9}
                 reviewCount={property.reviewCount}
-                pricePerNight={property.accommodations[0].pricePerNight}
+                pricePerNight={
+                  property.accommodations[0].pricePerNight as number
+                }
                 isLoading={isLoading}
-                onClick={() => {
-                  router.push(`/properties/${property.pageName}`)
-                }}
+                linkHref={`/properties/${property.pageName}`}
               />
             ))}
         </div>

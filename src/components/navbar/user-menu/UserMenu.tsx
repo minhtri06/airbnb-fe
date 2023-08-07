@@ -26,14 +26,21 @@ const UserMenu = () => {
   const accountBtnRef = useRef(null)
 
   const toggleOpen = () => {
-    setIsOpen((pre) => !pre)
+    setIsOpen((pre) => {
+      return !pre
+    })
   }
 
-  useOutSideListener('mousedown', accountBtnRef, () => {
-    if (isOpen) {
-      setIsOpen(false)
-    }
-  })
+  useOutSideListener(
+    'mousedown',
+    accountBtnRef,
+    () => {
+      if (isOpen) {
+        setIsOpen(false)
+      }
+    },
+    [isOpen],
+  )
 
   const handleLogout = async () => {
     try {
@@ -54,7 +61,7 @@ const UserMenu = () => {
                 ? router.push('/hosting')
                 : router.push('/')
             }}
-            className=" hidden lg:block text-base font-semibold px-4 py-2 
+            className=" hidden lg:block text-base font-semibold px-4 py-2 select-none
             hover:bg-neutral-100 transition cursor-pointer rounded-full h-10"
           >
             {appSide === 'traveling'
@@ -72,12 +79,15 @@ const UserMenu = () => {
           <div className="h-8 w-8 flex items-center justify-center">
             <AiOutlineMenu />
           </div>
-          <Avatar size="8" />
+          <Avatar
+            size="8"
+            avatarUrl={currentUser ? currentUser.avatar : undefined}
+          />
         </div>
       </div>
       {isOpen && (
         <div
-          className="absolute rounded-xl w-52 bg-white 
+          className="absolute rounded-xl w-52 bg-white select-none
             overflow-hidden right-0 top-12 text-base"
           style={{ boxShadow: '0px 4px 10px 4px rgb(0 0 0 / 0.1)' }}
         >

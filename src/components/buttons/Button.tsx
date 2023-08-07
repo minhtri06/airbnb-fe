@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       className={`relative disabled:opacity-70 disabled:cursor-not-allowed 
         rounded-lg hover:opacity-80 transition w-full flex items-center 
-        justify-center
+        justify-center select-none
         ${
           outline
             ? 'bg-white border-gray-400 shadow-sm text-gray-900'
@@ -39,7 +39,7 @@ const Button: React.FC<ButtonProps> = ({
         }
         ${
           small
-            ? 'text-base font-semibold border-[1px]'
+            ? 'p-1 text-base font-semibold border-[1px]'
             : big
             ? 'py-2 text-xl font-bold border-[1px]'
             : 'py-1 text-lg font-semibold border-[1px]'

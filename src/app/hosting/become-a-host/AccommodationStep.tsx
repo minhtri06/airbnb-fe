@@ -4,11 +4,11 @@ import ErrorText from '@/components/ErrorText'
 import Button from '@/components/buttons/Button'
 import Counter from '@/components/inputs/Counter'
 import Input from '@/components/inputs/Input'
-import { accommodation, bed } from '@/hooks/usePropertyAction'
 import { useEffect, useRef } from 'react'
 import { IconType } from '@react-icons/all-files'
 import { AiOutlineHome } from '@react-icons/all-files/ai/AiOutlineHome'
 import { BsHouseDoor } from '@react-icons/all-files/bs/BsHouseDoor'
+import { accommodation, bed } from '@/types'
 
 interface AccommodationStepProps {
   accommodations: accommodation[]
@@ -25,6 +25,13 @@ const AccommodationStep: React.FC<AccommodationStepProps> = ({
   accommodationOnAdd,
   error,
 }) => {
+  const errorElement = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (error && error !== '') {
+      errorElement.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [error])
+
   const AccommodationTypeButton = ({
     title,
     subtitle,
@@ -123,13 +130,6 @@ const AccommodationStep: React.FC<AccommodationStepProps> = ({
       </>
     )
   }
-
-  const errorElement = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (error && error !== '') {
-      errorElement.current?.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [error])
 
   return (
     <div>

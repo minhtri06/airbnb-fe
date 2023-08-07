@@ -1,3 +1,4 @@
+import 'leaflet/dist/leaflet.css'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
@@ -23,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${nunito.className} text-gray-900`}
+        className={`${nunito.className} text-gray-900 min-w-[900px]`}
         suppressHydrationWarning={true}
       >
         <SetupClient>

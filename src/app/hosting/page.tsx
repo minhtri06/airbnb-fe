@@ -19,11 +19,13 @@ const Hosting: React.FC = () => {
 
   useEffect(() => {
     if (currentUserStore.currentUser) {
-      propertyAction.getMyProperties().then((data) => {
-        setMyProperties(data.properties)
+      propertyAction.getMyProperties().then((result) => {
+        setMyProperties(result.data)
       })
     }
   }, [currentUserStore.currentUser])
+
+  console.log(myProperties)
 
   if (currentUserStore.isLoading) {
     return <></>
@@ -33,12 +35,19 @@ const Hosting: React.FC = () => {
     <div className="px-16">
       {currentUserStore.currentUser === null ? (
         <>
-          <div className="text-3xl font-bold pb-8">Welcome to Airbnb 🍁</div>
+          <div className="text-3xl font-bold pb-8 pt-20">
+            Welcome to Airbnb 🍁
+          </div>
           <div className="text-xl pb-8">
             Login to create a new hosting, are you ready!
           </div>
           <div className="w-32">
-            <Button label="Login" onClick={() => loginModal.open()} big />
+            <Button
+              label="Login"
+              onClick={() => loginModal.open()}
+              big
+              outline
+            />
           </div>
         </>
       ) : (
@@ -49,7 +58,7 @@ const Hosting: React.FC = () => {
             </div>
             <div className="w-44">
               <Button
-                label="New hosting"
+                label="New property"
                 onClick={() => router.push('/hosting/become-a-host')}
                 outline
                 big
@@ -57,20 +66,26 @@ const Hosting: React.FC = () => {
             </div>
           </div>
           <div className="">
-            <div className="text-2xl font-bold pb-7">Your hosting</div>
-            <div className="grid grid-cols-4 gap-10 text-lg">
-              {myProperties.map((p, i) => (
-                <PropertyCard
-                  key={i}
-                  cardTitle={p.title}
-                  thumbnail={p.thumbnail}
-                  isLoading={false}
-                  onClick={() => {
-                    router.push(`/hosting/my-properties/${p.pageName}`)
-                  }}
-                />
-              ))}
-            </div>
+            {myProperties.length !== 0 ? (
+              <>
+                <div className="text-2xl font-bold pb-7">Your property</div>
+                <div className="grid grid-cols-4 gap-10 text-lg">
+                  {myProperties.map((p, i) => (
+                    <PropertyCard
+                      key={i}
+                      cardTitle={p.title}
+                      thumbnail={p.thumbnail}
+                      isLoading={false}
+                      linkHref={`/hosting/my-properties/${p.pageName}`}
+                    />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="text-2xl font-bold pb-7">
+                No property, let's create a new one
+              </div>
+            )}
           </div>
         </div>
       )}
