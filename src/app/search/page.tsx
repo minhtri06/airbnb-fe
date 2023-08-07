@@ -17,7 +17,7 @@ const page = ({ searchParams }: { searchParams: any }) => {
 
   useEffect(() => {
     setIsLoading(true)
-    searchProperties({ ...searchParams, limit: 16 })
+    searchProperties({ ...searchParams, limit: 15 })
       .then((data) => {
         setProperties(data.properties)
       })
@@ -55,12 +55,12 @@ const page = ({ searchParams }: { searchParams: any }) => {
                   return (
                     <PropertyCard
                       key={property._id}
-                      cardTitle={
-                        property.address?.districtName +
-                        ', ' +
-                        property.address?.provinceName
+                      cardTitle={property.title}
+                      subText1={
+                        (property.address?.districtName +
+                          ', ' +
+                          property.address?.provinceName) as string
                       }
-                      subText1={property.title as string}
                       thumbnail={property.thumbnail as string}
                       score={property.score || 9}
                       reviewCount={property.reviewCount}

@@ -33,6 +33,14 @@ export default function RootLayout({
           <RegisterModal />
           <LoginModal />
           {children}
+          <div>
+            <div>FOOTER</div>
+            <div>FOOTER</div>
+            <div>FOOTER</div>
+            <div>FOOTER</div>
+            <div>FOOTER</div>
+            <div>FOOTER</div>
+          </div>
         </SetupClient>
       </body>
     </html>

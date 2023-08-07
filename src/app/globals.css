@@ -18,3 +18,14 @@ body,
 .leaflet-container {
   height: 100%;
 }
+
+.request-popup .leaflet-popup-content {
+  margin: 0px 0 5px 0px;
+  overflow: hidden;
+}
+
+.request-popup .leaflet-popup-content {
+  overflow: hidden;
+  height: fit-content;
+  width: fit-content;
+}
