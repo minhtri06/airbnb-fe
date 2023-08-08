@@ -13,6 +13,8 @@ import Heading from './Heading'
 import Categories from './Categories'
 import Description from './Description'
 import Reviews from './Reviews'
+import PropertyMap from './PropertyMap'
+import AboutHost from './AboutHost'
 
 const Properties = ({ params }: { params: { pageName: string } }) => {
   const propertyAction = usePropertyAction()
@@ -76,8 +78,6 @@ const Properties = ({ params }: { params: { pageName: string } }) => {
     return <div>Loading...</div>
   }
 
-  const owner = property.owner as ownerObj
-
   return (
     <div>
       <Container>
@@ -87,37 +87,15 @@ const Properties = ({ params }: { params: { pageName: string } }) => {
 
         <div className="flex pt-14">
           <div className="w-3/5 min-w-1000px">
-            <div className="flex justify-between items-center">
-              <div>
-                <div className="text-2xl font-bold">
-                  Hosted by {(property.owner as ownerObj).name}
-                </div>
-                <div>10 guests . 5 bedrooms . 8 beds . 5 baths</div>
-              </div>
-              <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                <Image
-                  src={
-                    owner.avatar && owner.avatar !== ''
-                      ? owner.avatar
-                      : '/img/avatar-placeholder.svg'
-                  }
-                  alt="Host avatar"
-                  fill
-                  sizes="100px"
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-            </div>
+            <AboutHost owner={property.owner as ownerObj} />
 
-            <hr className="my-7" />
+            <hr className="my-14" />
 
             <Categories property={property} />
 
-            <hr className="my-7" />
+            <hr className="my-14" />
 
             <Description property={property} />
-
-            <hr className="my-7" />
           </div>
 
           <div className="w-2/5 min-w-[300px] flex justify-end">
@@ -132,6 +110,7 @@ const Properties = ({ params }: { params: { pageName: string } }) => {
             />
           </div>
         </div>
+        <hr className="my-14" />
         <div>
           <Reviews
             reviews={reviews}
@@ -143,7 +122,16 @@ const Properties = ({ params }: { params: { pageName: string } }) => {
           />
         </div>
 
-        <hr className="my-7" />
+        <hr className="my-14" />
+
+        <PropertyMap
+          position={{
+            lat: property.address.latitude,
+            lng: property.address.longitude,
+          }}
+        />
+
+        <hr className="my-14" />
       </Container>
     </div>
   )

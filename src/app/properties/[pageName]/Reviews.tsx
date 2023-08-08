@@ -8,6 +8,7 @@ import { useState } from 'react'
 import SupportShowMore from './SupportShowMore'
 import useReviewAction from '@/hooks/useReviewAction'
 import { useRouter } from 'next/navigation'
+import Button from '@/components/buttons/Button'
 
 interface ReviewsProps {
   reviews: review[]
@@ -56,6 +57,7 @@ const Reviews: React.FC<ReviewsProps> = ({
   return (
     <>
       {isShowAllReviews && (
+        // Show more board
         <SupportShowMore
           body={
             <div>
@@ -81,6 +83,7 @@ const Reviews: React.FC<ReviewsProps> = ({
           onScroll={handleScrollToBottom}
         />
       )}
+
       <div>
         <div className="flex gap-5 text-2xl font-bold">
           <AiFillStar size={30} />
@@ -99,6 +102,16 @@ const Reviews: React.FC<ReviewsProps> = ({
             </div>
           ))}
         </div>
+        {reviews.length > 6 && (
+          <div className="w-44 mt-5">
+            <Button
+              label="Show all reviews"
+              outline
+              small
+              onClick={() => setIsShowAllReviews(true)}
+            />
+          </div>
+        )}
       </div>
     </>
   )

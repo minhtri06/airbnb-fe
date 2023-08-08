@@ -49,7 +49,10 @@ const ReserveBoard: React.FC<ReserveBoardProps> = ({
   })
 
   return (
-    <div className="w-5/6 h-fit shadow-[0px_4px_15px_6px_rgba(0,0,0,0.1)] rounded-lg p-7">
+    <div
+      className="w-5/6 h-fit sticky top-24 bottom-0 
+        shadow-[0px_4px_15px_6px_rgba(0,0,0,0.1)] rounded-lg p-7"
+    >
       <div className="font-bold">
         {!haveBooking ? 'Pick your booking date' : 'Choose your accommodation'}
       </div>

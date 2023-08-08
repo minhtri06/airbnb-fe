@@ -28,11 +28,11 @@ const Heading: React.FC<HeadingProps> = ({ property }) => {
           </div>
         </div>
         <div className="flex gap-3">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer">
             <BiShare />
             <span className="underline">Share</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer">
             <BsHeart />
             <span className="underline">save</span>
           </div>
