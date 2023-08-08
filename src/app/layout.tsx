@@ -8,6 +8,7 @@ import NotificationModal from '@/components/modals/NotificationModal'
 import RegisterModal from '@/components/modals/RegisterModal'
 import LoginModal from '@/components/modals/LoginModal'
 import { usePathname } from 'next/navigation'
+import Footer from '@/components/Footer'
 
 const nunito = Nunito({ subsets: ['latin'] })
 
@@ -28,19 +29,14 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <SetupClient>
-          <Navbar />
-          <NotificationModal />
-          <RegisterModal />
-          <LoginModal />
-          {children}
-          <div>
-            <div>FOOTER</div>
-            <div>FOOTER</div>
-            <div>FOOTER</div>
-            <div>FOOTER</div>
-            <div>FOOTER</div>
-            <div>FOOTER</div>
+          <div className="min-h-[100vh]">
+            <Navbar />
+            <NotificationModal />
+            <RegisterModal />
+            <LoginModal />
+            {children}
           </div>
+          <Footer />
         </SetupClient>
       </body>
     </html>
