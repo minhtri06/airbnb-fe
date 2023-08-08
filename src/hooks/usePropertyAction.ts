@@ -5,8 +5,8 @@ import { newProperty, property, propertyPaginate, review } from '@/types'
 const usePropertyAction = () => {
   const authAxios = useAuthAxios()
 
-  const searchProperties = async (params: any) => {
-    const res = await apiAxios.get('/properties', { params })
+  const searchProperties = async (params: any): Promise<propertyPaginate> => {
+    const res = await authAxios.get('/properties', { params })
     return res.data
   }
 
