@@ -6,28 +6,30 @@ import PropertyCard from '@/components/PropertyCard'
 import usePropertyAction from '@/hooks/usePropertyAction'
 import { property } from '@/types'
 import axios from 'axios'
-import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function Home({ searchParams }: { searchParams: any }) {
   const { searchProperties } = usePropertyAction()
-  const router = useRouter()
 
   const [properties, setProperties] = useState<property[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [totalPage, setTotalPage] = useState<number | null>(null)
 
   useEffect(() => {
     setIsLoading(true)
-    searchProperties({ ...searchParams, limit: 16 })
-      .then((data) => {
-        setProperties(data.properties)
+    searchProperties({
+      ...searchParams,
+      limit: 16,
+      checkPaginate: totalPage === null,
+    })
+      .then((results) => {
+        console.log('got data')
+        setProperties(results.data)
+        if (results.totalPage) setTotalPage(results.totalPage)
       })
       .catch((error) => {
-        if (axios.isAxiosError(error)) {
-          console.log(error.response?.data)
-        } else {
-          console.log(error)
-        }
+        if (axios.isAxiosError(error)) console.log(error.response?.data)
+        else console.log(error)
       })
       .finally(() => {
         setIsLoading(false)
@@ -62,8 +64,11 @@ export default function Home({ searchParams }: { searchParams: any }) {
               />
             ))}
         </div>
-        {properties.length !== 0 && (
-          <PaginationController currentPage={searchParams.page} maxPage={6} />
+        {totalPage !== null && totalPage > 1 && (
+          <PaginationController
+            currentPage={searchParams.page || 1}
+            maxPage={totalPage}
+          />
         )}
       </Container>
     </div>

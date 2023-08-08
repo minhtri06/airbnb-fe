@@ -11,26 +11,28 @@ import { useEffect, useState } from 'react'
 import SearchMap from './SearchMap'
 
 const page = ({ searchParams }: { searchParams: any }) => {
+  const { searchProperties } = usePropertyAction()
+
   const [properties, setProperties] = useState<property[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const { searchProperties } = usePropertyAction()
+  const [totalPage, setTotalPage] = useState<number | null>(null)
 
   useEffect(() => {
     setIsLoading(true)
-    searchProperties({ ...searchParams, limit: 15 })
-      .then((data) => {
-        setProperties(data.properties)
+    searchProperties({
+      ...searchParams,
+      limit: 15,
+      checkPaginate: totalPage === null,
+    })
+      .then((result) => {
+        setProperties(result.data)
+        if (result.totalPage) setTotalPage(result.totalPage)
       })
       .catch((error) => {
-        if (axios.isAxiosError(error)) {
-          console.log(error.response?.data)
-        } else {
-          console.log(error)
-        }
+        if (axios.isAxiosError(error)) console.log(error.response?.data)
+        else console.log(error)
       })
-      .finally(() => {
-        setIsLoading(false)
-      })
+      .finally(() => setIsLoading(false))
   }, [searchParams])
 
   console.log(properties)
@@ -73,10 +75,10 @@ const page = ({ searchParams }: { searchParams: any }) => {
                   )
                 })}
             </div>
-            {properties.length !== 0 && (
+            {totalPage !== null && totalPage > 1 && (
               <PaginationController
                 currentPage={searchParams.page}
-                maxPage={2}
+                maxPage={totalPage}
               />
             )}
           </div>
