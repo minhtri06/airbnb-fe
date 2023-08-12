@@ -1,16 +1,22 @@
 'use client'
 
-import useAppSideStore from '@/hooks/contexts/useAppSideStore'
-import useCurrentUserStore from '@/hooks/contexts/useCurrentUserStore'
+import useAppSideStore from '@/stores/useAppSideStore'
+import useAuthStore from '@/stores/useAuthStore'
 import useAuthTokens from '@/hooks/useAuthTokens'
-import useUser from '@/hooks/useUser'
-import { usePathname } from 'next/navigation'
+import useUserAction from '@/hooks/useUserAction'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
+import { ACCESS_TOKEN } from '@/constants/auth'
+import dynamic from 'next/dynamic'
+import { useLocalStorage } from '@/hooks/useStorage'
 
 const SetupClient = ({ children }: { children: React.ReactNode }) => {
-  const { currentUser, setCurrentUser, setIsLoading } = useCurrentUserStore()
-  const { getCurrentUser } = useUser()
+  const { currentUser, setCurrentUser, setIsLoading, isLogin, setIsLogin } =
+    useAuthStore()
+  const { getCurrentUser } = useUserAction()
   const { getAccessToken } = useAuthTokens()
+  const [accessToken] = useLocalStorage(ACCESS_TOKEN, null)
+  const router = useRouter()
 
   const { appSide, setAppSide } = useAppSideStore()
 
@@ -29,15 +35,22 @@ const SetupClient = ({ children }: { children: React.ReactNode }) => {
   }, [pathname])
 
   useEffect(() => {
-    if (!currentUser && getAccessToken()) {
+    setIsLogin(accessToken !== null)
+  }, [])
+
+  useEffect(() => {
+    if (isLogin) {
       getCurrentUser()
         .then((user) => setCurrentUser(user))
-        .catch((err) => console.log(err.response?.data))
+        .catch((err) => router.push('/500'))
         .finally(() => setIsLoading(false))
-    } else {
+    } else if (isLogin === false) {
+      setCurrentUser(null)
       setIsLoading(false)
     }
-  }, [])
+  }, [isLogin])
+
+  console.log(isLogin)
 
   return <>{children}</>
 }

@@ -1,57 +1,68 @@
-import axios from 'axios'
+import axios, { InternalAxiosRequestConfig } from 'axios'
 
 import useAuthTokens from './useAuthTokens'
 import useAuthService from './useAuthService'
 import { BASE_URL } from '@/constants/urls'
+import { useRouter } from 'next/navigation'
+import { useEffect, useMemo } from 'react'
+const authAxios = axios.create({
+  baseURL: BASE_URL,
+  headers: { 'Content-Type': 'application/json' },
+})
 
 const useAuthAxios = () => {
-  const privateAxios = axios.create({
-    baseURL: BASE_URL,
-    headers: { 'Content-Type': 'application/json' },
-  })
-
   const { logout } = useAuthService()
-  const { getAccessToken, getRefreshToken, isTokenExpired, refreshAuthTokens } =
+  const { refreshTokenProcess, getAccessToken, refreshAuthTokens } =
     useAuthTokens()
 
-  privateAxios.interceptors.request.use(async (config) => {
-    let accessToken = getAccessToken()
+  useEffect(() => {
+    const requestInterceptor = authAxios.interceptors.request.use(
+      (config) => {
+        if (!config.headers.Authorization)
+          config.headers.Authorization = getAccessToken()
+        return config
+      },
+      (error) => Promise.reject(error),
+    )
 
-    if (accessToken) {
-      // If access token expired => we refresh tokens
-      if (isTokenExpired(accessToken)) {
-        let refreshToken = getRefreshToken()
-        // If refresh token is not available or expired => logout user
-        if (refreshToken && !isTokenExpired(refreshToken)) {
-          const newTokens = await refreshAuthTokens(accessToken, refreshToken)
+    const responseInterceptor = authAxios.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        console.log('response error')
+        if (axios.isAxiosError(error)) {
+          // Handle refresh token
+          const preRequest = error.config
+          if (error.response?.status === 401 && preRequest) {
+            try {
+              if (!refreshTokenProcess.isPending) {
+                refreshTokenProcess.isPending = true
+                refreshTokenProcess.promise = refreshAuthTokens()
+              }
+              const { newAccessToken } = await refreshTokenProcess.promise
+              refreshTokenProcess.isPending = false
+              preRequest.headers.Authorization = newAccessToken
+              return await authAxios(preRequest)
+            } catch (error) {
+              logout()
+            }
+          }
 
-          accessToken = newTokens.newAccessToken
-          refreshToken = newTokens.newRefreshToken
+          // Print error
+          console.log(error.response?.data)
+        } else {
+          console.log(error)
         }
-      }
+        return Promise.reject(error)
+      },
+    )
 
-      config.headers.Authorization = accessToken
+    return () => {
+      authAxios.interceptors.request.eject(requestInterceptor)
+      authAxios.interceptors.response.eject(responseInterceptor)
     }
+  }, [getAccessToken, logout, refreshAuthTokens, refreshTokenProcess])
 
-    return config
-  })
-
-  privateAxios.interceptors.response.use(
-    (config) => config,
-    (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.response?.data)
-        if (error.response?.status === 401) {
-          logout()
-        }
-      } else {
-        console.log(error)
-      }
-      throw error
-    },
-  )
-
-  return privateAxios
+  return useMemo(() => authAxios, [])
 }
 
 export default useAuthAxios
