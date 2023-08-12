@@ -2,14 +2,13 @@ import { useEffect } from 'react'
 import { Socket, io } from 'socket.io-client'
 import useAuthStore from '@/stores/useAuthStore'
 import useAuthService from './useAuthService'
-import useAuthTokens from './useAuthTokens'
+import { getAccessToken } from '@/utils/tokenUtils'
 
 let chatSocket: Socket | null = null
 
 const useSocket = () => {
   const { isLogin } = useAuthStore()
   const { logout } = useAuthService()
-  const { getAccessToken } = useAuthTokens()
 
   useEffect(() => {
     if (!isLogin) chatSocket = null
@@ -22,7 +21,7 @@ const useSocket = () => {
         console.log(error.message)
       })
     }
-  }, [isLogin, getAccessToken])
+  }, [isLogin])
 
   return { chatSocket }
 }

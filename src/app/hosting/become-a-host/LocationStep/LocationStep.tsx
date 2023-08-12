@@ -3,11 +3,13 @@
 import Select from 'react-select'
 import ErrorText from '@/components/ErrorText'
 import Input from '@/components/inputs/Input'
-import { district, province } from '@/hooks/useDivisionAction'
 
 import { useEffect, useRef } from 'react'
 import { addressState } from '../page'
-import Map from './Map'
+import { district, province } from '@/types'
+import dynamic from 'next/dynamic'
+
+const Map = dynamic(() => import('./Map'), { ssr: false })
 
 interface LocationStepProps {
   error?: string

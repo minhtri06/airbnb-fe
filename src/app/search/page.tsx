@@ -3,25 +3,28 @@
 import Container from '@/components/Container'
 import PaginationController from '@/components/PaginationController'
 import PropertyCard from '@/components/PropertyCard'
-import usePropertyAction from '@/hooks/usePropertyAction'
-import { property } from '@/types'
+import useAuthAxios from '@/hooks/useAuthAxios'
+import { property, propertyPaginate } from '@/types'
 import pickFields from '@/utils/pickFields'
 import axios from 'axios'
 import dynamic from 'next/dynamic'
-import { useEffect, useMemo, useState } from 'react'
-// import SearchMap from './SearchMap'
+import { useEffect, useState } from 'react'
 
 const SearchMap = dynamic(() => import('./SearchMap'), { ssr: false })
 
 const SearchPage = ({ searchParams }: { searchParams: any }) => {
-  const { searchProperties } = usePropertyAction()
+  const authAxios = useAuthAxios()
 
   const [properties, setProperties] = useState<property[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [totalPage, setTotalPage] = useState<number | null>(null)
 
   useEffect(() => {
-    console.log('??')
+    const searchProperties = async (params: any): Promise<propertyPaginate> => {
+      const res = await authAxios.get('/properties', { params })
+      return res.data
+    }
+
     setIsLoading(true)
     searchProperties({
       ...searchParams,
@@ -37,7 +40,7 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
         else console.log(error)
       })
       .finally(() => setIsLoading(false))
-  }, [searchParams, searchProperties, totalPage])
+  }, [searchParams, totalPage, authAxios])
 
   console.log(properties)
 

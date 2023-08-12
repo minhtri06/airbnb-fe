@@ -2,7 +2,6 @@
 
 import apiAxios from '@/utils/apiAxios'
 import useAuthStore from '@/stores/useAuthStore'
-import useAuthTokens from './useAuthTokens'
 import {
   GOOGLE_LOGIN,
   LOGIN_URL,
@@ -11,16 +10,16 @@ import {
 } from '@/constants/urls'
 import useChatStore from '@/stores/useChatStore'
 import { useCallback } from 'react'
+import {
+  getAccessToken,
+  getRefreshToken,
+  removeAuthTokens,
+  setAccessToken,
+  setRefreshToken,
+} from '@/utils/tokenUtils'
 
 const useAuthService = () => {
   const { setIsLogin } = useAuthStore()
-  const {
-    getAccessToken,
-    removeAuthTokens,
-    setAccessToken,
-    setRefreshToken,
-    getRefreshToken,
-  } = useAuthTokens()
   const { setChats, setConversations } = useChatStore()
 
   const isAuthenticated = () => getAccessToken() !== null
@@ -66,13 +65,7 @@ const useAuthService = () => {
     setChats([])
     setConversations([])
     removeAuthTokens()
-  }, [
-    getRefreshToken,
-    removeAuthTokens,
-    setChats,
-    setConversations,
-    setIsLogin,
-  ])
+  }, [setChats, setConversations, setIsLogin])
 
   return { isAuthenticated, register, login, googleLogin, logout }
 }

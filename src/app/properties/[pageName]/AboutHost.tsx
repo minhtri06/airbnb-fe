@@ -16,6 +16,7 @@ const AboutHost: React.FC<AboutHostProps> = ({ owner }) => {
   const router = useRouter()
 
   const handleMessageButtonOnClick = () => {
+    if (authStore.isLogin === null) return
     if (!authStore.isLogin) loginModalStore.open()
     else router.push(`/messages?t=${owner._id}`)
   }

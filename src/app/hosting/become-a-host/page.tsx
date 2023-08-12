@@ -2,20 +2,19 @@
 
 import useAuthStore from '@/stores/useAuthStore'
 import useNotificationModalStore from '@/stores/useNotificationModalStore'
-import useDivisionAction, {
-  district,
-  province,
-} from '@/hooks/useDivisionAction'
-import usePropertyAction from '@/hooks/usePropertyAction'
+
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import BasicInfoStep from './BasicInfoStep'
 import Button from '@/components/buttons/Button'
 import CategoryStep from './CategoryStep'
-import LocationStep from './LocationStep/LocationStep'
 import AccommodationStep from './AccommodationStep'
 import DescriptionStep from './DescriptionStep'
-import { accommodation } from '@/types'
+import { accommodation, district, newProperty, province } from '@/types'
+import apiAxios from '@/utils/apiAxios'
+import dynamic from 'next/dynamic'
+import LocationStep from './LocationStep/LocationStep'
+import useAuthAxios from '@/hooks/useAuthAxios'
 
 enum STEPS {
   BASIC_INFO = 1,
@@ -35,15 +34,13 @@ export type addressState = {
 
 const BecomeAHostPage = () => {
   const authStore = useAuthStore()
+  const authAxios = useAuthAxios()
   const router = useRouter()
   const notificationModal = useNotificationModalStore()
 
-  if (!authStore.isLogin) {
+  if (authStore.isLogin === false) {
     router.push('/hosting')
   }
-
-  const divisionAction = useDivisionAction()
-  const propertyAction = usePropertyAction()
 
   const [step, setStep] = useState<number>(1)
 
@@ -98,41 +95,44 @@ const BecomeAHostPage = () => {
     accommodation?: string
   }>({})
 
+  const createProperty = async (property: newProperty) => {
+    const res = await authAxios.post('/properties', property)
+    return res
+  }
+
   const handleSubmit = () => {
-    propertyAction
-      .createProperty({
-        title,
-        isClosed: false,
-        pageName,
-        categoryCodes: selectedCategoryCodes,
-        facilityCodes: ['Non-smoking rooms', 'Airport shuttle', 'Family rooms'],
-        address: {
-          province: address.province?._id as string,
-          district: address.district?._id as string,
-          address: address.address,
-          latitude: address.latitude as number,
-          longitude: address.longitude as number,
+    createProperty({
+      title,
+      isClosed: false,
+      pageName,
+      categoryCodes: selectedCategoryCodes,
+      facilityCodes: ['Non-smoking rooms', 'Airport shuttle', 'Family rooms'],
+      address: {
+        province: address.province?._id as string,
+        district: address.district?._id as string,
+        address: address.address,
+        latitude: address.latitude as number,
+        longitude: address.longitude as number,
+      },
+      description,
+      accommodations: accommodations.map((a) => ({
+        ...a,
+        pricePerNight: Number(a.pricePerNight),
+      })),
+    }).then(() => {
+      notificationModal.open({
+        title: 'Congratulation 🎉',
+        body: (
+          <div className="text-base flex justify-center">
+            You have successfully created a new hosting, let&apos;s check it
+            out!!
+          </div>
+        ),
+        callWhenClose: () => {
+          router.push('/hosting')
         },
-        description,
-        accommodations: accommodations.map((a) => ({
-          ...a,
-          pricePerNight: Number(a.pricePerNight),
-        })),
       })
-      .then(() => {
-        notificationModal.open({
-          title: 'Congratulation 🎉',
-          body: (
-            <div className="text-base flex justify-center">
-              You have successfully created a new hosting, let&apos;s check it
-              out!!
-            </div>
-          ),
-          callWhenClose: () => {
-            router.push('/hosting')
-          },
-        })
-      })
+    })
   }
 
   const handleNextStep = async () => {
@@ -242,14 +242,23 @@ const BecomeAHostPage = () => {
   }
 
   // Validate funcs
-  const validatePageNameExists = async () => {
-    const { doesExist } = await propertyAction.checkPageNameExists(pageName)
+  const validatePageNameExists = useCallback(async () => {
+    const checkPageNameExists = async (
+      pageName: string,
+    ): Promise<{ doesExist: boolean }> => {
+      const res = await apiAxios.post('/properties/check-page-name-exits', {
+        pageName,
+      })
+      return res.data
+    }
+
+    const { doesExist } = await checkPageNameExists(pageName)
     if (doesExist) {
       setErrors({ basicInfo: 'Page name already exists' })
       return false
     }
     return true
-  }
+  }, [pageName])
 
   const validateForm = async () => {
     switch (step) {
@@ -309,13 +318,21 @@ const BecomeAHostPage = () => {
 
   // Fetch province and district data
   useEffect(() => {
-    Promise.all([
-      divisionAction.getAllProvinces(),
-      divisionAction.getAllDistricts(),
-    ]).then(([pData, dData]) => {
-      setProvinces(pData.provinces)
-      setDistricts(dData.districts)
-    })
+    const getAllProvinces = async () => {
+      const res = await apiAxios.get('/divisions/p')
+      return res.data
+    }
+    const getAllDistricts = async () => {
+      const res = await apiAxios.get('/divisions/d')
+      return res.data
+    }
+
+    Promise.all([getAllProvinces(), getAllDistricts()]).then(
+      ([pData, dData]) => {
+        setProvinces(pData.provinces)
+        setDistricts(dData.districts)
+      },
+    )
   }, [])
 
   // Clear error on change
@@ -332,7 +349,7 @@ const BecomeAHostPage = () => {
     }, 500)
 
     return () => clearTimeout(validateDelay)
-  }, [pageName])
+  }, [pageName, validatePageNameExists])
 
   return (
     <div>

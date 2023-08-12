@@ -1,7 +1,6 @@
 'use client'
 
 import Container from '@/components/Container'
-import usePropertyAction from '@/hooks/usePropertyAction'
 import { accommodation, ownerObj, property, review } from '@/types'
 import axios from 'axios'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -13,11 +12,12 @@ import Categories from './Categories'
 import Description from './Description'
 import Reviews from './Reviews'
 import dynamic from 'next/dynamic'
-const PropertyMap = dynamic(() => import('./PropertyMap'))
 import AboutHost from './AboutHost'
+import apiAxios from '@/utils/apiAxios'
 
-const PropertiesPage = ({ params }: { params: { pageName: string } }) => {
-  const propertyAction = usePropertyAction()
+const PropertyMap = dynamic(() => import('./PropertyMap'), { ssr: false })
+
+const PropertyDetailPage = ({ params }: { params: { pageName: string } }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -34,12 +34,28 @@ const PropertiesPage = ({ params }: { params: { pageName: string } }) => {
   const [selectedAccom, setSelectedAccom] = useState<accommodation | null>(null)
 
   useEffect(() => {
-    propertyAction
-      .getPropertyByPageName(params.pageName, {
-        bookIn,
-        bookOut,
-        includeReviews: true,
+    const getPropertyByPageName = async (
+      pageName: string,
+      params: {
+        bookIn?: Date | null
+        bookOut?: Date | null
+        includeReviews?: boolean
+      } = {},
+    ): Promise<{
+      property: property
+      reviews: { data: review[]; totalRecords?: number; totalPage?: number }
+    }> => {
+      const res = await apiAxios.get(`/properties/page-name:${pageName}`, {
+        params,
       })
+      return res.data
+    }
+
+    getPropertyByPageName(params.pageName, {
+      bookIn,
+      bookOut,
+      includeReviews: true,
+    })
       .then((data) => {
         setProperty(data.property)
         setReviews(
@@ -59,7 +75,7 @@ const PropertiesPage = ({ params }: { params: { pageName: string } }) => {
         }
         router.push('/500')
       })
-  }, [bookIn])
+  }, [bookIn, bookOut, params.pageName, router])
 
   useEffect(() => {
     setSelectedAccom(null)
@@ -130,4 +146,4 @@ const PropertiesPage = ({ params }: { params: { pageName: string } }) => {
   )
 }
 
-export default PropertiesPage
+export default PropertyDetailPage

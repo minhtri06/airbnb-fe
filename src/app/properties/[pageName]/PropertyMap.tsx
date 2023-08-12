@@ -19,7 +19,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ property }) => {
   })
 
   return (
-    <div>
+    <div className="-z-10">
       <div className="text-2xl font-bold">Where you&apos;ll be</div>
       <div className="mt-2 font-semibold">{`${address.address}, ${address.districtName}, ${address.provinceName}`}</div>
       <div className="h-[450px] bg-black mt-5">

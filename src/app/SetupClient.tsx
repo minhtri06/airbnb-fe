@@ -2,21 +2,16 @@
 
 import useAppSideStore from '@/stores/useAppSideStore'
 import useAuthStore from '@/stores/useAuthStore'
-import useAuthTokens from '@/hooks/useAuthTokens'
-import useUserAction from '@/hooks/useUserAction'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
-import { ACCESS_TOKEN } from '@/constants/auth'
-import dynamic from 'next/dynamic'
-import { useLocalStorage } from '@/hooks/useStorage'
+import { getAccessToken } from '@/utils/tokenUtils'
+import useAuthAxios from '@/hooks/useAuthAxios'
 
 const SetupClient = ({ children }: { children: React.ReactNode }) => {
   const { currentUser, setCurrentUser, setIsLoading, isLogin, setIsLogin } =
     useAuthStore()
-  const { getCurrentUser } = useUserAction()
-  const { getAccessToken } = useAuthTokens()
-  const [accessToken] = useLocalStorage(ACCESS_TOKEN, null)
   const router = useRouter()
+  const authAxios = useAuthAxios()
 
   const { appSide, setAppSide } = useAppSideStore()
 
@@ -24,21 +19,22 @@ const SetupClient = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (pathname?.startsWith('/hosting')) {
-      if (appSide !== 'hosting') {
-        setAppSide('hosting')
-      }
+      if (appSide !== 'hosting') setAppSide('hosting')
     } else {
-      if (appSide !== 'traveling') {
-        setAppSide('traveling')
-      }
+      if (appSide !== 'traveling') setAppSide('traveling')
     }
-  }, [pathname])
+  }, [pathname, appSide, setAppSide])
 
   useEffect(() => {
-    setIsLogin(accessToken !== null)
-  }, [])
+    setIsLogin(getAccessToken() !== null)
+  }, [setIsLogin])
 
   useEffect(() => {
+    const getCurrentUser = async () => {
+      const res = await authAxios.get('/me')
+      return res.data.myProfile
+    }
+
     if (isLogin) {
       getCurrentUser()
         .then((user) => setCurrentUser(user))
@@ -48,9 +44,7 @@ const SetupClient = ({ children }: { children: React.ReactNode }) => {
       setCurrentUser(null)
       setIsLoading(false)
     }
-  }, [isLogin])
-
-  console.log(isLogin)
+  }, [isLogin, authAxios, router, setCurrentUser, setIsLoading])
 
   return <>{children}</>
 }

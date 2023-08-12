@@ -2,13 +2,13 @@
 
 import Avatar from '@/components/Avatar'
 import Review from '@/components/Review'
-import { review } from '@/types'
+import { review, reviewPaginate } from '@/types'
 import { AiFillStar } from '@react-icons/all-files/ai/AiFillStar'
 import { useState } from 'react'
 import SupportShowMore from './SupportShowMore'
-import useReviewAction from '@/hooks/useReviewAction'
 import { useRouter } from 'next/navigation'
 import Button from '@/components/buttons/Button'
+import apiAxios from '@/utils/apiAxios'
 
 interface ReviewsProps {
   reviews: review[]
@@ -27,12 +27,30 @@ const Reviews: React.FC<ReviewsProps> = ({
   reviewCount,
   propertyId,
 }) => {
-  const reviewAction = useReviewAction()
-  const router = useRouter()
-
   const [isShowAllReviews, setIsShowAllReviews] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   let isLoadingReviews = false
+
+  const getReviews = async ({
+    propertyId,
+    limit,
+    page,
+    sortBy,
+  }: {
+    propertyId: string
+    limit?: number
+    page?: number
+    sortBy?: string
+  }): Promise<reviewPaginate> => {
+    const res = await apiAxios.get('/reviews', {
+      params: { propertyId, limit, page, sortBy },
+    })
+    const reviews = res.data.data as review[]
+    for (let review of reviews) {
+      review.createdAt = new Date(review.createdAt)
+    }
+    return res.data
+  }
 
   const handleScrollToBottom = (e: React.UIEvent) => {
     const isAtBottom =
@@ -41,8 +59,7 @@ const Reviews: React.FC<ReviewsProps> = ({
 
     if (isAtBottom && !isLoadingReviews && currentPage < reviewTotalPage) {
       isLoadingReviews = true
-      reviewAction
-        .getReviews({ propertyId, page: currentPage + 1 })
+      getReviews({ propertyId, page: currentPage + 1 })
         .then((result) => {
           setReviews((pre: review[]) => [...pre, ...result.data])
           setCurrentPage((pre) => pre + 1)

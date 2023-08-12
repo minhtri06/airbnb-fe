@@ -3,19 +3,24 @@
 import Container from '@/components/Container'
 import PaginationController from '@/components/PaginationController'
 import PropertyCard from '@/components/PropertyCard'
-import usePropertyAction from '@/hooks/usePropertyAction'
-import { property } from '@/types'
+import useAuthAxios from '@/hooks/useAuthAxios'
+import { property, propertyPaginate } from '@/types'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 export default function Home({ searchParams }: { searchParams: any }) {
-  const { searchProperties } = usePropertyAction()
+  const authAxios = useAuthAxios()
 
   const [properties, setProperties] = useState<property[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [totalPage, setTotalPage] = useState<number | null>(null)
 
   useEffect(() => {
+    const searchProperties = async (params: any): Promise<propertyPaginate> => {
+      const res = await authAxios.get('/properties', { params })
+      return res.data
+    }
+
     setIsLoading(true)
     searchProperties({
       ...searchParams,
@@ -33,7 +38,7 @@ export default function Home({ searchParams }: { searchParams: any }) {
       .finally(() => {
         setIsLoading(false)
       })
-  }, [searchParams])
+  }, [searchParams, authAxios, totalPage])
 
   return (
     <div>

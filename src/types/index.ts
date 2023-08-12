@@ -120,3 +120,22 @@ export type chat = {
   user: user
   messages: message[]
 }
+
+export type division = {
+  _id: string
+  type: string
+  name: string
+}
+
+export type district = {
+  _id: string
+  name: string
+  province: string
+  latitude: number
+  longitude: number
+}
+
+export type province = {
+  _id: string
+  name: string
+}

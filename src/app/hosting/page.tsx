@@ -4,29 +4,29 @@ import PropertyCard from '@/components/PropertyCard'
 import Button from '@/components/buttons/Button'
 import useAuthStore from '@/stores/useAuthStore'
 import useLoginModalStore from '@/stores/useLoginModalStore'
-import useAuthTokens from '@/hooks/useAuthTokens'
-import usePropertyAction from '@/hooks/usePropertyAction'
-import { property } from '@/types'
+import { property, propertyPaginate } from '@/types'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import useAuthAxios from '@/hooks/useAuthAxios'
 
 const HostingPage: React.FC = () => {
+  const authAxios = useAuthAxios()
   const authStore = useAuthStore()
   const loginModal = useLoginModalStore()
   const router = useRouter()
-  const propertyAction = usePropertyAction()
-  const { getAccessToken } = useAuthTokens()
 
   const [myProperties, setMyProperties] = useState<property[]>([])
 
   useEffect(() => {
+    const getMyProperties = async (): Promise<propertyPaginate> => {
+      const res = await authAxios.get('/me/properties')
+      return res.data
+    }
+
     if (authStore.isLogin) {
-      console.log('I get my property when I am ', authStore.currentUser)
-      propertyAction
-        .getMyProperties()
-        .then((result) => setMyProperties(result.data))
+      getMyProperties().then((result) => setMyProperties(result.data))
     } else setMyProperties([])
-  }, [authStore.isLogin])
+  }, [authStore.isLogin, authAxios])
 
   console.log('my properties', myProperties)
 
@@ -36,7 +36,7 @@ const HostingPage: React.FC = () => {
 
   return (
     <div className="px-16">
-      {!authStore.isLogin ? (
+      {authStore.isLogin === false && (
         <>
           <div className="text-3xl font-bold pb-8 pt-20">
             Welcome to Airbnb 🍁
@@ -53,7 +53,8 @@ const HostingPage: React.FC = () => {
             />
           </div>
         </>
-      ) : (
+      )}
+      {authStore.isLogin === true && (
         <div>
           <div className="flex justify-between items-center py-16">
             <div className="text-3xl font-bold">

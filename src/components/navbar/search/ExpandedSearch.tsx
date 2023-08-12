@@ -8,7 +8,7 @@ import BookingInput from '../../inputs/BookingInput'
 import LocationInput from './LocationInput'
 import GuestInput from './GuestInput'
 import { usePathname, useRouter } from 'next/navigation'
-import { division } from '@/hooks/useDivisionAction'
+import { division } from '@/types'
 
 interface ExpandedSearchProps {
   isExpanded: boolean

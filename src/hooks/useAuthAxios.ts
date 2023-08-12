@@ -1,19 +1,20 @@
-import axios, { InternalAxiosRequestConfig } from 'axios'
+import axios from 'axios'
 
-import useAuthTokens from './useAuthTokens'
 import useAuthService from './useAuthService'
 import { BASE_URL } from '@/constants/urls'
-import { useRouter } from 'next/navigation'
 import { useEffect, useMemo } from 'react'
 const authAxios = axios.create({
   baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
 })
+import {
+  getAccessToken,
+  refreshAuthTokens,
+  refreshTokenProcess,
+} from '@/utils/tokenUtils'
 
 const useAuthAxios = () => {
   const { logout } = useAuthService()
-  const { refreshTokenProcess, getAccessToken, refreshAuthTokens } =
-    useAuthTokens()
 
   useEffect(() => {
     const requestInterceptor = authAxios.interceptors.request.use(
@@ -60,7 +61,7 @@ const useAuthAxios = () => {
       authAxios.interceptors.request.eject(requestInterceptor)
       authAxios.interceptors.response.eject(responseInterceptor)
     }
-  }, [getAccessToken, logout, refreshAuthTokens, refreshTokenProcess])
+  }, [logout])
 
   return useMemo(() => authAxios, [])
 }

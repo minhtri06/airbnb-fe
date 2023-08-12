@@ -1,6 +1,7 @@
 import { IoLocationOutline } from '@react-icons/all-files/io5/IoLocationOutline'
-import useDivisionAction, { division } from '@/hooks/useDivisionAction'
 import { useEffect, useState } from 'react'
+import apiAxios from '@/utils/apiAxios'
+import { division } from '@/types'
 
 interface LocationInputProps {
   divisions: division[]
@@ -21,11 +22,37 @@ const LocationInput: React.FC<LocationInputProps> = ({
   locationSearch,
   setLocationSearch,
 }) => {
-  const { getAllDivisions } = useDivisionAction()
   const [searchResult, setSearchResult] = useState<division[]>([])
 
   useEffect(() => {
     if (divisions.length === 0) {
+      const getAllDivisions = async (): Promise<division[]> => {
+        const [res1, res2] = await Promise.all([
+          apiAxios.get('/divisions/d'),
+          apiAxios.get('/divisions/p'),
+        ])
+
+        const { districts } = res1.data
+        const { provinces } = res2.data
+
+        return [
+          ...districts.map(
+            (district: any): division => ({
+              _id: district._id,
+              type: 'district',
+              name: district.name,
+            }),
+          ),
+          ...provinces.map(
+            (province: any): division => ({
+              _id: province._id,
+              type: 'province',
+              name: province.name,
+            }),
+          ),
+        ]
+      }
+
       getAllDivisions()
         .then((data) => {
           setDivisions(data)
@@ -34,7 +61,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
           console.log(e)
         })
     }
-  }, [divisions.length])
+  }, [divisions.length, setDivisions])
 
   const handleLocationOnClick = (location: division) => {
     if (location.type === 'district') {

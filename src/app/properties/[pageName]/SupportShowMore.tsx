@@ -14,8 +14,8 @@ const SupportShowMore: React.FC<SupportShowMoreProps> = ({
 }) => {
   return (
     <div
-      className="flex justify-center items-center overflow-x-hidden overflow-y-auto 
-        fixed inset-0 z-50 outline-none focus:outline-none bg-neutral-800/70"
+      className="z-20 flex justify-center items-center overflow-x-hidden overflow-y-auto 
+        fixed inset-0 outline-none focus:outline-none bg-neutral-800/70"
       onClick={() => onClose()}
       autoFocus
     >

@@ -50,7 +50,7 @@ const Map: React.FC<MapProps> = ({ position, setPosition }) => {
   return (
     <>
       <div className="mt-7 flex justify-between">
-        Drag to your property's location
+        Drag to your property&apos;s location
         <div
           className="font-bold underline cursor-pointer select-none"
           onClick={() => mapRef.current.locate()}
