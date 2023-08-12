@@ -1,12 +1,13 @@
-import PropertyCard from '@/components/PropertyCard'
+'use client'
+
 import { property } from '@/types'
 import pickFields from '@/utils/pickFields'
-import { Icon } from 'leaflet'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Icon } from 'leaflet'
 
 interface SearchMapProps {
   properties: property[]
@@ -15,19 +16,20 @@ interface SearchMapProps {
 const SearchMap: React.FC<SearchMapProps> = ({ properties }) => {
   const searchParams = useSearchParams()
 
-  const center =
-    properties.length !== 0
-      ? {
-          lat:
-            properties.reduce((total, p) => total + p.address.latitude, 0) /
-            properties.length,
-          lng:
-            properties.reduce((total, p) => total + p.address.longitude, 0) /
-            properties.length,
-        }
-      : { lat: 9.791692129493027, lng: 105.46889011903893 }
-
-  console.log(center)
+  const center = useMemo(
+    () =>
+      properties.length !== 0
+        ? {
+            lat:
+              properties.reduce((total, p) => total + p.address.latitude, 0) /
+              properties.length,
+            lng:
+              properties.reduce((total, p) => total + p.address.longitude, 0) /
+              properties.length,
+          }
+        : { lat: 9.791692129493027, lng: 105.46889011903893 },
+    [properties],
+  )
 
   const MarkerIcon = new Icon({
     iconUrl: '/img/pin.png',
@@ -41,7 +43,7 @@ const SearchMap: React.FC<SearchMapProps> = ({ properties }) => {
     if (map !== null) {
       map.flyTo(center, map.getZoom())
     }
-  }, [properties])
+  }, [center])
 
   return (
     <div className="flex-1 sticky top-40 h-[calc(100vh-10rem)] bottom-0">
@@ -67,6 +69,7 @@ const SearchMap: React.FC<SearchMapProps> = ({ properties }) => {
 
           return (
             <Marker
+              key={p._id}
               position={{ lat: p.address.latitude, lng: p.address.longitude }}
               icon={MarkerIcon}
             >

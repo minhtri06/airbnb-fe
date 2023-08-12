@@ -1,5 +1,5 @@
-const Me = () => {
+const MePage = () => {
   return <div>Me</div>
 }
 
-export default Me
+export default MePage

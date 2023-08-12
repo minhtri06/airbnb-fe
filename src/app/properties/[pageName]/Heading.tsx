@@ -24,7 +24,7 @@ const Heading: React.FC<HeadingProps> = ({ property }) => {
             {owner.name}
           </div>
           <div className="underline">
-            {`${property.address.address}, ${property.address.districtName}, ${property.address.provinceName}`}
+            {`${property.address.districtName}, ${property.address.provinceName}`}
           </div>
         </div>
         <div className="flex gap-3">

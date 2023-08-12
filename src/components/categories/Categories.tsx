@@ -21,12 +21,8 @@ const Categories = () => {
 
   useEffect(() => {
     window.onscroll = () => {
-      const body = document.body
-      if (window.scrollY === 0) {
-        setIsWindowOnTop(true)
-      } else if (isWindowOnTop === true) {
-        setIsWindowOnTop(false)
-      }
+      if (window.scrollY === 0) setIsWindowOnTop(true)
+      else if (isWindowOnTop === true) setIsWindowOnTop(false)
     }
   }, [])
 

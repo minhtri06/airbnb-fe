@@ -20,7 +20,7 @@ const Review: React.FC<ReviewInterfaceProps> = ({
   return (
     <div className="overflow-hidden">
       <div className="flex items-center gap-3">
-        <Avatar avatarUrl={review.reviewer.avatar} size="10" />
+        <Avatar avatarUrl={review.reviewer.avatar} size="md" />
         <div>
           <div className="font-semibold">{review.reviewer.name}</div>
           <div className="text-sm">
@@ -36,8 +36,8 @@ const Review: React.FC<ReviewInterfaceProps> = ({
           }
         }}
       >
-        {review.body.split('\n').map((paragraph) => (
-          <p>{paragraph}</p>
+        {review.body.split('\n').map((paragraph, i) => (
+          <p key={i}>{paragraph}</p>
         ))}
       </div>
       {isOverflow && (

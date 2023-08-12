@@ -1,7 +1,7 @@
 'use client'
 
 import apiAxios from '@/utils/apiAxios'
-import useCurrentUserStore from './contexts/useCurrentUserStore'
+import useAuthStore from '@/stores/useAuthStore'
 import useAuthTokens from './useAuthTokens'
 import {
   GOOGLE_LOGIN,
@@ -9,11 +9,21 @@ import {
   LOGOUT_URL,
   REGISTER_URL,
 } from '@/constants/urls'
+import useChatStore from '@/stores/useChatStore'
+import { useCallback } from 'react'
 
 const useAuthService = () => {
-  const { setCurrentUser } = useCurrentUserStore()
-  const { removeAuthTokens, setAccessToken, setRefreshToken, getRefreshToken } =
-    useAuthTokens()
+  const { setIsLogin } = useAuthStore()
+  const {
+    getAccessToken,
+    removeAuthTokens,
+    setAccessToken,
+    setRefreshToken,
+    getRefreshToken,
+  } = useAuthTokens()
+  const { setChats, setConversations } = useChatStore()
+
+  const isAuthenticated = () => getAccessToken() !== null
 
   const register = async (body: object) => {
     await apiAxios.post(REGISTER_URL, body)
@@ -22,11 +32,13 @@ const useAuthService = () => {
   const login = async (email: string, password: string) => {
     const res = await apiAxios.post(LOGIN_URL, { email, password })
 
-    setCurrentUser(res.data.user)
+    setIsLogin(true)
 
     const { accessToken, refreshToken } = res.data.authTokens
     setAccessToken(accessToken)
     setRefreshToken(refreshToken)
+
+    console.log('refresh??')
 
     return res.data
   }
@@ -34,29 +46,35 @@ const useAuthService = () => {
   const googleLogin = async (code: string) => {
     const res = await apiAxios.post(GOOGLE_LOGIN + `?code=${code}`)
 
-    const { user, authTokens } = res.data
-    setCurrentUser(user)
+    const { authTokens } = res.data
+    setIsLogin(true)
 
     const { accessToken, refreshToken } = authTokens
     setAccessToken(accessToken)
     setRefreshToken(refreshToken)
+    setChats([])
+    setConversations([])
 
     return res.data
   }
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
+    console.log('logout')
     const refreshToken = getRefreshToken()
     await apiAxios.post(LOGOUT_URL, { refreshToken })
-    setCurrentUser(null)
+    setIsLogin(false)
+    setChats([])
+    setConversations([])
     removeAuthTokens()
-  }
+  }, [
+    getRefreshToken,
+    removeAuthTokens,
+    setChats,
+    setConversations,
+    setIsLogin,
+  ])
 
-  return {
-    register,
-    login,
-    googleLogin,
-    logout,
-  }
+  return { isAuthenticated, register, login, googleLogin, logout }
 }
 
 export default useAuthService

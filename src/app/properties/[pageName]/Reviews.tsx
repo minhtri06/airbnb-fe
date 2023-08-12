@@ -71,8 +71,8 @@ const Reviews: React.FC<ReviewsProps> = ({
                 </span>
               </div>
               <div className="">
-                {reviews.map((r) => (
-                  <div className="mb-7">
+                {reviews.map((r, i) => (
+                  <div key={i} className="mb-7">
                     <Review review={r} showAll />
                   </div>
                 ))}
@@ -93,8 +93,8 @@ const Reviews: React.FC<ReviewsProps> = ({
           </span>
         </div>
         <div className="grid grid-cols-2 mt-5 gap-y-10">
-          {reviews.slice(0, 6).map((review) => (
-            <div className="h-40 mr-24">
+          {reviews.slice(0, 6).map((review, i) => (
+            <div key={i} className="h-40 mr-24">
               <Review
                 review={review}
                 showMoreOnClick={() => setIsShowAllReviews(true)}

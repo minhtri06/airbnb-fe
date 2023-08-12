@@ -41,10 +41,10 @@ const ReserveBoard: React.FC<ReserveBoardProps> = ({
 
   const bookingInputRef = useRef(null)
   const accomSelectorButtonRef = useRef(null)
-  useOutSideListener('mousedown', bookingInputRef, () => {
+  useOutSideListener('mousedown', [bookingInputRef], () => {
     setIsBookingInputShowed(false)
   })
-  useOutSideListener('mousedown', accomSelectorButtonRef, () => {
+  useOutSideListener('mousedown', [accomSelectorButtonRef], () => {
     setIsAccomSelectorOpen(false)
   })
 

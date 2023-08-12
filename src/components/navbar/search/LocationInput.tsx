@@ -34,7 +34,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
           console.log(e)
         })
     }
-  }, [])
+  }, [divisions.length])
 
   const handleLocationOnClick = (location: division) => {
     if (location.type === 'district') {
@@ -53,10 +53,8 @@ const LocationInput: React.FC<LocationInputProps> = ({
           d.name.toLowerCase().includes(locationSearch.toLowerCase()),
         ),
       )
-    } else {
-      setSearchResult([])
-    }
-  }, [locationSearch])
+    } else setSearchResult([])
+  }, [locationSearch, divisions])
 
   return (
     <>
@@ -65,10 +63,11 @@ const LocationInput: React.FC<LocationInputProps> = ({
           className="absolute top-20 py-8 w-1/2 bg-white rounded-3xl flex flex-col
             shadow-[0px_0px_10px_5px_rgba(0,0,0,0.1)]"
         >
-          {searchResult?.slice(0, 4)?.map((result) => (
+          {searchResult?.slice(0, 4)?.map((result, i) => (
             <div
+              key={i}
               className="h-16 px-8 flex items-center gap-3 hover:bg-gray-100 
-            cursor-pointer"
+                cursor-pointer"
               onClick={() => {
                 handleLocationOnClick(result)
                 setSelectedInput('book-in')

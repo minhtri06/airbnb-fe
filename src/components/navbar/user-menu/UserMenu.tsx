@@ -5,17 +5,18 @@ import { useEffect, useRef, useState } from 'react'
 
 import Avatar from '../../Avatar'
 import MenuItem from './MenuItem'
-import useRegisterModalStore from '@/hooks/contexts/useRegisterModalStore'
-import useLoginModalStore from '@/hooks/contexts/useLoginModalStore'
-import useCurrentUserStore from '@/hooks/contexts/useCurrentUserStore'
+import useRegisterModalStore from '@/stores/useRegisterModalStore'
+import useLoginModalStore from '@/stores/useLoginModalStore'
+import useAuthStore from '@/stores/useAuthStore'
+import useAppSideStore from '@/stores/useAppSideStore'
 import useAuthService from '@/hooks/useAuthService'
 import { useRouter } from 'next/navigation'
-import useAppSideStore from '@/hooks/contexts/useAppSideStore'
 import useOutSideListener from '@/hooks/useOutSideListener'
+import Link from 'next/link'
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { currentUser, isLoading } = useCurrentUserStore()
+  const { currentUser, isLoading, isLogin } = useAuthStore()
   const { appSide } = useAppSideStore()
 
   const registerModal = useRegisterModalStore()
@@ -23,28 +24,21 @@ const UserMenu = () => {
   const { logout } = useAuthService()
   const router = useRouter()
 
+  const toggleOpen = () => setIsOpen((pre) => !pre)
+  const closeMenu = () => setIsOpen(false)
+
   const accountBtnRef = useRef(null)
-
-  const toggleOpen = () => {
-    setIsOpen((pre) => {
-      return !pre
-    })
-  }
-
-  useOutSideListener(
-    'mousedown',
-    accountBtnRef,
-    () => {
-      if (isOpen) {
-        setIsOpen(false)
-      }
-    },
-    [isOpen],
-  )
+  const menuRef = useRef(null)
+  useOutSideListener('mousedown', [accountBtnRef, menuRef], () => {
+    if (isOpen) {
+      setIsOpen(false)
+    }
+  })
 
   const handleLogout = async () => {
     try {
       await logout()
+      router.refresh()
       setIsOpen(false)
     } catch (error) {
       console.log(error)
@@ -55,19 +49,20 @@ const UserMenu = () => {
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         {!isLoading && (
-          <div
-            onClick={() => {
-              appSide !== null && appSide === 'traveling'
-                ? router.push('/hosting')
-                : router.push('/')
-            }}
-            className=" hidden lg:block text-base font-semibold px-4 py-2 select-none
-            hover:bg-neutral-100 transition cursor-pointer rounded-full h-10"
+          <Link
+            href={
+              appSide !== null && appSide === 'traveling' ? '/hosting' : '/'
+            }
           >
-            {appSide === 'traveling'
-              ? 'Switch to hosting'
-              : 'Switch to traveling'}
-          </div>
+            <div
+              className=" hidden lg:block text-base font-semibold px-4 py-2 select-none
+                hover:bg-neutral-100 transition cursor-pointer rounded-full h-10"
+            >
+              {appSide === 'traveling'
+                ? 'Switch to hosting'
+                : 'Switch to traveling'}
+            </div>
+          </Link>
         )}
         <div
           onClick={toggleOpen}
@@ -80,7 +75,7 @@ const UserMenu = () => {
             <AiOutlineMenu />
           </div>
           <Avatar
-            size="8"
+            size="sm"
             avatarUrl={currentUser ? currentUser.avatar : undefined}
           />
         </div>
@@ -90,19 +85,18 @@ const UserMenu = () => {
           className="absolute rounded-xl w-52 bg-white select-none
             overflow-hidden right-0 top-12 text-base"
           style={{ boxShadow: '0px 4px 10px 4px rgb(0 0 0 / 0.1)' }}
+          ref={menuRef}
         >
           <div className="flex flex-col cursor-pointer">
-            {currentUser ? (
+            {isLogin ? (
               <>
-                <MenuItem
-                  onClick={() => {
-                    router.push('/me')
-                  }}
-                  label="Account"
-                />
-                <MenuItem onClick={() => {}} label="My save" />
+                <MenuItem onClick={closeMenu} label="Account" />
+                <MenuItem onClick={closeMenu} label="My save" />
+                <Link href="/messages">
+                  <MenuItem onClick={closeMenu} label="Messages" />
+                </Link>
                 <hr />
-                <MenuItem onClick={() => {}} label="Help" />
+                <MenuItem onClick={closeMenu} label="Help" />
                 <MenuItem onClick={handleLogout} label="Logout" />
               </>
             ) : (
@@ -110,20 +104,20 @@ const UserMenu = () => {
                 <MenuItem
                   onClick={() => {
                     loginModal.open()
-                    toggleOpen()
+                    closeMenu()
                   }}
                   label="Login"
                 />
                 <MenuItem
                   onClick={() => {
                     registerModal.open()
-                    toggleOpen()
+                    closeMenu()
                   }}
                   label="Sign up"
                 />
                 <hr />
-                <MenuItem onClick={() => {}} label="Airbnb your home" />
-                <MenuItem onClick={() => {}} label="Help" />
+                <MenuItem onClick={closeMenu} label="Airbnb your home" />
+                <MenuItem onClick={closeMenu} label="Help" />
               </>
             )}
           </div>

@@ -23,7 +23,6 @@ export default function Home({ searchParams }: { searchParams: any }) {
       checkPaginate: totalPage === null,
     })
       .then((results) => {
-        console.log('got data')
         setProperties(results.data)
         if (results.totalPage) setTotalPage(results.totalPage)
       })

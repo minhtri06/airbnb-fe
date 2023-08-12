@@ -1,12 +1,18 @@
+'use client'
+
+import { property } from '@/types'
 import { Icon } from 'leaflet'
 import React from 'react'
 import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 
 interface PropertyMapProps {
-  position: { lat: number; lng: number }
+  property: property
 }
 
-const PropertyMap: React.FC<PropertyMapProps> = ({ position }) => {
+const PropertyMap: React.FC<PropertyMapProps> = ({ property }) => {
+  const address = property.address
+  const position = { lat: address.latitude, lng: address.longitude }
+
   const MarkerIcon = new Icon({
     iconUrl: '/img/pin.png',
     iconSize: [38, 38],
@@ -14,7 +20,8 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ position }) => {
 
   return (
     <div>
-      <div className="text-2xl font-bold">Where you'll be</div>
+      <div className="text-2xl font-bold">Where you&apos;ll be</div>
+      <div className="mt-2 font-semibold">{`${address.address}, ${address.districtName}, ${address.provinceName}`}</div>
       <div className="h-[450px] bg-black mt-5">
         <MapContainer center={position} zoom={14} scrollWheelZoom={false}>
           <Marker icon={MarkerIcon} position={position} />

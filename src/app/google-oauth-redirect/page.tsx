@@ -4,7 +4,7 @@ import useAuthService from '@/hooks/useAuthService'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
-const page = () => {
+const GoogleOauthRedirect = () => {
   const router = useRouter()
   const params = useSearchParams()
   const authService = useAuthService()
@@ -29,4 +29,4 @@ const page = () => {
   return <div></div>
 }
 
-export default page
+export default GoogleOauthRedirect

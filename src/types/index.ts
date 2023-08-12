@@ -89,3 +89,34 @@ export type propertyPaginate = {
   totalRecords?: number
   totalPage?: number
 }
+
+export type conversation = {
+  _id: string
+  withUser: { _id: string; name: string; avatar?: string }
+  latestMessage: { body: string; sender: string }
+}
+
+export type message = {
+  _id: string
+  userIds: string[]
+  body: string
+}
+
+export type messagePaginate = {
+  data: message[]
+  totalPage?: number
+  totalRecords?: number
+}
+
+export type user = {
+  _id: string
+  name: string
+  avatar?: string
+  dateOfBirth?: string | Date
+  gender?: string
+}
+
+export type chat = {
+  user: user
+  messages: message[]
+}

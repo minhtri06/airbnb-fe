@@ -13,7 +13,7 @@ const NotFound = () => {
         <div className="flex justify-between">
           <div>
             <div className="text-2xl font-semibold pb-5">
-              We can't seem to find the page you're looking for
+              We can&apos;t seem to find the page you&apos;re looking for
             </div>
             <div className="text-lg pb-5">
               Here are some helpful links instead:

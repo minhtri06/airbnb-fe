@@ -29,8 +29,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ property }) => {
           body={
             <>
               {images &&
-                images.map((img) => (
-                  <div className="flex justify-center w-full h-96 mb-7">
+                images.map((img, i) => (
+                  <div key={i} className="flex justify-center w-full h-96 mb-7">
                     <Image
                       className="rounded-lg overflow-hidden"
                       src={img}

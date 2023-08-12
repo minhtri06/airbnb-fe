@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 
 export interface CurrentUser {
+  _id: string
   name: string
   email: string
   avatar?: string
@@ -12,9 +13,11 @@ interface CurrentUserStore {
   setCurrentUser: (newCurrentUser: CurrentUser | null) => void
   isLoading: boolean
   setIsLoading: (value: boolean) => void
+  isLogin: boolean | null
+  setIsLogin: (isLogin: boolean) => void
 }
 
-const useCurrentUserStore = create<CurrentUserStore>((set) => {
+const useAuthStore = create<CurrentUserStore>((set) => {
   const setCurrentUser = (newCurrentUser: CurrentUser | null) => {
     set({ currentUser: newCurrentUser, isLoading: false })
   }
@@ -24,7 +27,9 @@ const useCurrentUserStore = create<CurrentUserStore>((set) => {
     setCurrentUser,
     isLoading: true,
     setIsLoading: (value) => set({ isLoading: value }),
+    isLogin: null,
+    setIsLogin: (isLogin) => set({ isLogin }),
   }
 })
 
-export default useCurrentUserStore
+export default useAuthStore

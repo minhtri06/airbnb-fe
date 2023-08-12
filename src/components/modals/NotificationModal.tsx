@@ -1,6 +1,6 @@
 'use client'
 
-import useNotificationModalStore from '@/hooks/contexts/useNotificationModalStore'
+import useNotificationModalStore from '@/stores/useNotificationModalStore'
 import Modal from './Modal'
 
 const NotificationModal = () => {

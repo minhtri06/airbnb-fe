@@ -9,15 +9,14 @@ interface ContainerProps {
 const Container: React.FC<ContainerProps> = ({ children }) => {
   const pathname = usePathname()
 
+  const style =
+    pathname?.startsWith('/search') || pathname?.startsWith('/messages')
+      ? 'max-w-[2520px] px-5'
+      : 'max-w-[2520px] mx-auto xl:px-20 md:px-16 sm:px-2 px-4'
+
   return (
     <>
-      {pathname?.startsWith('/search') ? (
-        <div className="max-w-[2520px] px-5">{children}</div>
-      ) : (
-        <div className=" max-w-[2520px] mx-auto xl:px-20 md:px-16 sm:px-2 px-4">
-          {children}
-        </div>
-      )}
+      <div className={style}>{children}</div>
     </>
   )
 }

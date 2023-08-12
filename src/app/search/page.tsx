@@ -7,10 +7,13 @@ import usePropertyAction from '@/hooks/usePropertyAction'
 import { property } from '@/types'
 import pickFields from '@/utils/pickFields'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
-import SearchMap from './SearchMap'
+import dynamic from 'next/dynamic'
+import { useEffect, useMemo, useState } from 'react'
+// import SearchMap from './SearchMap'
 
-const page = ({ searchParams }: { searchParams: any }) => {
+const SearchMap = dynamic(() => import('./SearchMap'), { ssr: false })
+
+const SearchPage = ({ searchParams }: { searchParams: any }) => {
   const { searchProperties } = usePropertyAction()
 
   const [properties, setProperties] = useState<property[]>([])
@@ -18,6 +21,7 @@ const page = ({ searchParams }: { searchParams: any }) => {
   const [totalPage, setTotalPage] = useState<number | null>(null)
 
   useEffect(() => {
+    console.log('??')
     setIsLoading(true)
     searchProperties({
       ...searchParams,
@@ -33,7 +37,7 @@ const page = ({ searchParams }: { searchParams: any }) => {
         else console.log(error)
       })
       .finally(() => setIsLoading(false))
-  }, [searchParams])
+  }, [searchParams, searchProperties, totalPage])
 
   console.log(properties)
 
@@ -89,4 +93,4 @@ const page = ({ searchParams }: { searchParams: any }) => {
   )
 }
 
-export default page
+export default SearchPage

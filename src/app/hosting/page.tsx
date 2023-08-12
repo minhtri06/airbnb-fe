@@ -2,38 +2,41 @@
 
 import PropertyCard from '@/components/PropertyCard'
 import Button from '@/components/buttons/Button'
-import useCurrentUserStore from '@/hooks/contexts/useCurrentUserStore'
-import useLoginModalStore from '@/hooks/contexts/useLoginModalStore'
+import useAuthStore from '@/stores/useAuthStore'
+import useLoginModalStore from '@/stores/useLoginModalStore'
+import useAuthTokens from '@/hooks/useAuthTokens'
 import usePropertyAction from '@/hooks/usePropertyAction'
 import { property } from '@/types'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-const Hosting: React.FC = () => {
-  const currentUserStore = useCurrentUserStore()
+const HostingPage: React.FC = () => {
+  const authStore = useAuthStore()
   const loginModal = useLoginModalStore()
   const router = useRouter()
   const propertyAction = usePropertyAction()
+  const { getAccessToken } = useAuthTokens()
 
   const [myProperties, setMyProperties] = useState<property[]>([])
 
   useEffect(() => {
-    if (currentUserStore.currentUser) {
-      propertyAction.getMyProperties().then((result) => {
-        setMyProperties(result.data)
-      })
-    }
-  }, [currentUserStore.currentUser])
+    if (authStore.isLogin) {
+      console.log('I get my property when I am ', authStore.currentUser)
+      propertyAction
+        .getMyProperties()
+        .then((result) => setMyProperties(result.data))
+    } else setMyProperties([])
+  }, [authStore.isLogin])
 
-  console.log(myProperties)
+  console.log('my properties', myProperties)
 
-  if (currentUserStore.isLoading) {
+  if (authStore.isLoading) {
     return <></>
   }
 
   return (
     <div className="px-16">
-      {currentUserStore.currentUser === null ? (
+      {!authStore.isLogin ? (
         <>
           <div className="text-3xl font-bold pb-8 pt-20">
             Welcome to Airbnb 🍁
@@ -54,7 +57,7 @@ const Hosting: React.FC = () => {
         <div>
           <div className="flex justify-between items-center py-16">
             <div className="text-3xl font-bold">
-              Welcome, {currentUserStore.currentUser?.name}! 🍁
+              Welcome, {authStore.currentUser?.name}! 🍁
             </div>
             <div className="w-44">
               <Button
@@ -83,7 +86,7 @@ const Hosting: React.FC = () => {
               </>
             ) : (
               <div className="text-2xl font-bold pb-7">
-                No property, let's create a new one
+                No property, let&apos;s create a new one
               </div>
             )}
           </div>
@@ -93,4 +96,4 @@ const Hosting: React.FC = () => {
   )
 }
 
-export default Hosting
+export default HostingPage

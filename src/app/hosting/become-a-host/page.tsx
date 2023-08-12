@@ -1,6 +1,7 @@
 'use client'
 
-import useCurrentUserStore from '@/hooks/contexts/useCurrentUserStore'
+import useAuthStore from '@/stores/useAuthStore'
+import useNotificationModalStore from '@/stores/useNotificationModalStore'
 import useDivisionAction, {
   district,
   province,
@@ -14,8 +15,6 @@ import CategoryStep from './CategoryStep'
 import LocationStep from './LocationStep/LocationStep'
 import AccommodationStep from './AccommodationStep'
 import DescriptionStep from './DescriptionStep'
-import axios from 'axios'
-import useNotificationModalStore from '@/hooks/contexts/useNotificationModalStore'
 import { accommodation } from '@/types'
 
 enum STEPS {
@@ -34,12 +33,12 @@ export type addressState = {
   longitude: number | null
 }
 
-const page = () => {
-  const currentUserStore = useCurrentUserStore()
+const BecomeAHostPage = () => {
+  const authStore = useAuthStore()
   const router = useRouter()
   const notificationModal = useNotificationModalStore()
 
-  if (!currentUserStore.isLoading && !currentUserStore.currentUser) {
+  if (!authStore.isLogin) {
     router.push('/hosting')
   }
 
@@ -125,7 +124,8 @@ const page = () => {
           title: 'Congratulation 🎉',
           body: (
             <div className="text-base flex justify-center">
-              You have successfully created a new hosting, let's check it out!!
+              You have successfully created a new hosting, let&apos;s check it
+              out!!
             </div>
           ),
           callWhenClose: () => {
@@ -365,4 +365,4 @@ const page = () => {
   )
 }
 
-export default page
+export default BecomeAHostPage

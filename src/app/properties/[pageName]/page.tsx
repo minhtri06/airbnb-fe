@@ -4,7 +4,6 @@ import Container from '@/components/Container'
 import usePropertyAction from '@/hooks/usePropertyAction'
 import { accommodation, ownerObj, property, review } from '@/types'
 import axios from 'axios'
-import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ReserveBoard from './ReserveBoard'
@@ -13,10 +12,11 @@ import Heading from './Heading'
 import Categories from './Categories'
 import Description from './Description'
 import Reviews from './Reviews'
-import PropertyMap from './PropertyMap'
+import dynamic from 'next/dynamic'
+const PropertyMap = dynamic(() => import('./PropertyMap'))
 import AboutHost from './AboutHost'
 
-const Properties = ({ params }: { params: { pageName: string } }) => {
+const PropertiesPage = ({ params }: { params: { pageName: string } }) => {
   const propertyAction = usePropertyAction()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -79,7 +79,7 @@ const Properties = ({ params }: { params: { pageName: string } }) => {
   }
 
   return (
-    <div>
+    <div className="mb-14">
       <Container>
         <Heading property={property} />
 
@@ -124,17 +124,10 @@ const Properties = ({ params }: { params: { pageName: string } }) => {
 
         <hr className="my-14" />
 
-        <PropertyMap
-          position={{
-            lat: property.address.latitude,
-            lng: property.address.longitude,
-          }}
-        />
-
-        <hr className="my-14" />
+        <PropertyMap property={property} />
       </Container>
     </div>
   )
 }
 
-export default Properties
+export default PropertiesPage

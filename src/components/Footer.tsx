@@ -6,7 +6,11 @@ import Container from './Container'
 const Footer = () => {
   const pathname = usePathname()
 
-  if (pathname?.startsWith('/hosting/become-a-host')) return <></>
+  if (
+    pathname?.startsWith('/hosting/become-a-host') ||
+    pathname?.startsWith('/messages')
+  )
+    return <></>
 
   return (
     <div className="bg-neutral-100">

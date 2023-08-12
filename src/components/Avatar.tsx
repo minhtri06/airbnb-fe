@@ -1,17 +1,29 @@
 'use client'
 
-import useCurrentUserStore from '@/hooks/contexts/useCurrentUserStore'
 import Image from 'next/image'
 
 interface AvatarProps {
-  size: string
+  size: 'sm' | 'md' | 'lg'
   avatarUrl?: string
 }
 
 const Avatar: React.FC<AvatarProps> = ({ size, avatarUrl }) => {
+  let style = ''
+  switch (size) {
+    case 'sm':
+      style = 'h-8 w-8'
+      break
+    case 'md':
+      style = 'h-12 w-12'
+      break
+    case 'lg':
+      style = 'h-16 w-16'
+      break
+  }
+
   return (
     <div
-      className={`h-${size} w-${size} relative rounded-full overflow-hidden select-none`}
+      className={`${style} relative rounded-full overflow-hidden select-none`}
     >
       <Image
         priority

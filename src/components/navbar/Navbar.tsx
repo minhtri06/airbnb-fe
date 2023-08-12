@@ -1,14 +1,16 @@
 'use client'
 
-import useAppSideStore from '@/hooks/contexts/useAppSideStore'
+import useAppSideStore from '@/stores/useAppSideStore'
 import Container from '../Container'
 import Logo from './Logo'
 import Search from './search/Search'
 import UserMenu from './user-menu/UserMenu'
 import Categories from '../categories/Categories'
+import { usePathname } from 'next/navigation'
 
 const Navbar = () => {
   const { appSide } = useAppSideStore()
+  const pathname = usePathname()
 
   return (
     <>
@@ -23,7 +25,9 @@ const Navbar = () => {
                 <Logo />
               </div>
 
-              {appSide === 'traveling' && <Search />}
+              {appSide === 'traveling' && pathname !== '/messages' && (
+                <Search />
+              )}
 
               <div className="absolute right-0 z-20">
                 <UserMenu />
@@ -32,7 +36,7 @@ const Navbar = () => {
           </Container>
         </div>
       </div>
-      {appSide === 'traveling' && <Categories />}
+      {appSide === 'traveling' && pathname !== '/messages' && <Categories />}
     </>
   )
 }

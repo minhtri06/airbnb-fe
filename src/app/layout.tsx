@@ -2,13 +2,14 @@ import 'leaflet/dist/leaflet.css'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
-import SetupClient from './SetupClient'
 import Navbar from '@/components/navbar/Navbar'
 import NotificationModal from '@/components/modals/NotificationModal'
 import RegisterModal from '@/components/modals/RegisterModal'
 import LoginModal from '@/components/modals/LoginModal'
-import { usePathname } from 'next/navigation'
 import Footer from '@/components/Footer'
+import dynamic from 'next/dynamic'
+
+const SetupClient = dynamic(() => import('./SetupClient'), { ssr: true })
 
 const nunito = Nunito({ subsets: ['latin'] })
 
