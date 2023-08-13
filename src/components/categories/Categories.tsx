@@ -24,7 +24,7 @@ const Categories = () => {
       if (window.scrollY === 0) setIsWindowOnTop(true)
       else if (isWindowOnTop === true) setIsWindowOnTop(false)
     }
-  }, [])
+  }, [isWindowOnTop])
 
   const slideLeft = () => {
     const slider = document.getElementById('slider')

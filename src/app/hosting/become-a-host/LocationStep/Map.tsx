@@ -9,42 +9,48 @@ interface MapProps {
   setPosition: (value: { lat: number; lng: number }) => void
 }
 
-const Map: React.FC<MapProps> = ({ position, setPosition }) => {
-  const CenteredMarker = () => {
-    const markerRef = useRef<null | any>(null)
+const CenteredMarker = ({
+  position,
+  setPosition,
+}: {
+  position: { lat: number; lng: number }
+  setPosition: (value: { lat: number; lng: number }) => void
+}) => {
+  const markerRef = useRef<null | any>(null)
 
-    const map = useMapEvents({
-      move() {
-        const marker = markerRef.current
-        if (marker) {
-          marker.setLatLng(map.getCenter())
-        }
-      },
-      moveend() {
-        setPosition(map.getCenter())
-      },
-      locationfound(e) {
-        console.log(e)
-        setPosition(e.latlng)
-        map.flyTo(e.latlng, map.getZoom())
-      },
-    })
-
-    useEffect(() => {
-      const center = map.getCenter()
-      if (position.lat !== center.lat) {
-        map.flyTo(position)
+  const map = useMapEvents({
+    move() {
+      const marker = markerRef.current
+      if (marker) {
+        marker.setLatLng(map.getCenter())
       }
-    }, [position])
+    },
+    moveend() {
+      setPosition(map.getCenter())
+    },
+    locationfound(e) {
+      console.log(e)
+      setPosition(e.latlng)
+      map.flyTo(e.latlng, map.getZoom())
+    },
+  })
 
-    const MarkerIcon = new Icon({
-      iconUrl: '/img/location-pin.png',
-      iconSize: [38, 38],
-    })
+  useEffect(() => {
+    const center = map.getCenter()
+    if (position.lat !== center.lat) {
+      map.flyTo(position)
+    }
+  }, [position, map])
 
-    return <Marker position={position} ref={markerRef} icon={MarkerIcon} />
-  }
+  const MarkerIcon = new Icon({
+    iconUrl: '/img/location-pin.png',
+    iconSize: [38, 38],
+  })
 
+  return <Marker position={position} ref={markerRef} icon={MarkerIcon} />
+}
+
+const Map: React.FC<MapProps> = ({ position, setPosition }) => {
   const mapRef = useRef<null | any>(null)
 
   return (
@@ -70,7 +76,7 @@ const Map: React.FC<MapProps> = ({ position, setPosition }) => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <CenteredMarker />
+          <CenteredMarker position={position} setPosition={setPosition} />
         </MapContainer>
       </div>
     </>

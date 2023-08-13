@@ -10,7 +10,7 @@ import useLoginModalStore from '@/stores/useLoginModalStore'
 import useAuthStore from '@/stores/useAuthStore'
 import useAppSideStore from '@/stores/useAppSideStore'
 import useAuthService from '@/hooks/useAuthService'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import useOutSideListener from '@/hooks/useOutSideListener'
 import Link from 'next/link'
 
@@ -18,7 +18,7 @@ const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { currentUser, isLoading, isLogin } = useAuthStore()
   const { appSide } = useAppSideStore()
-
+  const pathname = usePathname()
   const registerModal = useRegisterModalStore()
   const loginModal = useLoginModalStore()
   const { logout } = useAuthService()
@@ -44,6 +44,8 @@ const UserMenu = () => {
       console.log(error)
     }
   }
+
+  if (pathname?.startsWith('/404') || pathname?.startsWith('/500')) return <></>
 
   return (
     <div className="relative">

@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 const GoogleOauthRedirect = () => {
   const router = useRouter()
   const params = useSearchParams()
-  const authService = useAuthService()
+  const { googleLogin } = useAuthService()
 
   useEffect(() => {
     let code = params?.get('code')
@@ -15,8 +15,7 @@ const GoogleOauthRedirect = () => {
       router.push('/500')
       return
     }
-    authService
-      .googleLogin(code)
+    googleLogin(code)
       .then(() => {
         router.push('/')
       })
@@ -24,7 +23,7 @@ const GoogleOauthRedirect = () => {
         console.log(error.response.data)
         router.push('/500')
       })
-  }, [])
+  }, [googleLogin, params, router])
 
   return <div></div>
 }

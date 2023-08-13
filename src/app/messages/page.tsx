@@ -14,7 +14,7 @@ const MessagesPage = () => {
 
   useEffect(() => {
     if (isLogin === false) loginModalStore.open()
-  }, [isLogin])
+  }, [isLogin, loginModalStore])
 
   return (
     <div className="flex h-[calc(100vh-5rem)]">

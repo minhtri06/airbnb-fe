@@ -76,7 +76,7 @@ const HostingPage: React.FC = () => {
                 <div className="grid grid-cols-4 gap-10 text-lg">
                   {myProperties.map((p, i) => (
                     <PropertyCard
-                      key={i}
+                      key={p._id}
                       cardTitle={p.title}
                       thumbnail={p.thumbnail}
                       isLoading={false}

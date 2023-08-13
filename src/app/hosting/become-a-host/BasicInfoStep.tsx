@@ -26,7 +26,7 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({
       </div>
       <div className="pt-4  text-xl">
         <div className="pb-2">
-          <div className="font-semibold">Your home's title</div>
+          <div className="font-semibold">Your home&apos;s title</div>
         </div>
         <Input
           value={title}

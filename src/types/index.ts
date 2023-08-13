@@ -6,6 +6,7 @@ export type bed = {
 }
 
 export type accommodation = {
+  _id?: string
   title: string
   pricePerNight: string | number
   maximumOfGuests: number | string

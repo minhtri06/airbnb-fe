@@ -7,7 +7,7 @@ import Navbar from '@/components/navbar/Navbar'
 const SomethingWentWrong = () => {
   return (
     <>
-      <Navbar hideSearch hideUserMenu />
+      <Navbar />
       <div className="pl-10 pr-32 pt-20">
         <div className="flex justify-between">
           <div>
@@ -16,9 +16,13 @@ const SomethingWentWrong = () => {
             </div>
 
             <div className=" text-lg pb-3">
-              Go to{' '}
               <Link className="font-semibold underline" href="/">
-                Home
+                Go to Home
+              </Link>
+            </div>
+            <div className=" text-lg pb-3">
+              <Link className="font-semibold underline" href="/">
+                Visit our 404 page
               </Link>
             </div>
           </div>

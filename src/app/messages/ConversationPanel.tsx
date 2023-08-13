@@ -2,26 +2,34 @@
 
 import useChatStore from '@/stores/useChatStore'
 import ConversationBox from './ConversationBox'
-import { useEffect, useState } from 'react'
-import useChatAction from '@/hooks/useChatAction'
+import { useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import useAuthService from '@/hooks/useAuthService'
+import useAuthAxios from '@/hooks/useAuthAxios'
+import { conversation } from '@/types'
+import useAuthStore from '@/stores/useAuthStore'
 
 const ConversationPanel = () => {
   const { conversations, setConversations } = useChatStore()
+  const authAxios = useAuthAxios()
   const searchParams = useSearchParams()
-  const { isAuthenticated } = useAuthService()
-  const chatAction = useChatAction()
+  const { isLogin } = useAuthStore()
 
   const toUserId = searchParams?.get('t')
 
   useEffect(() => {
-    if (isAuthenticated())
-      chatAction
-        .getConversations()
-        .then(({ conversations }) => setConversations(conversations))
-    else setConversations([])
-  }, [])
+    if (isLogin) {
+      const getConversations = async (): Promise<{
+        conversations: conversation[]
+      }> => {
+        const res = await authAxios.get('/me/conversations')
+        return res.data
+      }
+
+      getConversations().then(({ conversations }) =>
+        setConversations(conversations),
+      )
+    } else setConversations([])
+  }, [authAxios, isLogin, setConversations])
 
   return (
     <div className="w-full h-full border-r-[1px]">

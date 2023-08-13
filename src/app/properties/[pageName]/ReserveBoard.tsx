@@ -125,7 +125,7 @@ const ReserveBoard: React.FC<ReserveBoardProps> = ({
                 rounded-lg overflow-hidden bg-white z-10 max-h-80 overflow-y-auto"
             >
               {accommodations.map((a, i) => (
-                <div key={i}>
+                <div key={a._id}>
                   {i !== 0 && <hr />}
                   <div
                     className={`py-3 px-5 flex items-center justify-between

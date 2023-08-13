@@ -61,7 +61,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ property }) => {
         </div>
         <div className="h-full w-full grid grid-cols-2 gap-3">
           {[1, 2, 3, 4].map((i) => (
-            <div className="relative">
+            <div key={i} className="relative">
               <Image
                 src={images[i] || '/img/home-icon.png'}
                 alt="Property image"

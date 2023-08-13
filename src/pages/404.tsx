@@ -25,7 +25,7 @@ const NotFound = () => {
               <Link href="/">Traveling on Airbnb</Link>
             </div>
             <div className="underline text-lg pb-3 font-semibold">
-              <Link href="/500">Go to 500 error page</Link>
+              <Link href="/500">Visit our error 500 page</Link>
             </div>
             <div className="underline text-lg pb-3 font-semibold">
               <Link href="/">Site map</Link>

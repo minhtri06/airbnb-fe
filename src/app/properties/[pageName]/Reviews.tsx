@@ -111,7 +111,7 @@ const Reviews: React.FC<ReviewsProps> = ({
         </div>
         <div className="grid grid-cols-2 mt-5 gap-y-10">
           {reviews.slice(0, 6).map((review, i) => (
-            <div key={i} className="h-40 mr-24">
+            <div key={review._id} className="h-40 mr-24">
               <Review
                 review={review}
                 showMoreOnClick={() => setIsShowAllReviews(true)}

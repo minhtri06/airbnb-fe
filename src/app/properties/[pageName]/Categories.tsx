@@ -21,6 +21,7 @@ const Categories: React.FC<CategoriesProps> = ({ property }) => {
     const category = CATEGORY_MAP.get(c)
     return (
       <div
+        key={c}
         className="h-16 px-5 flex items-center justify-start gap-3 border-[1px] 
         border-gray-300 rounded-lg"
       >
