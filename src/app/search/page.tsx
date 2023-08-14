@@ -15,11 +15,25 @@ const SearchMap = dynamic(() => import('./SearchMap'), { ssr: false })
 const SearchPage = ({ searchParams }: { searchParams: any }) => {
   const authAxios = useAuthAxios()
 
-  const [properties, setProperties] = useState<property[]>([])
+  const [properties, setProperties] = useState<property[] | null>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [totalPage, setTotalPage] = useState<number | null>(null)
+  const [totalPage, setTotalPage] = useState<number | null>(1)
+
+  const { provinceId, districtId, page, bookIn, bookOut, categoryCode } =
+    searchParams
+
+  useEffect(
+    () => setProperties(null),
+    [provinceId, districtId, page, bookIn, bookOut, categoryCode],
+  )
+  useEffect(
+    () => setTotalPage(null),
+    [provinceId, districtId, bookIn, bookOut, categoryCode],
+  )
 
   useEffect(() => {
+    if (properties !== null) return
+
     const searchProperties = async (params: any): Promise<propertyPaginate> => {
       const res = await authAxios.get('/properties', { params })
       return res.data
@@ -27,7 +41,12 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
 
     setIsLoading(true)
     searchProperties({
-      ...searchParams,
+      provinceId,
+      districtId,
+      page,
+      bookIn,
+      bookOut,
+      categoryCode,
       limit: 15,
       checkPaginate: totalPage === null,
     })
@@ -40,7 +59,17 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
         else console.log(error)
       })
       .finally(() => setIsLoading(false))
-  }, [searchParams, totalPage, authAxios])
+  }, [
+    totalPage,
+    authAxios,
+    properties,
+    provinceId,
+    districtId,
+    page,
+    bookIn,
+    bookOut,
+    categoryCode,
+  ])
 
   console.log(properties)
 
@@ -49,12 +78,12 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
       <div className="w-[62%] mr-0">
         <Container>
           <div className="">
-            <div
-              className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-            xl:grid-cols-5 2xl:grid-cols-6 gap-6"
-            >
-              {properties.length !== 0 &&
-                properties.map((property) => {
+            {properties && properties.length !== 0 && (
+              <div
+                className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+                  xl:grid-cols-5 2xl:grid-cols-6 gap-6"
+              >
+                {properties.map((property) => {
                   const query = new URLSearchParams(
                     pickFields(searchParams, 'bookIn', 'bookOut'),
                   )
@@ -81,7 +110,12 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
                     />
                   )
                 })}
-            </div>
+              </div>
+            )}
+            {properties && properties.length === 0 && (
+              <div>No property found</div>
+            )}
+
             {totalPage !== null && totalPage > 1 && (
               <PaginationController
                 currentPage={searchParams.page}
@@ -91,7 +125,9 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
           </div>
         </Container>
       </div>
-      {properties.length !== 0 && <SearchMap properties={properties} />}
+      {properties && properties.length !== 0 && (
+        <SearchMap properties={properties} />
+      )}
     </div>
   )
 }

@@ -10,14 +10,17 @@ import {
 } from '@/constants/urls'
 import { useCallback } from 'react'
 import {
-  getAccessToken,
   getRefreshToken,
+  refreshAuthTokens,
   removeAuthTokens,
   setAccessToken,
   setRefreshToken,
 } from '@/utils/tokenUtils'
 
-const useAuthService = () => {
+let logoutProcess: null | Promise<any> = null
+let refreshTokenProcess: null | Promise<any> = null
+
+const useAuth = () => {
   const { setIsLogin } = useAuthStore()
 
   const register = useCallback(async (body: object) => {
@@ -63,7 +66,31 @@ const useAuthService = () => {
     removeAuthTokens()
   }, [setIsLogin])
 
-  return { register, login, googleLogin, logout }
+  const handleLogout = useCallback(async () => {
+    if (logoutProcess === null) logoutProcess = logout()
+    await logoutProcess
+    logoutProcess = null
+  }, [logout])
+
+  const handleRefreshToken = useCallback(async () => {
+    try {
+      if (refreshTokenProcess === null)
+        refreshTokenProcess = refreshAuthTokens()
+      await refreshTokenProcess
+      refreshTokenProcess = null
+    } catch (error) {
+      await handleLogout()
+    }
+  }, [handleLogout])
+
+  return {
+    register,
+    login,
+    googleLogin,
+    logout,
+    handleLogout,
+    handleRefreshToken,
+  }
 }
 
-export default useAuthService
+export default useAuth

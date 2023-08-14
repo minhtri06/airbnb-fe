@@ -1,13 +1,13 @@
 'use client'
 
-import useAuthService from '@/hooks/useAuthService'
+import useAuth from '@/hooks/useAuth'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 const GoogleOauthRedirect = () => {
   const router = useRouter()
   const params = useSearchParams()
-  const { googleLogin } = useAuthService()
+  const { googleLogin } = useAuth()
 
   useEffect(() => {
     let code = params?.get('code')

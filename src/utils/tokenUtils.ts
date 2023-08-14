@@ -14,14 +14,6 @@ interface TokenPayload {
   type: string
 }
 
-export const refreshTokenProcess: {
-  promise: null | Promise<any>
-  isPending: boolean
-} = {
-  promise: null,
-  isPending: false,
-}
-
 export const getAccessToken = (): string | null =>
   localStorage.getItem(ACCESS_TOKEN)
 

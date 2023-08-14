@@ -1,36 +1,29 @@
-import useSocket from '@/hooks/useSocket'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import useChat from '@/hooks/useChat'
 
 const MessageInput = () => {
-  const searchParams = useSearchParams()
-  // const { chatSocket } = useSocket()
-  const router = useRouter()
+  const { currentChat, chats, setChats, handleSendMessage } = useChat()
 
-  const [message, setMessage] = useState('')
+  if (!currentChat) return <></>
 
-  const toUserId = searchParams?.get('t') as string
-
-  // console.log('???', chatSocket?.connected)
-  useEffect(() => {
-    console.log('rerender')
-  }, [])
-  const handleSendMessage = () => {
-    router.refresh()
-    console.log('refresh dau??')
-    // console.log(chatSocket)
-    console.log('send msg')
+  const setNewMessage = (value: string) => {
+    if (!currentChat) {
+      return
+    }
+    currentChat.newMessage = value
+    setChats([...chats])
   }
 
   return (
     <div
       className="h-[70px] flex items-center px-5 border-t-[1px]"
-      onKeyDown={handleSendMessage}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') handleSendMessage()
+      }}
     >
       <input
         className="w-full outline-none border-[1px] h-12 px-5 rounded-full bg-gray-200"
-        value={message}
-        onChange={(e) => setMessage(e.currentTarget.value)}
+        value={currentChat.newMessage}
+        onChange={(e) => setNewMessage(e.currentTarget.value)}
         placeholder="Message..."
       />
     </div>

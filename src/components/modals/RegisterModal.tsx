@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 
 import useRegisterModalStore from '@/stores/useRegisterModalStore'
 import Modal from './Modal'
-import useAuthService from '@/hooks/useAuthService'
+import useAuth from '@/hooks/useAuth'
 import Heading from '../Heading'
 import Input from '../inputs/Input'
 import validateRequire from '@/utils/validateRequire'
@@ -20,7 +20,7 @@ function RegisterModal() {
   const modal = useRegisterModalStore()
   const notificationModal = useNotificationModalStore()
 
-  const auth = useAuthService()
+  const auth = useAuth()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')

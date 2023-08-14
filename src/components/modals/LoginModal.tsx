@@ -1,6 +1,5 @@
 'use client'
 
-import { FcGoogle } from '@react-icons/all-files/fc/FcGoogle'
 import { useState } from 'react'
 import axios from 'axios'
 
@@ -8,7 +7,7 @@ import Modal from './Modal'
 import Heading from '../Heading'
 import Input from '../inputs/Input'
 import validateRequire from '@/utils/validateRequire'
-import useAuthService from '@/hooks/useAuthService'
+import useAuth from '@/hooks/useAuth'
 import useLoginModalStore from '@/stores/useLoginModalStore'
 import ErrorText from '../ErrorText'
 import { useRouter } from 'next/navigation'
@@ -17,7 +16,7 @@ import GoogleLoginButton from '../buttons/GoogleLoginButton'
 function LoginModal() {
   const modal = useLoginModalStore()
 
-  const auth = useAuthService()
+  const auth = useAuth()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -56,7 +55,10 @@ function LoginModal() {
         modal.close()
       } catch (error: any) {
         if (axios.isAxiosError(error)) {
-          setErrors((pre) => ({ ...pre, general: error.response.data.message }))
+          setErrors((pre) => ({
+            ...pre,
+            general: error.response?.data?.message,
+          }))
         } else {
           console.log(error)
         }

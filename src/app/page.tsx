@@ -11,9 +11,15 @@ import { useEffect, useState } from 'react'
 export default function Home({ searchParams }: { searchParams: any }) {
   const authAxios = useAuthAxios()
 
-  const [properties, setProperties] = useState<property[]>([])
+  const [properties, setProperties] = useState<property[] | null>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [totalPage, setTotalPage] = useState<number | null>(null)
+  const [totalPage, setTotalPage] = useState<number | null>(1)
+
+  const { categoryCode, page } = searchParams
+
+  useEffect(() => setProperties(null), [categoryCode, page])
+
+  useEffect(() => setTotalPage(null), [categoryCode])
 
   useEffect(() => {
     const searchProperties = async (params: any): Promise<propertyPaginate> => {
@@ -21,31 +27,32 @@ export default function Home({ searchParams }: { searchParams: any }) {
       return res.data
     }
 
-    setIsLoading(true)
-    searchProperties({
-      ...searchParams,
-      limit: 16,
-      checkPaginate: totalPage === null,
-    })
-      .then((results) => {
-        setProperties(results.data)
-        if (results.totalPage) setTotalPage(results.totalPage)
+    if (properties === null) {
+      setIsLoading(true)
+      searchProperties({
+        categoryCode,
+        page,
+        limit: 16,
+        checkPaginate: totalPage === null,
       })
-      .catch((error) => {
-        if (axios.isAxiosError(error)) console.log(error.response?.data)
-        else console.log(error)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }, [searchParams, authAxios, totalPage])
+        .then((results) => {
+          setProperties(results.data)
+          if (results.totalPage) setTotalPage(results.totalPage)
+        })
+        .catch((error) => {
+          if (axios.isAxiosError(error)) console.log(error.response?.data)
+          else console.log(error)
+        })
+        .finally(() => setIsLoading(false))
+    }
+  }, [categoryCode, page, authAxios, totalPage, properties])
 
   return (
     <div>
       <Container>
         <div
           className=" pt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
-            xl:grid-cols-5 2xl:grid-cols-6 gap-6"
+            2xl:grid-cols-5 gap-6"
         >
           {properties &&
             properties.map((property) => (

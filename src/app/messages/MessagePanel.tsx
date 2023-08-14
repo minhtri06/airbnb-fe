@@ -11,20 +11,14 @@ import MessageInput from './MessageInput'
 import Avatar from '@/components/Avatar'
 import apiAxios from '@/utils/apiAxios'
 import useAuthAxios from '@/hooks/useAuthAxios'
+import useChat from '@/hooks/useChat'
 
 const MessagePanel = () => {
   const { chats, setChats } = useChatStore()
   const { isLogin } = useAuthStore()
   const router = useRouter()
-  const searchParams = useSearchParams()
   const authAxios = useAuthAxios()
-
-  const toUserId = searchParams?.get('t')
-
-  const getCurrentChat = useCallback(
-    (userId: string) => chats.find((c) => c.user._id === userId) || null,
-    [chats],
-  )
+  const { toUserId, currentChat } = useChat()
 
   useEffect(() => {
     const getUserById = async (userId: string): Promise<{ user: user }> => {
@@ -42,42 +36,43 @@ const MessagePanel = () => {
     }
 
     if (!isLogin) {
-      setChats([])
+      if (chats.length !== 0) setChats([])
       return
     }
-    if (toUserId && !getCurrentChat(toUserId)) {
+    if (toUserId && !currentChat) {
       Promise.all([getUserById(toUserId), getMessages(toUserId)])
         .then(([{ user }, { messages }]) => {
           const chat: chat = {
             user: { _id: user._id, name: user.name, avatar: user.avatar },
             messages: messages,
+            newMessage: '',
           }
           setChats([...chats, chat])
         })
-        .catch((err) => {
-          if (axios.isAxiosError(err) && err.response?.status !== 404)
+        .catch((error) => {
+          if (!axios.isAxiosError(error)) {
             router.push('/500')
+          }
         })
     }
-  }, [isLogin, toUserId, authAxios, chats, getCurrentChat, router, setChats])
-
-  let currentChat: chat | null = null
-  if (toUserId) {
-    currentChat = getCurrentChat(toUserId)
-  }
+  }, [isLogin, toUserId, authAxios, chats, currentChat, router, setChats])
 
   return (
     <div className="w-full h-full flex flex-col">
       <div className="h-[70px] border-b-[1px] flex items-center px-5 gap-5">
-        <Avatar size="md" avatarUrl={currentChat?.user?.avatar} />
-        <span className="font-bold">{currentChat?.user.name}</span>
+        {currentChat && (
+          <>
+            <Avatar size="md" avatarUrl={currentChat?.user?.avatar} />
+            <span className="font-bold">{currentChat?.user.name}</span>
+          </>
+        )}
       </div>
       {currentChat && (
         <>
-          <div className="flex-1 flex flex-col-reverse px-5">
+          <div className="flex-1 flex flex-col-reverse px-5 overflow-y-auto">
             {currentChat &&
-              currentChat.messages.map((m) => (
-                <Message key={m._id} chatUser={currentChat!.user} message={m} />
+              currentChat.messages.map((m, i) => (
+                <Message key={i} chatUser={currentChat!.user} message={m} />
               ))}
           </div>
 

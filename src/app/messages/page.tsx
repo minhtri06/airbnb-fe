@@ -5,16 +5,14 @@ import ConversationPanel from './ConversationPanel'
 import MessagePanel from './MessagePanel'
 import useAuthStore from '@/stores/useAuthStore'
 import useLoginModalStore from '@/stores/useLoginModalStore'
-import useSocket from '@/hooks/useSocket'
 
 const MessagesPage = () => {
   const { isLogin } = useAuthStore()
-  const loginModalStore = useLoginModalStore()
-  const { chatSocket } = useSocket()
+  const { open: openLoginModal } = useLoginModalStore()
 
   useEffect(() => {
-    if (isLogin === false) loginModalStore.open()
-  }, [isLogin, loginModalStore])
+    if (isLogin === false) openLoginModal()
+  }, [isLogin, openLoginModal])
 
   return (
     <div className="flex h-[calc(100vh-5rem)]">

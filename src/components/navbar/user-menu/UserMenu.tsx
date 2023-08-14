@@ -9,7 +9,7 @@ import useRegisterModalStore from '@/stores/useRegisterModalStore'
 import useLoginModalStore from '@/stores/useLoginModalStore'
 import useAuthStore from '@/stores/useAuthStore'
 import useAppSideStore from '@/stores/useAppSideStore'
-import useAuthService from '@/hooks/useAuthService'
+import useAuth from '@/hooks/useAuth'
 import { usePathname, useRouter } from 'next/navigation'
 import useOutSideListener from '@/hooks/useOutSideListener'
 import Link from 'next/link'
@@ -21,7 +21,7 @@ const UserMenu = () => {
   const pathname = usePathname()
   const registerModal = useRegisterModalStore()
   const loginModal = useLoginModalStore()
-  const { logout } = useAuthService()
+  const { logout } = useAuth()
   const router = useRouter()
 
   const toggleOpen = () => setIsOpen((pre) => !pre)

@@ -92,13 +92,12 @@ export type propertyPaginate = {
 }
 
 export type conversation = {
-  _id: string
+  _id?: string
   withUser: { _id: string; name: string; avatar?: string }
   latestMessage: { body: string; sender: string }
 }
 
 export type message = {
-  _id: string
   userIds: string[]
   body: string
 }
@@ -120,6 +119,7 @@ export type user = {
 export type chat = {
   user: user
   messages: message[]
+  newMessage: string
 }
 
 export type division = {

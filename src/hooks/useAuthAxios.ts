@@ -1,23 +1,21 @@
 import axios from 'axios'
 
-import useAuthService from './useAuthService'
+import useAuth from './useAuth'
 import { BASE_URL } from '@/constants/urls'
-import { useEffect, useMemo } from 'react'
-const authAxios = axios.create({
-  baseURL: BASE_URL,
-  headers: { 'Content-Type': 'application/json' },
-})
-import {
-  getAccessToken,
-  refreshAuthTokens,
-  refreshTokenProcess,
-} from '@/utils/tokenUtils'
+import { useMemo } from 'react'
+
+import { getAccessToken } from '@/utils/tokenUtils'
 
 const useAuthAxios = () => {
-  const { logout } = useAuthService()
+  const { handleRefreshToken } = useAuth()
 
-  useEffect(() => {
-    const requestInterceptor = authAxios.interceptors.request.use(
+  return useMemo(() => {
+    const authAxios = axios.create({
+      baseURL: BASE_URL,
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    authAxios.interceptors.request.use(
       (config) => {
         if (!config.headers.Authorization)
           config.headers.Authorization = getAccessToken()
@@ -26,28 +24,18 @@ const useAuthAxios = () => {
       (error) => Promise.reject(error),
     )
 
-    const responseInterceptor = authAxios.interceptors.response.use(
+    authAxios.interceptors.response.use(
       (response) => response,
       async (error) => {
-        console.log('response error')
         if (axios.isAxiosError(error)) {
           // Handle refresh token
           const preRequest = error.config
           if (error.response?.status === 401 && preRequest) {
-            try {
-              if (!refreshTokenProcess.isPending) {
-                refreshTokenProcess.isPending = true
-                refreshTokenProcess.promise = refreshAuthTokens()
-              }
-              const { newAccessToken } = await refreshTokenProcess.promise
-              refreshTokenProcess.isPending = false
-              preRequest.headers.Authorization = newAccessToken
-              return await authAxios(preRequest)
-            } catch (error) {
-              logout()
-            }
+            console.log('refresh')
+            await handleRefreshToken()
+            preRequest.headers.Authorization = getAccessToken()
+            return authAxios(preRequest)
           }
-
           // Print error
           console.log(error.response?.data)
         } else {
@@ -57,13 +45,8 @@ const useAuthAxios = () => {
       },
     )
 
-    return () => {
-      authAxios.interceptors.request.eject(requestInterceptor)
-      authAxios.interceptors.response.eject(responseInterceptor)
-    }
-  }, [logout])
-
-  return useMemo(() => authAxios, [])
+    return authAxios
+  }, [handleRefreshToken])
 }
 
 export default useAuthAxios
