@@ -140,3 +140,31 @@ export type province = {
   _id: string
   name: string
 }
+
+export type booking = {
+  _id: string
+  bookIn: Date
+  bookOut: Date
+  property: {
+    _id: string
+    title: string
+    pageName: string
+    address: {
+      address: string
+      district: string
+      province: string
+      latitude: number
+      longitude: number
+      districtName: string
+      provinceName: string
+    }
+    thumbnail: string
+    score: number | null
+  }
+  status: 'booked' | 'cancel'
+  pricePerNight: number
+  accomTitle: 'Cozy apartment'
+  accomType: 'entire-house'
+  numberOfDays: 4
+  totalPrice: 280
+}

@@ -73,62 +73,66 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
 
   console.log(properties)
 
-  return (
-    <div className="flex">
-      <div className="w-[62%] mr-0">
-        <Container>
-          <div className="">
-            {properties && properties.length !== 0 && (
-              <div
-                className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-                  xl:grid-cols-5 2xl:grid-cols-6 gap-6"
-              >
-                {properties.map((property) => {
-                  const query = new URLSearchParams(
-                    pickFields(searchParams, 'bookIn', 'bookOut'),
-                  )
-                  const linkHref = `/properties/${
-                    property.pageName
-                  }?${query.toString()}`
-                  return (
-                    <PropertyCard
-                      key={property._id}
-                      cardTitle={property.title}
-                      subText1={
-                        (property.address?.districtName +
-                          ', ' +
-                          property.address?.provinceName) as string
-                      }
-                      thumbnail={property.thumbnail as string}
-                      score={property.score || 9}
-                      reviewCount={property.reviewCount}
-                      pricePerNight={
-                        property.accommodations[0].pricePerNight as number
-                      }
-                      isLoading={isLoading}
-                      linkHref={linkHref}
-                    />
-                  )
-                })}
-              </div>
-            )}
-            {properties && properties.length === 0 && (
-              <div>No property found</div>
-            )}
+  if (!properties) return <></>
 
-            {totalPage !== null && totalPage > 1 && (
-              <PaginationController
-                currentPage={searchParams.page}
-                maxPage={totalPage}
-              />
-            )}
+  return (
+    <>
+      {properties.length !== 0 && (
+        <div className="flex">
+          <div className="w-[62%] mr-0">
+            <Container>
+              <div className="">
+                <div
+                  className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+                  xl:grid-cols-5 2xl:grid-cols-6 gap-6"
+                >
+                  {properties.map((property) => {
+                    const query = new URLSearchParams(
+                      pickFields(searchParams, 'bookIn', 'bookOut'),
+                    )
+                    const linkHref = `/properties/${
+                      property.pageName
+                    }?${query.toString()}`
+                    return (
+                      <PropertyCard
+                        key={property._id}
+                        cardTitle={property.title}
+                        subText1={
+                          (property.address?.districtName +
+                            ', ' +
+                            property.address?.provinceName) as string
+                        }
+                        thumbnail={property.thumbnail as string}
+                        score={property.score || 9}
+                        reviewCount={property.reviewCount}
+                        pricePerNight={
+                          property.accommodations[0].pricePerNight as number
+                        }
+                        isLoading={isLoading}
+                        linkHref={linkHref}
+                      />
+                    )
+                  })}
+                </div>
+
+                {totalPage !== null && totalPage > 1 && (
+                  <PaginationController
+                    currentPage={searchParams.page}
+                    maxPage={totalPage}
+                  />
+                )}
+              </div>
+            </Container>
           </div>
-        </Container>
-      </div>
-      {properties && properties.length !== 0 && (
-        <SearchMap properties={properties} />
+          <SearchMap properties={properties} />
+        </div>
       )}
-    </div>
+      {properties && properties.length === 0 && (
+        <div className="text-2xl font-semibold flex justify-center items-center mt-10">
+          No property found
+        </div>
+      )}
+    </>
   )
 }
 

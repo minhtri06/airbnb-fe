@@ -12,6 +12,12 @@ const Navbar = () => {
   const { appSide } = useAppSideStore()
   const pathname = usePathname()
 
+  const isSearchShowed =
+    appSide === 'traveling' && pathname !== '/messages' && pathname !== '/trips'
+
+  const isCategoriesShowed =
+    appSide === 'traveling' && pathname !== '/messages' && pathname !== '/trips'
+
   return (
     <>
       <div className="w-ful h-20">
@@ -25,9 +31,7 @@ const Navbar = () => {
                 <Logo />
               </div>
 
-              {appSide === 'traveling' && pathname !== '/messages' && (
-                <Search />
-              )}
+              {isSearchShowed && <Search />}
 
               <div className="absolute right-0 z-20">
                 <UserMenu />
@@ -36,7 +40,7 @@ const Navbar = () => {
           </Container>
         </div>
       </div>
-      {appSide === 'traveling' && pathname !== '/messages' && <Categories />}
+      {isCategoriesShowed && <Categories />}
     </>
   )
 }

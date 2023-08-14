@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { FaAngleRight } from '@react-icons/all-files/fa/FaAngleRight'
 import { FaAngleLeft } from '@react-icons/all-files/fa/FaAngleLeft'
+import { useCallback } from 'react'
 
 interface PaginationControllerProps {
   currentPage?: number | string | null
@@ -56,6 +57,13 @@ const PaginationController: React.FC<PaginationControllerProps> = ({
     router.push(`${pathname}${query}`)
   }
 
+  const handleGoToPrevPage = (currentPage: number) => {
+    if (currentPage > 1) handleOnSwitchPage(currentPage - 1)
+  }
+  const handleGoToNextPage = (currentPage: number) => {
+    if (currentPage < maxPage) handleOnSwitchPage(currentPage + 1)
+  }
+
   return (
     <div
       className="w-full flex justify-center gap-4 items-center text-base font-semibold
@@ -64,6 +72,7 @@ const PaginationController: React.FC<PaginationControllerProps> = ({
       <div
         className="w-8 h-8 flex items-center justify-center rounded-full 
           cursor-pointer hover:bg-gray-200 select-none"
+        onClick={() => handleGoToPrevPage(currentPage as number)}
       >
         <FaAngleLeft />
       </div>
@@ -93,7 +102,8 @@ const PaginationController: React.FC<PaginationControllerProps> = ({
       })}
       <div
         className="w-8 h-8 flex items-center justify-center rounded-full 
-      cursor-pointer hover:bg-gray-200 select-none"
+          cursor-pointer hover:bg-gray-200 select-none"
+        onClick={() => handleGoToNextPage(currentPage as number)}
       >
         <FaAngleRight />
       </div>

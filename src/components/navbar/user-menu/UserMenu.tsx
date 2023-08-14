@@ -1,7 +1,7 @@
 'use client'
 
 import { AiOutlineMenu } from '@react-icons/all-files/ai/AiOutlineMenu'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import Avatar from '../../Avatar'
 import MenuItem from './MenuItem'
@@ -84,21 +84,27 @@ const UserMenu = () => {
       </div>
       {isOpen && (
         <div
-          className="absolute rounded-xl w-52 bg-white select-none
+          className="absolute rounded-xl w-60 bg-white select-none
             overflow-hidden right-0 top-12 text-base"
           style={{ boxShadow: '0px 4px 10px 4px rgb(0 0 0 / 0.1)' }}
           ref={menuRef}
         >
-          <div className="flex flex-col cursor-pointer">
+          <div className="flex flex-col cursor-pointer text-sm py-2">
             {isLogin ? (
               <>
-                <MenuItem onClick={closeMenu} label="Account" />
-                <MenuItem onClick={closeMenu} label="My save" />
-                <Link href="/messages">
-                  <MenuItem onClick={closeMenu} label="Messages" />
-                </Link>
+                <div className="font-bold">
+                  <MenuItem onClick={closeMenu} label="My save" />
+                  <Link href="/trips">
+                    <MenuItem onClick={closeMenu} label="Trips" />
+                  </Link>
+                  <Link href="/messages">
+                    <MenuItem onClick={closeMenu} label="Messages" />
+                  </Link>
+                </div>
                 <hr />
+                <MenuItem onClick={closeMenu} label="Account" />
                 <MenuItem onClick={closeMenu} label="Help" />
+                <hr />
                 <MenuItem onClick={handleLogout} label="Logout" />
               </>
             ) : (
