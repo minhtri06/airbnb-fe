@@ -50,19 +50,13 @@ const UserMenu = () => {
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
-        {!isLoading && (
-          <Link
-            href={
-              appSide !== null && appSide === 'traveling' ? '/hosting' : '/'
-            }
-          >
+        {!isLoading && appSide === 'traveling' && (
+          <Link href="/hosting">
             <div
               className=" hidden lg:block text-base font-semibold px-4 py-2 select-none
                 hover:bg-neutral-100 transition cursor-pointer rounded-full h-10"
             >
-              {appSide === 'traveling'
-                ? 'Switch to hosting'
-                : 'Switch to traveling'}
+              Switch to hosting
             </div>
           </Link>
         )}

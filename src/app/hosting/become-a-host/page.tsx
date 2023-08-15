@@ -161,7 +161,7 @@ const BecomeAHostPage = () => {
           title={title}
           titleOnChange={(v) => setTitle(v)}
           pageName={pageName}
-          pageNameOnChange={(v) => setPageName(v)}
+          pageNameOnChange={(v) => setPageName(v.replaceAll(' ', '-'))}
           error={errors.basicInfo}
         />
       )

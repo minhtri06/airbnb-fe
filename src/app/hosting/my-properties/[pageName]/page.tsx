@@ -1,17 +1,12 @@
 'use client'
 
-import React from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 
-const page = ({
-  params,
-
-  searchParams,
-}: {
-  params: { pageName: string }
-  searchParams: any
-}) => {
-  console.log(searchParams)
-  return <div>{params.pageName}</div>
+const MyPropertyPage = () => {
+  const router = useRouter()
+  const pathname = usePathname()
+  router.replace(pathname + '/info')
+  return <div></div>
 }
 
-export default page
+export default MyPropertyPage

@@ -7,13 +7,17 @@ import Search from './search/Search'
 import UserMenu from './user-menu/UserMenu'
 import Categories from '../categories/Categories'
 import { usePathname } from 'next/navigation'
+import PropertyManagementNav from './PropertyManagementNav'
 
 const Navbar = () => {
   const { appSide } = useAppSideStore()
   const pathname = usePathname()
 
-  const isSearchShowed =
-    appSide === 'traveling' && pathname !== '/messages' && pathname !== '/trips'
+  let Middle
+  if (appSide === 'traveling') Middle = <Search />
+  else if (pathname?.startsWith('/hosting/my-properties'))
+    Middle = <PropertyManagementNav />
+  else Middle = <></>
 
   const isCategoriesShowed =
     appSide === 'traveling' && pathname !== '/messages' && pathname !== '/trips'
@@ -31,7 +35,7 @@ const Navbar = () => {
                 <Logo />
               </div>
 
-              {isSearchShowed && <Search />}
+              {Middle}
 
               <div className="absolute right-0 z-20">
                 <UserMenu />
