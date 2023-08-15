@@ -10,19 +10,22 @@ import { BsFillHouseFill } from '@react-icons/all-files/bs/BsFillHouseFill'
 import { FaHome } from '@react-icons/all-files/fa/FaHome'
 import { useRef, useState } from 'react'
 import ErrorText from '@/components/ErrorText'
+import useAuthAxios from '@/hooks/useAuthAxios'
+import useNotificationModalStore from '@/stores/useNotificationModalStore'
+import Router from 'next/router'
+import Modal from '@/components/modals/Modal'
+import Image from 'next/image'
+import { usePathname, useRouter } from 'next/navigation'
 
 interface ReserveBoardProps {
   bookIn: Date | null
   bookOut: Date | null
-  bookingOnChange: (newBookIn: Date, newBookOut: Date) => void
+  bookingOnChange: (newBookIn: Date | null, newBookOut: Date | null) => void
   accommodations: accommodation[]
   selectedAccom: accommodation | null
   selectedAccomOnChange: (value: accommodation | null) => void
   isAvailable: boolean | undefined
-}
-
-const AccommodationSelect = (accommodations: accommodation[]) => {
-  return <div></div>
+  propertyId: string
 }
 
 const ReserveBoard: React.FC<ReserveBoardProps> = ({
@@ -33,9 +36,15 @@ const ReserveBoard: React.FC<ReserveBoardProps> = ({
   selectedAccom,
   selectedAccomOnChange,
   isAvailable,
+  propertyId,
 }) => {
+  const authAxios = useAuthAxios()
+  const router = useRouter()
+  const pathname = usePathname()
+
   const [isBookingInputShowed, setIsBookingInputShowed] = useState(false)
   const [isAccomSelectorOpen, setIsAccomSelectorOpen] = useState(false)
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
 
   const haveBooking = bookIn !== null && bookOut !== null
 
@@ -47,6 +56,52 @@ const ReserveBoard: React.FC<ReserveBoardProps> = ({
   useOutSideListener('mousedown', [accomSelectorButtonRef], () => {
     setIsAccomSelectorOpen(false)
   })
+
+  const SuccessModal = (
+    <Modal
+      isOpen={isSuccessModalOpen}
+      onClose={() => {
+        setIsSuccessModalOpen(false)
+        bookingOnChange(null, null)
+      }}
+      title="Congratulation"
+      body={
+        <div className="text-lg">
+          <div className="h-36 flex justify-center">
+            <Image
+              src="/img/welcome.png"
+              width={0}
+              height={0}
+              sizes="100vh"
+              style={{ width: 'auto', height: '100%' }}
+              alt="Property image"
+            />
+          </div>
+          <div className="flex justify-center">
+            You have book successfully. Let&apos;s check it out
+          </div>
+        </div>
+      }
+      actionLabel={'Go to Trips'}
+      action={() => router.push('/trips')}
+      secondaryActionLabel="Close"
+      secondaryAction={() => {
+        setIsSuccessModalOpen(false)
+        bookingOnChange(null, null)
+      }}
+    />
+  )
+
+  const handleReserve = async () => {
+    if (!selectedAccom) return
+    await authAxios.post('/bookings', {
+      bookIn,
+      bookOut,
+      property: propertyId,
+      accomId: selectedAccom._id,
+    })
+    setIsSuccessModalOpen(true)
+  }
 
   return (
     <div
@@ -216,10 +271,12 @@ const ReserveBoard: React.FC<ReserveBoardProps> = ({
       <div className="mt-7">
         <Button
           label="Reserve"
-          onClick={() => {}}
+          onClick={handleReserve}
           disabled={!selectedAccom || !selectedAccom.isAvailable}
         />
       </div>
+
+      {isSuccessModalOpen && SuccessModal}
     </div>
   )
 }

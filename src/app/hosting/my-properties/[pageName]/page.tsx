@@ -2,7 +2,15 @@
 
 import React from 'react'
 
-const page = ({ params }: { params: { pageName: string } }) => {
+const page = ({
+  params,
+
+  searchParams,
+}: {
+  params: { pageName: string }
+  searchParams: any
+}) => {
+  console.log(searchParams)
   return <div>{params.pageName}</div>
 }
 

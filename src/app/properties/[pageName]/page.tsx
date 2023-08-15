@@ -81,7 +81,10 @@ const PropertyDetailPage = ({ params }: { params: { pageName: string } }) => {
     setSelectedAccom(null)
   }, [property])
 
-  const handleBookingOnChange = (newBookIn: Date, newBookOut: Date) => {
+  const handleBookingOnChange = (
+    newBookIn: Date | null,
+    newBookOut: Date | null,
+  ) => {
     setBookIn(newBookIn)
     setBookOut(newBookOut)
   }
@@ -116,6 +119,7 @@ const PropertyDetailPage = ({ params }: { params: { pageName: string } }) => {
 
           <div className="w-2/5 min-w-[300px] flex justify-end">
             <ReserveBoard
+              propertyId={property._id}
               bookIn={bookIn}
               bookOut={bookOut}
               bookingOnChange={handleBookingOnChange}

@@ -34,7 +34,7 @@ const BookingInput: React.FC<BookingInputProps> = ({
     >
       <DateRangePicker
         ranges={[bookingRange]}
-        minDate={new Date()}
+        minDate={moment().add(2, 'days').toDate()}
         maxDate={moment().add(3, 'months').toDate()}
         rangeColors={['#374151']}
         onChange={handleSelectDate}
