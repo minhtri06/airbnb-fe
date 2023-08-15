@@ -73,20 +73,18 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
 
   console.log(properties)
 
-  if (!properties) return <></>
-
   return (
     <>
-      {properties.length !== 0 && (
-        <div className="flex">
-          <div className="w-[62%] mr-0">
-            <Container>
-              <div className="">
-                <div
-                  className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+      <div className="flex">
+        <div className="w-[62%] mr-0">
+          <Container>
+            <div className="">
+              <div
+                className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3
                   xl:grid-cols-5 2xl:grid-cols-6 gap-6"
-                >
-                  {properties.map((property) => {
+              >
+                {properties &&
+                  properties.map((property) => {
                     const query = new URLSearchParams(
                       pickFields(searchParams, 'bookIn', 'bookOut'),
                     )
@@ -113,25 +111,24 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
                       />
                     )
                   })}
-                </div>
-
-                {totalPage !== null && totalPage > 1 && (
-                  <PaginationController
-                    currentPage={searchParams.page}
-                    maxPage={totalPage}
-                  />
-                )}
               </div>
-            </Container>
-          </div>
-          <SearchMap properties={properties} />
+              {properties && properties.length === 0 && (
+                <div className="text-2xl font-semibold flex justify-center items-center mt-10">
+                  No property found
+                </div>
+              )}
+
+              {totalPage !== null && totalPage > 1 && (
+                <PaginationController
+                  currentPage={searchParams.page}
+                  maxPage={totalPage}
+                />
+              )}
+            </div>
+          </Container>
         </div>
-      )}
-      {properties && properties.length === 0 && (
-        <div className="text-2xl font-semibold flex justify-center items-center mt-10">
-          No property found
-        </div>
-      )}
+        <SearchMap properties={properties} />
+      </div>
     </>
   )
 }
