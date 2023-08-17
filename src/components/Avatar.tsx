@@ -3,8 +3,8 @@
 import Image from 'next/image'
 
 interface AvatarProps {
-  size: 'sm' | 'md' | 'lg'
-  avatarUrl?: string
+  size: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
+  avatarUrl?: string | null
 }
 
 const Avatar: React.FC<AvatarProps> = ({ size, avatarUrl }) => {
@@ -18,6 +18,15 @@ const Avatar: React.FC<AvatarProps> = ({ size, avatarUrl }) => {
       break
     case 'lg':
       style = 'h-16 w-16'
+      break
+    case 'xl':
+      style = 'h-20 w-20'
+      break
+    case '2xl':
+      style = 'h-24 w-24'
+      break
+    case '3xl':
+      style = 'h-28 w-28'
       break
   }
 

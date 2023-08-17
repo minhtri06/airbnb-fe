@@ -7,8 +7,9 @@ const Footer = () => {
   const pathname = usePathname()
 
   if (
-    pathname?.startsWith('/hosting/become-a-host') ||
-    pathname?.startsWith('/messages')
+    pathname?.startsWith('/new-property') ||
+    pathname?.startsWith('/messages') ||
+    pathname?.startsWith('/my-properties')
   )
     return <></>
 

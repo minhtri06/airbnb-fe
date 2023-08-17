@@ -3,12 +3,22 @@ import '@/app/globals.css'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import Navbar from '@/components/navbar/Navbar'
-
 const NotFound = () => {
   return (
     <>
-      <Navbar />
+      <div className="w-ful h-20 px-10 flex items-center border-b-[1px]">
+        <Link href="/">
+          <Image
+            priority
+            alt="Logo"
+            src="/img/airbnb-logo.svg"
+            className="hidden md:block cursor-pointer"
+            style={{ height: 'auto' }}
+            height={0}
+            width={100}
+          />
+        </Link>
+      </div>
       <div className="pl-10 pr-32 pt-20">
         <div className="flex justify-between">
           <div>

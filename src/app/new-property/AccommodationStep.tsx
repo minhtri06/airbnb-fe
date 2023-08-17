@@ -7,8 +7,8 @@ import Input from '@/components/inputs/Input'
 import { useEffect, useRef } from 'react'
 import { IconType } from '@react-icons/all-files'
 import { AiOutlineHome } from '@react-icons/all-files/ai/AiOutlineHome'
-import { BsHouseDoor } from '@react-icons/all-files/bs/BsHouseDoor'
 import { accommodation, bed } from '@/types'
+import { BiDoorOpen } from '@react-icons/all-files/bi/BiDoorOpen'
 
 interface AccommodationStepProps {
   accommodations: accommodation[]
@@ -199,7 +199,7 @@ const AccommodationStep: React.FC<AccommodationStepProps> = ({
                 title="A room"
                 subtitle="Guests have their own room in a home, plus access to shared
                   spaces"
-                Icon={BsHouseDoor}
+                Icon={BiDoorOpen}
                 isSelected={a.type === 'specific-room'}
                 onClick={() =>
                   accommodationOnChange({ ...a, type: 'specific-room' }, i)

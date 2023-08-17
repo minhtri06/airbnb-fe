@@ -51,7 +51,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ property }) => {
       <div className="flex gap-3 h-96 rounded-xl overflow-hidden relative">
         <div className="h-full w-full relative">
           <Image
-            src={images[0] || '/img/home-icon.png'}
+            src={property.thumbnail || '/img/home-icon.png'}
             alt="Property image"
             style={{ objectFit: 'cover' }}
             fill
@@ -60,7 +60,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ property }) => {
           />
         </div>
         <div className="h-full w-full grid grid-cols-2 gap-3">
-          {[1, 2, 3, 4].map((i) => (
+          {[0, 1, 2, 3].map((i) => (
             <div key={i} className="relative">
               <Image
                 src={images[i] || '/img/home-icon.png'}

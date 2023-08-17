@@ -63,7 +63,7 @@ const HostingPage: React.FC = () => {
             <div className="w-44">
               <Button
                 label="New property"
-                onClick={() => router.push('/hosting/become-a-host')}
+                onClick={() => router.push('/new-property')}
                 outline
                 big
               />
@@ -80,7 +80,7 @@ const HostingPage: React.FC = () => {
                       cardTitle={p.title}
                       thumbnail={p.thumbnail}
                       isLoading={false}
-                      linkHref={`/hosting/my-properties/${p.pageName}`}
+                      linkHref={`/my-properties/${p.pageName}`}
                     />
                   ))}
                 </div>

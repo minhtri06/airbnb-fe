@@ -4,8 +4,12 @@ export interface CurrentUser {
   _id: string
   name: string
   email: string
-  avatar?: string
+  authType: 'local' | 'google'
+  avatar?: string | null
   address?: { [key: string]: string }
+  phoneNumber?: string | null
+  gender?: 'male' | 'female' | null
+  dateOfBirth?: Date | null
 }
 
 interface CurrentUserStore {
@@ -19,6 +23,12 @@ interface CurrentUserStore {
 
 const useAuthStore = create<CurrentUserStore>((set) => {
   const setCurrentUser = (newCurrentUser: CurrentUser | null) => {
+    if (
+      newCurrentUser?.dateOfBirth &&
+      typeof newCurrentUser.dateOfBirth === 'string'
+    )
+      newCurrentUser.dateOfBirth = new Date(newCurrentUser.dateOfBirth)
+
     set({ currentUser: newCurrentUser, isLoading: false })
   }
 

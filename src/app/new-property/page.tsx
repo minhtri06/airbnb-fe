@@ -32,7 +32,7 @@ export type addressState = {
   longitude: number | null
 }
 
-const BecomeAHostPage = () => {
+const NewPropertyPage = () => {
   const authStore = useAuthStore()
   const authAxios = useAuthAxios()
   const router = useRouter()
@@ -304,7 +304,7 @@ const BecomeAHostPage = () => {
             })
             return false
           }
-          if (isNaN(a.pricePerNight as number) || Number(a.pricePerNight) < 0) {
+          if (isNaN(a.pricePerNight as number) || Number(a.pricePerNight) < 1) {
             setErrors({ accommodation: `Invalid price at accommodation #${i}` })
             return false
           }
@@ -382,4 +382,4 @@ const BecomeAHostPage = () => {
   )
 }
 
-export default BecomeAHostPage
+export default NewPropertyPage

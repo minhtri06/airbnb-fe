@@ -50,7 +50,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             <span className="whitespace-nowrap text-rose-700">
               {score && (
                 <LoadingText
-                  text={`${score}/10 (${reviewCount})`}
+                  text={`${Math.round(score * 10) / 10}/10 (${reviewCount})`}
                   isLoading={isLoading}
                   length={5}
                 />

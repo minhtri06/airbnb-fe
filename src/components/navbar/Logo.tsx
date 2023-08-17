@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import logo from '@/../public/img/airbnb-logo.svg'
 
 const Logo = () => {
   return (
@@ -9,7 +10,7 @@ const Logo = () => {
       <Image
         priority
         alt="Logo"
-        src="/img/airbnb-logo.svg"
+        src={logo}
         className="hidden md:block cursor-pointer"
         style={{ height: 'auto' }}
         height={0}

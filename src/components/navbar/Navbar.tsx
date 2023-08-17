@@ -10,17 +10,16 @@ import { usePathname } from 'next/navigation'
 import PropertyManagementNav from './PropertyManagementNav'
 
 const Navbar = () => {
-  const { appSide } = useAppSideStore()
   const pathname = usePathname()
 
   let Middle
-  if (appSide === 'traveling') Middle = <Search />
-  else if (pathname?.startsWith('/hosting/my-properties'))
+  if (pathname === '/' || pathname === '/search') Middle = <Search />
+  else if (pathname?.startsWith('/my-properties'))
     Middle = <PropertyManagementNav />
   else Middle = <></>
 
-  const isCategoriesShowed =
-    appSide === 'traveling' && pathname !== '/messages' && pathname !== '/trips'
+  const isCategoriesShowed = pathname === '/' || pathname === '/search'
+  const isUserMenuShowed = pathname !== '/500' && pathname !== '/404'
 
   return (
     <>

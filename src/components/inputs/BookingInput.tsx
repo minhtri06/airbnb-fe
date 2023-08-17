@@ -13,8 +13,8 @@ const BookingInput: React.FC<BookingInputProps> = ({
   bookingOnChange,
 }) => {
   const bookingRange = {
-    startDate: bookIn || moment().toDate(),
-    endDate: bookOut || moment().toDate(),
+    startDate: bookIn || moment().add(2, 'days').toDate(),
+    endDate: bookOut || moment().add(2, 'days').toDate(),
     key: 'selection',
   }
 

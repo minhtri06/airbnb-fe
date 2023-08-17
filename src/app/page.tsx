@@ -65,7 +65,7 @@ export default function Home({ searchParams }: { searchParams: any }) {
                 }
                 subText1={property.title as string}
                 thumbnail={property.thumbnail as string}
-                score={property.score || 9}
+                score={property.score}
                 reviewCount={property.reviewCount}
                 pricePerNight={
                   property.accommodations[0].pricePerNight as number

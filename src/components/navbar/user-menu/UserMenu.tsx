@@ -96,7 +96,9 @@ const UserMenu = () => {
                   </Link>
                 </div>
                 <hr />
-                <MenuItem onClick={closeMenu} label="Account" />
+                <Link href="/account">
+                  <MenuItem onClick={closeMenu} label="Account" />
+                </Link>
                 <MenuItem onClick={closeMenu} label="Help" />
                 <hr />
                 <MenuItem onClick={handleLogout} label="Logout" />

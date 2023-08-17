@@ -80,7 +80,9 @@ const Reviews: React.FC<ReviewsProps> = ({
             <div>
               <div className="w-2/2 flex gap-5 text-3xl font-bold mb-7">
                 <AiFillStar size={30} />
-                <span>{`${propertyScore || '...'} / 5`}</span>
+                <span>{`${
+                  propertyScore ? Math.round(propertyScore * 10) / 10 : '...'
+                } / 10`}</span>
                 <span>
                   {reviewCount !== 0
                     ? `${reviewCount} reviews`
@@ -104,7 +106,9 @@ const Reviews: React.FC<ReviewsProps> = ({
       <div>
         <div className="flex gap-5 text-2xl font-bold">
           <AiFillStar size={30} />
-          <span>{`${propertyScore || '...'} / 5`}</span>
+          <span>{`${
+            propertyScore ? Math.round(propertyScore * 10) / 10 : '...'
+          } / 10`}</span>
           <span>
             {reviewCount !== 0 ? `${reviewCount} reviews` : 'No review Yet'}
           </span>

@@ -145,6 +145,7 @@ export type booking = {
   _id: string
   bookIn: Date
   bookOut: Date
+  guest: string
   property: {
     _id: string
     title: string
