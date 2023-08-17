@@ -4,6 +4,7 @@ import Container from '@/components/Container'
 import PaginationController from '@/components/PaginationController'
 import PropertyCard from '@/components/PropertyCard'
 import useAuthAxios from '@/hooks/useAuthAxios'
+import useAuthStore from '@/stores/useAuthStore'
 import { property, propertyPaginate } from '@/types'
 import pickFields from '@/utils/pickFields'
 import axios from 'axios'
@@ -14,6 +15,7 @@ const SearchMap = dynamic(() => import('./SearchMap'), { ssr: false })
 
 const SearchPage = ({ searchParams }: { searchParams: any }) => {
   const authAxios = useAuthAxios()
+  const { isLogin } = useAuthStore()
 
   const [properties, setProperties] = useState<property[] | null>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -24,7 +26,7 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
 
   useEffect(
     () => setProperties(null),
-    [provinceId, districtId, page, bookIn, bookOut, categoryCode],
+    [provinceId, districtId, page, bookIn, bookOut, categoryCode, isLogin],
   )
   useEffect(
     () => setTotalPage(null),
@@ -108,6 +110,12 @@ const SearchPage = ({ searchParams }: { searchParams: any }) => {
                         }
                         isLoading={isLoading}
                         linkHref={linkHref}
+                        isSaved={property.isSaved}
+                        propertyId={property._id}
+                        onSaveChange={(newSave) => {
+                          property.isSaved = newSave
+                          setProperties([...properties])
+                        }}
                       />
                     )
                   })}

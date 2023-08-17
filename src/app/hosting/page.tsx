@@ -8,6 +8,8 @@ import { property, propertyPaginate } from '@/types'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import useAuthAxios from '@/hooks/useAuthAxios'
+import Image from 'next/image'
+import Link from 'next/link'
 
 const HostingPage: React.FC = () => {
   const authAxios = useAuthAxios()
@@ -65,23 +67,29 @@ const HostingPage: React.FC = () => {
                 label="New property"
                 onClick={() => router.push('/new-property')}
                 outline
-                big
               />
             </div>
           </div>
           <div className="">
             {myProperties.length !== 0 ? (
               <>
-                <div className="text-2xl font-bold pb-7">Your property</div>
-                <div className="grid grid-cols-4 gap-10 text-lg">
+                <div className="text-2xl font-bold pb-7">Your properties</div>
+                <div className="grid grid-cols-4 gap-10">
                   {myProperties.map((p, i) => (
-                    <PropertyCard
-                      key={p._id}
-                      cardTitle={p.title}
-                      thumbnail={p.thumbnail}
-                      isLoading={false}
-                      linkHref={`/my-properties/${p.pageName}`}
-                    />
+                    <Link key={p._id} href={`my-properties/${p.pageName}`}>
+                      <div className="relative pt-[100%] rounded-lg overflow-hidden">
+                        <Image
+                          src={p.thumbnail || '/img/home-icon.png'}
+                          alt="thumbnail"
+                          style={{ objectFit: 'cover' }}
+                          fill
+                          sizes="(max-width: 300px) 100vw, (max-width: 800px) 50vw, 33vw"
+                        />
+                      </div>
+                      <div className="text-lg font-semibold mt-3">
+                        {p.title}
+                      </div>
+                    </Link>
                   ))}
                 </div>
               </>

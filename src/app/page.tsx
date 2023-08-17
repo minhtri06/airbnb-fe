@@ -4,12 +4,14 @@ import Container from '@/components/Container'
 import PaginationController from '@/components/PaginationController'
 import PropertyCard from '@/components/PropertyCard'
 import useAuthAxios from '@/hooks/useAuthAxios'
+import useAuthStore from '@/stores/useAuthStore'
 import { property, propertyPaginate } from '@/types'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 export default function Home({ searchParams }: { searchParams: any }) {
   const authAxios = useAuthAxios()
+  const { isLogin } = useAuthStore()
 
   const [properties, setProperties] = useState<property[] | null>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -17,7 +19,7 @@ export default function Home({ searchParams }: { searchParams: any }) {
 
   const { categoryCode, page } = searchParams
 
-  useEffect(() => setProperties(null), [categoryCode, page])
+  useEffect(() => setProperties(null), [categoryCode, page, isLogin])
 
   useEffect(() => setTotalPage(null), [categoryCode])
 
@@ -72,6 +74,12 @@ export default function Home({ searchParams }: { searchParams: any }) {
                 }
                 isLoading={isLoading}
                 linkHref={`/properties/${property.pageName}`}
+                isSaved={property.isSaved}
+                propertyId={property._id}
+                onSaveChange={(newSave) => {
+                  property.isSaved = newSave
+                  setProperties([...properties])
+                }}
               />
             ))}
         </div>

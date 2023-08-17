@@ -46,6 +46,7 @@ export type property = {
   }
   accommodations: accommodation[]
   isAvailable?: boolean
+  isSaved?: boolean
 }
 
 export type newProperty = {

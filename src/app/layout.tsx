@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${nunito.className} text-gray-900 min-w-[900px]`}
+        className={`${nunito.className} text-gray-800 min-w-[900px]`}
         suppressHydrationWarning={true}
       >
         <SetupClient>

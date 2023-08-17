@@ -14,12 +14,16 @@ import Reviews from './Reviews'
 import dynamic from 'next/dynamic'
 import AboutHost from './AboutHost'
 import apiAxios from '@/utils/apiAxios'
+import useAuthAxios from '@/hooks/useAuthAxios'
+import useAuthStore from '@/stores/useAuthStore'
 
 const PropertyMap = dynamic(() => import('./PropertyMap'), { ssr: false })
 
 const PropertyDetailPage = ({ params }: { params: { pageName: string } }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const authAxios = useAuthAxios()
+  const { isLogin } = useAuthStore()
 
   const bIn = searchParams?.get('bookIn')
   const bOut = searchParams?.get('bookOut')
@@ -33,6 +37,7 @@ const PropertyDetailPage = ({ params }: { params: { pageName: string } }) => {
   )
   const [selectedAccom, setSelectedAccom] = useState<accommodation | null>(null)
 
+  console.log(property?.isSaved)
   useEffect(() => {
     const getPropertyByPageName = async (
       pageName: string,
@@ -45,7 +50,7 @@ const PropertyDetailPage = ({ params }: { params: { pageName: string } }) => {
       property: property
       reviews: { data: review[]; totalRecords?: number; totalPage?: number }
     }> => {
-      const res = await apiAxios.get(`/properties/page-name:${pageName}`, {
+      const res = await authAxios.get(`/properties/page-name:${pageName}`, {
         params,
       })
       return res.data
@@ -75,7 +80,7 @@ const PropertyDetailPage = ({ params }: { params: { pageName: string } }) => {
         }
         router.push('/500')
       })
-  }, [bookIn, bookOut, params.pageName, router])
+  }, [authAxios, bookIn, bookOut, params.pageName, router, isLogin])
 
   useEffect(() => {
     setSelectedAccom(null)
@@ -100,7 +105,7 @@ const PropertyDetailPage = ({ params }: { params: { pageName: string } }) => {
   return (
     <div className="mb-14">
       <Container>
-        <Heading property={property} />
+        <Heading property={property} setProperty={setProperty} />
 
         <ImageGallery property={property} />
 
