@@ -10,6 +10,7 @@ const PersonalAvatar = () => {
   const authAxios = useAuthAxios()
 
   const handleEditAvatar = (file: File) => {
+    if (!currentUser) return
     const formData = new FormData()
     formData.append('avatar', file)
     authAxios
@@ -17,7 +18,6 @@ const PersonalAvatar = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((res) => {
-        if (!currentUser) return
         setCurrentUser({ ...currentUser, avatar: res.data.avatar })
       })
   }

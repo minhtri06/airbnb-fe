@@ -80,34 +80,37 @@ const PropertyInfo: React.FC<PropertyInfoProps> = ({
   if (addedImages !== null) console.log(addedImages[0])
 
   const handleUploadImages = () => {
-    if (!addedImages || addedImages.length === 0) return
+    if (!addedImages || addedImages.length === 0 || !property) return
     const fd = new FormData()
     for (let i = 0; i < addedImages.length; i++) {
       fd.append('images', addedImages[i])
     }
-    console.log(fd)
     authAxios
       .post(`/properties/${property?._id}/images`, fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      .then(() => {
+      .then((res) => {
+        const { newImages } = res.data
         setAddedImages(null)
         setSelectedImgInx([])
-        fetchProperty().then((property) => setProperty(property))
+        property?.images?.push(...newImages)
+        setProperty({ ...property })
       })
   }
 
   const handleUploadThumbnail = () => {
-    if (!newThumbnail) return
+    if (!newThumbnail || !property) return
     const fd = new FormData()
     fd.append('thumbnail', newThumbnail)
     authAxios
       .put(`/properties/${property?._id}/thumbnail`, fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      .then(() => {
+      .then((res) => {
         setNewThumbnail(null)
-        fetchProperty().then((property) => setProperty(property))
+        const { thumbnail } = res.data
+        property.thumbnail = thumbnail
+        setProperty({ ...property })
       })
   }
 
