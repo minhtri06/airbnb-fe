@@ -1,31 +1,12 @@
-'use client'
+import ClientOnly from '@/components/ClientOnly'
+import GoogleOauthRedirectClient from './GoogleOauthRedirectClient'
 
-import useAuth from '@/hooks/useAuth'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
-
-const GoogleOauthRedirect = () => {
-  const router = useRouter()
-  const params = useSearchParams()
-  const { googleLogin } = useAuth()
-
-  useEffect(() => {
-    let code = params?.get('code')
-    if (!code) {
-      router.push('/500')
-      return
-    }
-    googleLogin(code)
-      .then(() => {
-        router.push('/')
-      })
-      .catch((error) => {
-        console.log(error.response.data)
-        router.push('/500')
-      })
-  }, [googleLogin, params, router])
-
-  return <div></div>
+const GoogleOauthRedirectPage = () => {
+  return (
+    <ClientOnly>
+      <GoogleOauthRedirectClient />
+    </ClientOnly>
+  )
 }
 
-export default GoogleOauthRedirect
+export default GoogleOauthRedirectPage

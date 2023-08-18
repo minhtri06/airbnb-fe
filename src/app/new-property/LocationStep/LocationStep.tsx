@@ -5,7 +5,7 @@ import ErrorText from '@/components/ErrorText'
 import Input from '@/components/inputs/Input'
 
 import { useEffect, useRef } from 'react'
-import { addressState } from '../page'
+import { addressState } from '../NewPropertyPageClient'
 import { district, province } from '@/types'
 import dynamic from 'next/dynamic'
 
