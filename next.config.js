@@ -6,6 +6,7 @@ const nextConfig = {
       'lh3.googleusercontent.com',
       'a0.muscache.com',
       'cf.bstatic.com',
+      'res.cloudinary.com',
     ],
   },
 }
