@@ -9,9 +9,13 @@ import { useEffect, useState } from 'react'
 import NoTrip from './NoTrip'
 import BookingSection from './BookingSection'
 import PaginationController from '@/components/PaginationController'
+import useAuthStore from '@/stores/useAuthStore'
+import { useRouter } from 'next/navigation'
 
 const TripsPageClient = ({ searchParams }: { searchParams: any }) => {
   const authAxios = useAuthAxios()
+  const { isLogin } = useAuthStore()
+  const router = useRouter()
 
   const [bookings, setBookings] = useState<booking[] | null>(null)
   const [totalPage, setTotalPage] = useState<number | null>(null)
@@ -44,7 +48,7 @@ const TripsPageClient = ({ searchParams }: { searchParams: any }) => {
     }
   }, [authAxios, bookings, page, totalPage])
 
-  console.log(bookings)
+  if (!isLogin) router.replace('/')
 
   return (
     <div>

@@ -58,8 +58,6 @@ const LocationStep: React.FC<LocationStepProps> = ({
     setAddress((pre) => ({ ...pre, address: newAddress }))
   }
 
-  console.log(address)
-
   const selectStyle = {
     classNames: {
       control: () => 'p-1 border-[1px] font-semibold text-lg',

@@ -16,6 +16,8 @@ import Router from 'next/router'
 import Modal from '@/components/modals/Modal'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
+import useAuthStore from '@/stores/useAuthStore'
+import useLoginModalStore from '@/stores/useLoginModalStore'
 
 interface ReserveBoardProps {
   bookIn: Date | null
@@ -40,7 +42,8 @@ const ReserveBoard: React.FC<ReserveBoardProps> = ({
 }) => {
   const authAxios = useAuthAxios()
   const router = useRouter()
-  const pathname = usePathname()
+  const { isLogin } = useAuthStore()
+  const { open: openLoginModal } = useLoginModalStore()
 
   const [isBookingInputShowed, setIsBookingInputShowed] = useState(false)
   const [isAccomSelectorOpen, setIsAccomSelectorOpen] = useState(false)
@@ -94,6 +97,10 @@ const ReserveBoard: React.FC<ReserveBoardProps> = ({
 
   const handleReserve = async () => {
     if (!selectedAccom) return
+    if (!isLogin) {
+      openLoginModal()
+      return
+    }
     await authAxios.post('/bookings', {
       bookIn,
       bookOut,

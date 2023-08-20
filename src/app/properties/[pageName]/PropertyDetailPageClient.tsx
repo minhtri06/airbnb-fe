@@ -41,7 +41,6 @@ const PropertyDetailPageClient = ({
   )
   const [selectedAccom, setSelectedAccom] = useState<accommodation | null>(null)
 
-  console.log(property?.isSaved)
   useEffect(() => {
     const getPropertyByPageName = async (
       pageName: string,

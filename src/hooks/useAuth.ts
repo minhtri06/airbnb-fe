@@ -59,7 +59,6 @@ const useAuth = () => {
   )
 
   const logout = useCallback(async () => {
-    console.log('logout')
     const refreshToken = getRefreshToken()
     await apiAxios.post(LOGOUT_URL, { refreshToken })
     setIsLogin(false)

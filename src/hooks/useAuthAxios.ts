@@ -31,7 +31,6 @@ const useAuthAxios = () => {
           // Handle refresh token
           const preRequest = error.config
           if (error.response?.status === 401 && preRequest) {
-            console.log('refresh')
             await handleRefreshToken()
             preRequest.headers.Authorization = getAccessToken()
             return authAxios(preRequest)

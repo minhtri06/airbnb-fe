@@ -87,20 +87,18 @@ const UserMenu = () => {
             {isLogin ? (
               <>
                 <div className="font-bold">
-                  <MenuItem onClick={closeMenu} label="My save" />
                   <Link href="/trips">
                     <MenuItem onClick={closeMenu} label="Trips" />
                   </Link>
                   <Link href="/messages">
                     <MenuItem onClick={closeMenu} label="Messages" />
                   </Link>
+                  <Link href="/account">
+                    <MenuItem onClick={closeMenu} label="Account" />
+                  </Link>
                 </div>
                 <hr />
-                <Link href="/account">
-                  <MenuItem onClick={closeMenu} label="Account" />
-                </Link>
                 <MenuItem onClick={closeMenu} label="Help" />
-                <hr />
                 <MenuItem onClick={handleLogout} label="Logout" />
               </>
             ) : (

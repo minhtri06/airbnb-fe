@@ -9,8 +9,6 @@ const DescriptionStep: React.FC<DescriptionStepProps> = ({
   description,
   descriptionOnChange,
 }) => {
-  console.log(description)
-
   return (
     <div>
       <div className="font-bold text-3xl pb-3">Create your description</div>

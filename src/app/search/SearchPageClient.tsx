@@ -73,8 +73,6 @@ const SearchPageClient = ({ searchParams }: { searchParams: any }) => {
     categoryCode,
   ])
 
-  console.log(properties)
-
   return (
     <>
       <div className="flex">

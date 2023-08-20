@@ -30,13 +30,9 @@ const HostingPageClient: React.FC = () => {
     } else setMyProperties([])
   }, [authStore.isLogin, authAxios])
 
-  console.log('my properties', myProperties)
-
   if (authStore.isLoading) {
     return <></>
   }
-
-  console.log(myProperties)
 
   return (
     <div className="px-16">

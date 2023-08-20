@@ -128,7 +128,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           </div>
         </div>
       </Link>
-      <div className="absolute right-3 top-3" onClick={handleSaveOnClick}>
+      <div
+        className="absolute right-3 top-3 cursor-pointer"
+        onClick={handleSaveOnClick}
+      >
         <HeartIcon isSaved={isSaved} />
       </div>
     </div>

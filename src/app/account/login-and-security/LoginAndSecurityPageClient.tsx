@@ -15,7 +15,6 @@ const LoginAndSecurityPageClient = () => {
     if (currentUser?.authType === 'google') return
     setIsPasswordChanging(true)
   }
-  console.log(currentUser)
 
   if (isLogin === false) router.replace('/')
 

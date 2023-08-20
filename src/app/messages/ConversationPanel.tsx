@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import useAuthAxios from '@/hooks/useAuthAxios'
 import { conversation } from '@/types'
 import useAuthStore from '@/stores/useAuthStore'
+import NoConversation from './NoConversation'
 
 const ConversationPanel = () => {
   const { conversations, setConversations } = useChatStore()
@@ -37,17 +38,18 @@ const ConversationPanel = () => {
         Inbox
       </div>
       <div>
-        {!conversations ? (
-          <></>
-        ) : (
-          conversations.map((c) => (
-            <ConversationBox
-              key={c._id}
-              isSelected={toUserId === c.withUser._id}
-              conversation={c}
-            />
-          ))
-        )}
+        {conversations &&
+          (conversations.length === 0 ? (
+            <NoConversation />
+          ) : (
+            conversations.map((c) => (
+              <ConversationBox
+                key={c._id}
+                isSelected={toUserId === c.withUser._id}
+                conversation={c}
+              />
+            ))
+          ))}
       </div>
     </div>
   )

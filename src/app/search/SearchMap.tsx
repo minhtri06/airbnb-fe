@@ -35,7 +35,6 @@ const SearchMap: React.FC<SearchMapProps> = ({ properties }) => {
           )
 
           map?.fitBounds(markerBounds)
-          console.log('yolo')
         }}
       >
         <TileLayer
