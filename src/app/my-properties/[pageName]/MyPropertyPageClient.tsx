@@ -45,13 +45,7 @@ const MyPropertyPageClient = ({ params }: { params: { pageName: string } }) => {
 
   let body = <></>
   if (tab === 'info')
-    body = (
-      <PropertyInfo
-        property={property}
-        setProperty={setProperty}
-        fetchProperty={fetchProperty}
-      />
-    )
+    body = <PropertyInfo property={property} setProperty={setProperty} />
   if (tab === 'bookings')
     body = <PropertyBookings property={property} setProperty={setProperty} />
 
