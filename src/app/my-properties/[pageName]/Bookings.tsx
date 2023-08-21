@@ -114,7 +114,7 @@ const PropertyBookings: React.FC<PropertyBookingsProps> = ({
             {!selectedAccom ? (
               <div className="text-lg text-center">Choose accommodation</div>
             ) : bookings?.length === 0 ? (
-              <div className="flex justify-center text-lg pt-1">
+              <div className="flex justify-center text-lg">
                 No bookings in this month
               </div>
             ) : (
