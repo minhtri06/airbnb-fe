@@ -16,6 +16,7 @@ const MyPropertyPageClient = ({ params }: { params: { pageName: string } }) => {
   const { isLogin } = useAuthStore()
 
   const [property, setProperty] = useState<property | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const tab = searchParams?.get('tab')
 
@@ -34,18 +35,26 @@ const MyPropertyPageClient = ({ params }: { params: { pageName: string } }) => {
 
   useEffect(() => {
     if (property === null) {
+      setIsLoading(true)
       fetchProperty()
         .then((property) => setProperty(property))
         .catch((error) => {
           if (axios.isAxiosError(error) && error.status === 404)
             router.push('/404')
         })
+        .finally(() => setIsLoading(false))
     }
   }, [fetchProperty, params.pageName, property, router])
 
   let body = <></>
   if (tab === 'info')
-    body = <PropertyInfo property={property} setProperty={setProperty} />
+    body = (
+      <PropertyInfo
+        property={property}
+        setProperty={setProperty}
+        isLoading={isLoading}
+      />
+    )
   if (tab === 'bookings')
     body = <PropertyBookings property={property} setProperty={setProperty} />
 

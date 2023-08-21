@@ -1,12 +1,9 @@
 'use client'
 
 import ErrorText from '@/components/ErrorText'
-import { CATEGORIES } from '@/constants/categories'
 import useAuthAxios from '@/hooks/useAuthAxios'
 import { property } from '@/types'
-import pickFields from '@/utils/pickFields'
 import axios from 'axios'
-import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ThumbnailSection from './ThumbnailSection'
@@ -16,11 +13,13 @@ import CategoriesSection from './CategoriesSection'
 interface PropertyInfoProps {
   property: null | property
   setProperty: React.Dispatch<React.SetStateAction<property | null>>
+  isLoading: boolean
 }
 
 const PropertyInfo: React.FC<PropertyInfoProps> = ({
   property,
   setProperty,
+  isLoading,
 }) => {
   const router = useRouter()
   const authAxios = useAuthAxios()
@@ -118,6 +117,7 @@ const PropertyInfo: React.FC<PropertyInfoProps> = ({
           </span>
         </div>
         <ErrorText error={error} size="big" />
+        {isLoading && <div>Loading...</div>}
         {property && (
           <div className="text-lg pb-10">
             <div className="py-5">
