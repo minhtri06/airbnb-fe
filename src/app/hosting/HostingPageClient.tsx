@@ -18,6 +18,7 @@ const HostingPageClient: React.FC = () => {
   const router = useRouter()
 
   const [myProperties, setMyProperties] = useState<property[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const getMyProperties = async (): Promise<propertyPaginate> => {
@@ -26,7 +27,9 @@ const HostingPageClient: React.FC = () => {
     }
 
     if (authStore.isLogin) {
-      getMyProperties().then((result) => setMyProperties(result.data))
+      getMyProperties()
+        .then((result) => setMyProperties(result.data))
+        .finally(() => setIsLoading(false))
     } else setMyProperties([])
   }, [authStore.isLogin, authAxios])
 
@@ -69,7 +72,9 @@ const HostingPageClient: React.FC = () => {
             </div>
           </div>
           <div className="">
-            {myProperties.length !== 0 ? (
+            {isLoading ? (
+              <div>Loading...</div>
+            ) : myProperties.length !== 0 ? (
               <>
                 <div className="text-2xl font-bold pb-7">Your properties</div>
                 <div className="grid grid-cols-4 gap-10">
