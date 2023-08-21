@@ -27,6 +27,7 @@ const HostingPageClient: React.FC = () => {
     }
 
     if (authStore.isLogin) {
+      setIsLoading(true)
       getMyProperties()
         .then((result) => setMyProperties(result.data))
         .finally(() => setIsLoading(false))
@@ -58,7 +59,7 @@ const HostingPageClient: React.FC = () => {
         </>
       )}
       {authStore.isLogin === true && (
-        <div>
+        <div className="pb-10">
           <div className="flex justify-between items-center py-16">
             <div className="text-3xl font-bold">
               Welcome, {authStore.currentUser?.name}! 🍁
