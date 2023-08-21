@@ -39,18 +39,20 @@ const PersonalFields = () => {
   const handleSave = async () => {
     if (!currentUser) return
 
+    const updateBody = pickFields(
+      { name, gender, dateOfBirth, phoneNumber },
+      'name',
+      'gender',
+      'dateOfBirth',
+      'phoneNumber',
+    )
+
     setNotificationMsg('')
     authAxios
-      .patch('/me', { name, gender, dateOfBirth, phoneNumber })
+      .patch('/me', updateBody)
       .then(() => {
         setError('')
-        setCurrentUser({
-          ...currentUser!,
-          name,
-          gender,
-          dateOfBirth,
-          phoneNumber,
-        })
+        setCurrentUser({ ...currentUser!, ...updateBody })
         setNotificationMsg('Update successfully')
       })
       .catch((error) => {
