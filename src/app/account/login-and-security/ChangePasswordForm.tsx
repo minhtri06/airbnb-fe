@@ -36,6 +36,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
     const errMsg = validateForm()
     if (errMsg) {
       setError(errMsg)
+      setNotificationMsg('')
       return
     }
     authAxios
@@ -43,10 +44,14 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
         oldPassword,
         newPassword,
       })
-      .then(() => setNotificationMsg('Change password successfully'))
+      .then(() => {
+        setError('')
+        setNotificationMsg('Change password successfully')
+      })
       .catch((error) => {
         if (axios.isAxiosError(error)) {
           setError(error.response?.data.message)
+          setNotificationMsg('')
         }
       })
   }
