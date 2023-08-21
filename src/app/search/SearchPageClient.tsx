@@ -101,7 +101,7 @@ const SearchPageClient = ({ searchParams }: { searchParams: any }) => {
                             property.address?.provinceName) as string
                         }
                         thumbnail={property.thumbnail as string}
-                        score={property.score || 9}
+                        score={property.score}
                         reviewCount={property.reviewCount}
                         pricePerNight={
                           property.accommodations[0].pricePerNight as number
