@@ -106,7 +106,7 @@ function RegisterModal() {
   }
 
   const bodyElement = (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-1">
       <Heading title="Welcome to Airbnb" subtitle="Create an account" />
       <div className="pb-2">
         <ErrorText error={errors.general} size="small" />
