@@ -23,6 +23,7 @@ const PropertyBookings: React.FC<PropertyBookingsProps> = ({
 
   const [selectedAccom, setSelectedAccom] = useState<null | accommodation>(null)
   const [bookings, setBookings] = useState<null | booking[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const [time, setTime] = useState(moment())
 
   const monthNames = [
@@ -43,6 +44,7 @@ const PropertyBookings: React.FC<PropertyBookingsProps> = ({
   useEffect(() => {
     if (!selectedAccom) return
 
+    setIsLoading(true)
     authAxios
       .get(
         `/properties/${property?._id}/accommodations/${selectedAccom._id}/bookings`,
@@ -55,6 +57,7 @@ const PropertyBookings: React.FC<PropertyBookingsProps> = ({
         }
         setBookings(res.data.bookings)
       })
+      .finally(() => setIsLoading(false))
   }, [authAxios, property?._id, selectedAccom, time])
 
   if (!property) return <></>
@@ -113,8 +116,10 @@ const PropertyBookings: React.FC<PropertyBookingsProps> = ({
           <Container>
             {!selectedAccom ? (
               <div className="text-lg text-center">Choose accommodation</div>
+            ) : isLoading ? (
+              <div className="text-lg text-center">Loading...</div>
             ) : bookings?.length === 0 ? (
-              <div className="flex justify-center text-lg">
+              <div className="text-center text-lg">
                 No bookings in this month
               </div>
             ) : (
