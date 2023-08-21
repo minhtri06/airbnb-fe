@@ -56,42 +56,48 @@ export default function HomePageClient({
   return (
     <div>
       <Container>
-        <div
-          className=" pt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            <div
+              className=" pt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
             2xl:grid-cols-5 gap-6"
-        >
-          {properties &&
-            properties.map((property) => (
-              <PropertyCard
-                key={property._id}
-                cardTitle={
-                  property.address?.districtName +
-                  ', ' +
-                  property.address?.provinceName
-                }
-                subText1={property.title as string}
-                thumbnail={property.thumbnail as string}
-                score={property.score}
-                reviewCount={property.reviewCount}
-                pricePerNight={
-                  property.accommodations[0].pricePerNight as number
-                }
-                isLoading={isLoading}
-                linkHref={`/properties/${property.pageName}`}
-                isSaved={property.isSaved}
-                propertyId={property._id}
-                onSaveChange={(newSave) => {
-                  property.isSaved = newSave
-                  setProperties([...properties])
-                }}
+            >
+              {properties &&
+                properties.map((property) => (
+                  <PropertyCard
+                    key={property._id}
+                    cardTitle={
+                      property.address?.districtName +
+                      ', ' +
+                      property.address?.provinceName
+                    }
+                    subText1={property.title as string}
+                    thumbnail={property.thumbnail as string}
+                    score={property.score}
+                    reviewCount={property.reviewCount}
+                    pricePerNight={
+                      property.accommodations[0].pricePerNight as number
+                    }
+                    isLoading={isLoading}
+                    linkHref={`/properties/${property.pageName}`}
+                    isSaved={property.isSaved}
+                    propertyId={property._id}
+                    onSaveChange={(newSave) => {
+                      property.isSaved = newSave
+                      setProperties([...properties])
+                    }}
+                  />
+                ))}
+            </div>
+            {!isLoading && totalPage !== null && totalPage > 1 && (
+              <PaginationController
+                currentPage={searchParams.page || 1}
+                maxPage={totalPage}
               />
-            ))}
-        </div>
-        {totalPage !== null && totalPage > 1 && (
-          <PaginationController
-            currentPage={searchParams.page || 1}
-            maxPage={totalPage}
-          />
+            )}
+          </>
         )}
       </Container>
     </div>
