@@ -64,7 +64,9 @@ const PropertyBookings: React.FC<PropertyBookingsProps> = ({
       <div className="w-1/4 border-r-[1px] h-full">
         <div className="flex items-center border-b-[1px]">
           <Container>
-            <div className="text-xl font-bold h-16 ">Accommodations</div>
+            <div className="text-xl font-bold h-16 flex items-center">
+              Accommodations
+            </div>
           </Container>
         </div>
         <div className="py-3">
@@ -73,7 +75,9 @@ const PropertyBookings: React.FC<PropertyBookingsProps> = ({
               <div
                 key={a._id}
                 className={`py-3 cursor-pointer text-lg ${
-                  selectedAccom?._id === a._id && 'font-bold underline'
+                  selectedAccom?._id === a._id
+                    ? 'font-bold underline'
+                    : 'font-semibold'
                 }`}
                 onClick={() => setSelectedAccom(a)}
               >
@@ -88,7 +92,7 @@ const PropertyBookings: React.FC<PropertyBookingsProps> = ({
           <Container>
             <div className="h-16 flex justify-between items-center">
               <div
-                className="p-2 rounded-full bg-gray-200 cursor-pointer"
+                className="p-2 rounded-full bg-gray-200 cursor-pointer select-none"
                 onClick={() => setTime(moment(time.add(-1, 'month')))}
               >
                 <FaAngleLeft />
@@ -97,7 +101,7 @@ const PropertyBookings: React.FC<PropertyBookingsProps> = ({
                 {monthNames[time.get('month')]} - {time.get('year')}
               </span>
               <div
-                className="p-2 rounded-full bg-gray-200 cursor-pointer"
+                className="p-2 rounded-full bg-gray-200 cursor-pointer select-none"
                 onClick={() => setTime(moment(time.add(1, 'month')))}
               >
                 <FaAngleRight />

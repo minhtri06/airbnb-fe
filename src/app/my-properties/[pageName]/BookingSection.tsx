@@ -18,7 +18,7 @@ const BookingSection: React.FC<BookingSectionProps> = ({ booking }) => {
   return (
     <div className="h-36 flex w-full">
       <div className="flex gap-6">
-        <div className="h-20 w-20 relative rounded-full overflow-hidden">
+        <div className="h-16 w-16 relative rounded-full overflow-hidden">
           <Image
             src={guest.avatar}
             fill
