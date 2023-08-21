@@ -111,16 +111,19 @@ const PropertyBookings: React.FC<PropertyBookingsProps> = ({
         </div>
         <div className="py-5">
           <Container>
-            {bookings?.map((b, i) => (
-              <>
-                {i !== 0 && <hr className="my-7" />}
-                <BookingSection key={b._id} booking={b} />
-              </>
-            ))}
-            {selectedAccom && bookings?.length === 0 && (
-              <div className="flex justify-center text-xl pt-1">
+            {!selectedAccom ? (
+              <div className="text-lg text-center">Choose accommodation</div>
+            ) : bookings?.length === 0 ? (
+              <div className="flex justify-center text-lg pt-1">
                 No bookings in this month
               </div>
+            ) : (
+              bookings?.map((b, i) => (
+                <>
+                  {i !== 0 && <hr className="my-7" />}
+                  <BookingSection key={b._id} booking={b} />
+                </>
+              ))
             )}
           </Container>
         </div>
