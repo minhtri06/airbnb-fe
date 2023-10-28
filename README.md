@@ -2,11 +2,11 @@
 
 ## About this project
 
-This is the frontend of my Airbnb clone application, which implements the basic feature of airbnb.com.
+This is the frontend of my Airbnb clone application, which implements the main features of Airbnb.com. People can search a airbnb or post their own room/house to the app. They can also use map for easily searching or message with the host
 
 [BE repository](https://github.com/minhtri06/airbnb-be)
 
-You can visit the live website in [here](https://minhtri06-airbnb.vercel.app/)
+[Live website](https://minhtri06-airbnb.vercel.app/)
 
 ## Features
 
