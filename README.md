@@ -1,8 +1,8 @@
-# Airbnb Clone BE
+# Airbnb Clone FE
 
 ## About this project
 
-This is the frontend of my Airbnb clone application, which implements the basic feature of airbnb.com such as search/reserve property, post a property, find property in map, message host, etc.
+This is the frontend of my Airbnb clone application, which implements the basic feature of airbnb.com.
 
 [BE repository](https://github.com/minhtri06/airbnb-be)
 
