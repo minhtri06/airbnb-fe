@@ -6,8 +6,6 @@ This is the frontend of my Airbnb clone application, which implements the main f
 
 [BE repository](https://github.com/minhtri06/airbnb-be)
 
-[Live website](https://minhtri06-airbnb.vercel.app/)
-
 ## Features
 
 - Sign up, verify email
@@ -32,3 +30,11 @@ This is the frontend of my Airbnb clone application, which implements the main f
 - Leaflet and React leaflet
 - Zustand
 - Socket.io client
+
+## Screenshots
+
+![](./screenshots/1.png)
+
+| ![](./screenshots/2.png) | ![](./screenshots/3.png) | ![](./screenshots/4.png) |
+| ------------------------ | ------------------------ | ------------------------ |
+| ![](./screenshots/5.png) | ![](./screenshots/6.png) | ![](./screenshots/7.png) |
