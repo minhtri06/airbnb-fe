@@ -33,8 +33,8 @@ This is the frontend of my Airbnb clone application, which implements the main f
 
 ## Screenshots
 
-![](./screenshots/1.png)
+![home](./screenshots/1.png)
 
-| ![](./screenshots/2.png) | ![](./screenshots/3.png) | ![](./screenshots/4.png) |
-| ------------------------ | ------------------------ | ------------------------ |
-| ![](./screenshots/5.png) | ![](./screenshots/6.png) | ![](./screenshots/7.png) |
+| ![search](./screenshots/2.png)  | ![search-result](./screenshots/3.png) | ![property-details](./screenshots/4.png) |
+| ------------------------------- | ------------------------------------- | ---------------------------------------- |
+| ![reviews](./screenshots/5.png) | ![booking](./screenshots/6.png)       | ![chat-with-host](./screenshots/7.png)   |
